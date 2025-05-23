@@ -139,7 +139,7 @@ const RoomCategory = () => {
               />
             </div>
           </div>
-          <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2  flex space-x-4 items-center">
+          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2  flex space-x-4 justify-center h-1/6 items-center backdrop-blur-[2px] w-full ">
             <button
               onClick={() =>
                 setCurrentIndex((prev) =>
