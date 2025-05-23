@@ -15,11 +15,17 @@ const RoomCategory = () => {
   const [filter, setFilter] = useState("Filter");
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % roomType.length);
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setCurrentIndex((prev) => (prev + 1) % roomType.length);
+        setIsTransitioning(false);
+      }, 3000); 
     }, 10000);
+
     return () => clearInterval(interval);
   }, []);
 
@@ -72,7 +78,14 @@ const RoomCategory = () => {
             />
           </div>
 
-          <div className="relative z-10">
+          <div
+            className={`relative z-10 transition-all duration-500 ease-in-out ${
+              isTransitioning
+                ? "opacity-0 -translate-x-10"
+                : "opacity-100 translate-x-0"
+            }`}
+            key={roomCategory.id} 
+          >
             <h2 className=" font-bold mb-4 flex gap-4">
               <Title title={`0${roomCategory.id}  ${roomCategory.title}`} />
             </h2>
@@ -108,14 +121,23 @@ const RoomCategory = () => {
 
         {/* Right Section */}
         <div className="w-1/2 h-full relative">
-          <div className="h-[550px] w-full overflow-hidden">
-            <Image
-              src={roomCategory.image}
-              alt={roomCategory.title}
-              height={400}
-              width={400}
-              className="w-full h-full object-cover object-center rounded-l-3xl"
-            />
+          <div
+            className={`transition-all duration-500 ease-in-out ${
+              isTransitioning
+                ? "opacity-0 translate-x-10"
+                : "opacity-100 translate-x-0"
+            }`}
+            key={roomCategory.id}
+          >
+            <div className="h-[550px] w-full overflow-hidden">
+              <Image
+                src={roomCategory.image}
+                alt={roomCategory.title}
+                height={400}
+                width={400}
+                className="w-full h-full object-cover object-center rounded-l-3xl"
+              />
+            </div>
           </div>
           <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2  flex space-x-4 items-center">
             <button
