@@ -39,9 +39,7 @@ const StayWithUs = () => {
       <div className="px-20">
         <TitleBlack title={"Why Stay With Us"} />
         <p className="text-medium max-w-2xl">
-          Praesent volutpat augue sapien sapien. A sit neque viverra eleifend
-          donec risus nam neque. Lacus etiam eu ullamcorper nisi pellentesque
-          purus id. Lobortis
+        From our elegant accommodations to personalized services, we go above and beyond to create an exceptional guest experience. Whether you're here for business or leisure, you'll find the perfect blend of comfort, convenience, and hospitality.
         </p>
       </div>
 

@@ -9,11 +9,13 @@ export const roomType = [
     id: 1,
     title: "Penthouse Suite",
     description:
-      "Praesent volutpat augue sapien sapien. A sit neque viverra eleifend donec risus nam neque. Lacus etiam eu ullamcorper nisi pellentesque purus id. Lobortis",
+      "The epitome of luxury living. Our Penthouse Suite features expansive interiors, panoramic city views, and a private terrace with a fireplace. Perfect for distinguished guests seeking sophistication, space, and complete privacy.",
     amenities: [
-      "3 Guests",
-      "1 King Sized Bed + Lounge Area",
-      "Private Terrace & Fireplace",
+      "Up to 4 Guests",
+      "1 King-Sized Bed + Lounge Area",
+      "Private Terrace with Fireplace",
+      "Panoramic City View",
+      "Luxury Bathroom with Jacuzzi",
     ],
     available: 1,
     image: familyRoom,
@@ -22,11 +24,13 @@ export const roomType = [
     id: 2,
     title: "Executive Room",
     description:
-      "Praesent volutpat augue sapien sapien. A sit neque viverra eleifend donec risus nam neque. Lacus etiam eu ullamcorper nisi pellentesque purus id. Lobortis",
+      "Experience refined comfort in our Executive Room, thoughtfully designed for the modern traveler. Featuring elegant decor, a spacious layout, and premium amenities, it’s ideal for business or leisure.",
     amenities: [
-      "3 Guests",
-      "1 King Sized Bed + Lounge Area",
-      "Private Terrace & Fireplace",
+      "Up to 3 Guests",
+      "1 King-Sized Bed",
+      "Dedicated Workspace",
+      "Complimentary Mini-Bar",
+      "Modern Ensuite Bathroom",
     ],
     available: 1,
     image: Room2,
@@ -35,11 +39,13 @@ export const roomType = [
     id: 3,
     title: "Junior Suit",
     description:
-      "Praesent volutpat augue sapien sapien. A sit neque viverra eleifend donec risus nam neque. Lacus etiam eu ullamcorper nisi pellentesque purus id. Lobortis",
+      "Stylish and comfortable, the Junior Suite offers extra space to unwind with a separate lounge corner. Ideal for couples or solo travelers seeking elevated relaxation and function.",
     amenities: [
-      "3 Guests",
-      "1 King Sized Bed + Lounge Area",
-      "Private Terrace & Fireplace",
+      "2 Guests",
+      "1 Queen-Sized Bed + Lounge Area",
+      "Spacious Sitting Area",
+      "Smart TV & Desk",
+      "Walk-In Shower",
     ],
     available: 1,
     image: Room3,
@@ -48,11 +54,13 @@ export const roomType = [
     id: 4,
     title: "Deluxe Room",
     description:
-      "Praesent volutpat augue sapien sapien. A sit neque viverra eleifend donec risus nam neque. Lacus etiam eu ullamcorper nisi pellentesque purus id. Lobortis",
+      "Designed with comfort and elegance in mind, the Deluxe Room offers a cozy retreat with tasteful furnishings and all the essentials for a relaxing stay.",
     amenities: [
-      "3 Guests",
-      "1 King Sized Bed + Lounge Area",
-      "Private Terrace & Fireplace",
+      "2 Guests",
+      "1 Queen-Sized Bed",
+      "En-Suite Bathroom",
+      "Flat-Screen TV",
+      "Tea & Coffee Station",
     ],
     available: 2,
     image: Room4,
@@ -61,16 +69,19 @@ export const roomType = [
     id: 5,
     title: "Standard double rooom",
     description:
-      "Praesent volutpat augue sapien sapien. A sit neque viverra eleifend donec risus nam neque. Lacus etiam eu ullamcorper nisi pellentesque purus id. Lobortis",
+      "Our Standard Double Room provides simplicity and comfort for everyday travelers. A well-appointed space with modern essentials for a restful night.",
     amenities: [
-      "3 Guests",
-      "1 King Sized Bed + Lounge Area",
-      "Private Terrace & Fireplace",
+      "2 Guests",
+      "1 Double Bed",
+      "Compact Work Desk",
+      "Private Bathroom",
+      "Air Conditioning",
     ],
     available: 6,
     image: Room5,
   },
 ];
+
 
 export const testimonials = [
   {
