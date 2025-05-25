@@ -10,6 +10,7 @@ const HeroSection = () => {
   const [checkOut, setCheckOut] = useState("2025-05-20");
   const [people, setPeople] = useState("1 Person");
   const [roomType, setRoomType] = useState("Deluxe");
+  const [openModle, setOpenModle] = useState(false);
 
   const handleBooking = () => {
   console.log(
@@ -21,7 +22,7 @@ const HeroSection = () => {
   return (
     <div className=" relative flex max-lg:h-[70vh]  text-white lg:px-4 max-w-[1560px] mx-auto ">
       <div
-        className="max-lg:border-none w-full flex items-end justify-between lg:gap-10 lg:px-10 lg:pb-16  lg:pb-32 rounded-lg"
+        className="max-lg:border-none w-full flex items-end justify-between lg:gap-10 lg:px-10 md:pb-16  lg:pb-32 rounded-lg"
         // style={{
         //   borderLeft: "1px solid",
         //   borderRight: "1px solid",
@@ -45,9 +46,40 @@ const HeroSection = () => {
             is where tradition meets sophistication in the heart of Kigali.
           </p>
           <div className="flex justify-between items-center text-nowrap flex-wrap gap-4 w-3/4 mx-auto">
-            <div className="p-3 font-semibold rounded-md bg-white/10 backdrop-blur-sm flex items-center gap-2 w-fit text-primaryGreen cursor-pointer hover:bg-white/20  transition">
+            <div
+              onClick={() => setOpenModle(true)}
+              className="p-3 font-semibold rounded-md bg-white/10 backdrop-blur-sm flex items-center gap-2 w-fit text-primaryGreen cursor-pointer hover:bg-white/20  transition"
+            >
               <HiOutlinePlay size={20} /> Take A Tour
             </div>
+            {openModle && (
+              <div
+                className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4"
+                onClick={() => setOpenModle(false)}
+              >
+                <div
+                  className="w-full max-w-8xl h-[90vh] bg-black rounded-lg overflow-hidden relative"
+                  onClick={(e) => e.stopPropagation()} 
+                >
+                  <button
+                    className="absolute top-4 right-4 text-white text-2xl z-10"
+                    onClick={() => setOpenModle(false)}
+                  >
+                    &times;
+                  </button>
+
+                  <iframe
+                    title="Matterport Hotel Tour"
+                    src="https://my.matterport.com/show/?m=wBEFkyJTUnW&play=1&qs=1&ts=1"
+                    width="100%"
+                    height="100%"
+                    allow="fullscreen"
+                    allowFullScreen
+                    frameBorder="0"
+                  ></iframe>
+                </div>
+              </div>
+            )}
 
             <button
               onClick={handleBooking}

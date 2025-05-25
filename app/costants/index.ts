@@ -71,3 +71,36 @@ export const roomType = [
     image: Room5,
   },
 ];
+
+export const testimonials = [
+  {
+    name: "Sophie M.",
+    country: "Kenya",
+    flag: "/flags/kenya.png",
+    title: "A hidden gem in Kigali!",
+    image: Room5,
+    description:
+      "The rooms are beautiful, and the service is exceptional. Highly recommend!! 😊😇",
+    rating: 4.5,
+  },
+  {
+    name: "Jean-Pierre N.",
+    country: "Rwanda",
+    flag: "/flags/rwanda.png",
+    title: "Feels like home",
+    image: Room5,
+    description:
+      "From the moment I arrived, I felt welcomed. The staff went above and beyond to make my stay comfortable.",
+    rating: 5,
+  },
+  {
+    name: "Grace A.",
+    country: "Ghana",
+    flag: "/flags/ghana.png",
+    title: "Impressive hospitality!",
+    image: Room5,
+    description:
+      "Clean rooms, quick service, and a peaceful environment. It’s the perfect escape in the heart of the city.",
+    rating: 4,
+  },
+];

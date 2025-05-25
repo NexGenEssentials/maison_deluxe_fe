@@ -13,21 +13,24 @@ const RoomCategory = () => {
   const [room, setRoom] = useState("Room");
   const [price, setPrice] = useState("Highest Price");
   const [filter, setFilter] = useState("Filter");
+  const [isHovered, setIsHovered] = useState(false);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => {
+    if (isHovered) return;
+
     const interval = setInterval(() => {
       setIsTransitioning(true);
       setTimeout(() => {
         setCurrentIndex((prev) => (prev + 1) % roomType.length);
         setIsTransitioning(false);
-      }, 3000); 
+      }, 500);
     }, 10000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [isHovered]);
 
   const roomCategory = roomType[currentIndex];
 
@@ -84,7 +87,7 @@ const RoomCategory = () => {
                 ? "opacity-0 -translate-x-10"
                 : "opacity-100 translate-x-0"
             }`}
-            key={roomCategory.id} 
+            key={roomCategory.id}
           >
             <h2 className=" font-bold mb-4 flex gap-4">
               <Title title={`0${roomCategory.id}  ${roomCategory.title}`} />
@@ -120,7 +123,11 @@ const RoomCategory = () => {
         </div>
 
         {/* Right Section */}
-        <div className="w-1/2 h-full relative">
+        <div
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          className="w-1/2 h-full relative"
+        >
           <div
             className={`transition-all duration-500 ease-in-out ${
               isTransitioning
@@ -130,16 +137,19 @@ const RoomCategory = () => {
             key={roomCategory.id}
           >
             <div className="h-[550px] w-full overflow-hidden">
-              <Image
-                src={roomCategory.image}
-                alt={roomCategory.title}
-                height={400}
-                width={400}
-                className="w-full h-full object-cover object-center rounded-l-3xl"
-              />
+              <iframe
+                title="Matterport Hotel Tour"
+                src="https://my.matterport.com/show/?m=wBEFkyJTUnW&play=1&qs=1&ts=1"
+                width="100%"
+                height="100%"
+                allow="fullscreen"
+                allowFullScreen
+                frameBorder="0"
+              ></iframe>
             </div>
           </div>
-          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2  flex space-x-4 justify-center h-1/6 items-center backdrop-blur-[2px] w-full ">
+
+          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2  flex space-x-4 justify-center h-1/6 items-center  w-full ">
             <button
               onClick={() =>
                 setCurrentIndex((prev) =>
