@@ -10,7 +10,7 @@ import { HiOutlinePlay } from "react-icons/hi";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/scrollbar";
-import { Keyboard,} from "swiper/modules";
+import { Keyboard } from "swiper/modules";
 import { MdFilterListAlt } from "react-icons/md";
 
 const RoomCategory = () => {
@@ -261,7 +261,7 @@ const RoomCategory = () => {
                 </div>
                 {/* content section */}
                 <div className="-mt-14 bg-gradient-to-t from-[#3F31FF] from-[-50%] to-primaryBlue to-50% w-full rounded-t-[60px] flex items-end justify-between z-10 relative">
-                  <div className="  w-full flex gap-8 flex-col justify-between px-12 py-12">
+                  <div className="  w-full flex gap-8 flex-col justify-between px-12 py-8">
                     <div className=" space-y-4 text-center">
                       <Title title={`0${slide.id}  ${slide.title}`} />
 
@@ -271,7 +271,7 @@ const RoomCategory = () => {
                     </div>
                     <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-primaryGreen to-transparent block rounded" />
 
-                    <div className="mb-8">
+                    <div className="mb-4">
                       <h4 className="font-bold text-white mb-2 text-xl">
                         {" "}
                         Amenities
@@ -287,9 +287,14 @@ const RoomCategory = () => {
                         ))}
                       </ul>
                     </div>
-                    <button className="w-full md:w-1/2 mx-auto px-6 py-3 bg-primaryGreen text-primaryBlue font-semibold rounded-md shadow-md hover:opacity-90 transition">
-                      Reserve Room
-                    </button>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 ">
+                      <div className="p-3 font-semibold rounded-md bg-white/10 backdrop-blur-sm flex items-center justify-center gap-2 text-center text-primaryGreen cursor-pointer hover:bg-white/20  transition">
+                        <HiOutlinePlay size={20} /> Take A Tour
+                      </div>
+                      <button className="bg-[#C6F123] text-black px-6 py-3 rounded-lg font-bold hover:bg-lime-400 transition">
+                        Reserve room
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
