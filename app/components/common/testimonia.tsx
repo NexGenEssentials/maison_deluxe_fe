@@ -74,7 +74,7 @@ const Testimonials = () => {
           onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
         >
           {testimonials.map((t, i) => (
-            <SwiperSlide key={i} className="py-40 relative flex justify-center">
+            <SwiperSlide key={i} className=" lg:py-40 relative flex justify-center">
               <div
                 className={`max-lg:hidden transition-all overflow-hidden  duration-300 flex items-center gap-6 rounded-xl  text-left ${
                   activeIndex === i

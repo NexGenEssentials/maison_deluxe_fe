@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { GoChevronDown } from "react-icons/go";
 import Title from "../common/title";
 import { roomType } from "@/app/costants";
@@ -11,8 +10,7 @@ import { HiOutlinePlay } from "react-icons/hi";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/scrollbar";
-import { Scrollbar, Keyboard, Mousewheel, Autoplay } from "swiper/modules";
-import { slides } from "@/app/costants";
+import { Keyboard,} from "swiper/modules";
 import { MdFilterListAlt } from "react-icons/md";
 
 const RoomCategory = () => {
