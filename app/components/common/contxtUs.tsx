@@ -12,8 +12,10 @@ export default function ContactForm() {
     agree: false,
   });
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e: any) => {
+    setError("");
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -30,7 +32,7 @@ export default function ContactForm() {
       !formData.message ||
       !formData.agree
     ) {
-      alert("Please fill all required fields and accept terms.");
+      setError("Please fill all required fields and accept terms.");
       return;
     }
     // Simulate submission
@@ -39,7 +41,7 @@ export default function ContactForm() {
   };
 
   return (
-    <div className="min-h-screen  bg-secondaryBlue text-white flex items-center justify-center px-4">
+    <div className=" bg-gradient-to-t md:bg-gradient-to-tr from-[#3F31FF] from-[-55%] to-primaryBlue to-45%  text-white flex items-center justify-center px-4">
       <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 py-20">
         {/* Left content */}
         <div>
@@ -134,6 +136,11 @@ export default function ContactForm() {
               >
                 Send Enquiries
               </button>
+              {error && (
+                <div className="text-red-500 text-sm mt-2 text-center">
+                  {error}
+                </div>
+              )}
             </>
           )}
         </form>

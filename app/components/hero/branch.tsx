@@ -31,7 +31,7 @@ export default function FeatureBranch() {
             attributeName="stroke-dashoffset"
             from="1000"
             to="0"
-            dur="4s"
+            dur="10s"
             fill="freeze"
             repeatCount="indefinite"
           />
@@ -39,7 +39,7 @@ export default function FeatureBranch() {
             attributeName="stroke-dasharray"
             from="0,1000"
             to="1000,0"
-            dur="4s"
+            dur="10s"
             fill="freeze"
             repeatCount="indefinite"
           />
@@ -50,18 +50,18 @@ export default function FeatureBranch() {
       {/* Feature 1 - Online Check-in */}
       <div className="absolute left-[15%] top-[180px] flex items-center space-x-3 rounded-full bg-green-500/10 backdrop-blur-md px-6 text-sm py-4 shadow-lg">
         <div className="w-3 h-3 bg-lime-400 rotate-45"></div>
-        <span className="text-lime-400 font-medium">Concierge Service</span>
+        <span className="text-lime-400 font-medium text-nowrap">Concierge Service</span>
       </div>
 
       {/* Feature 2 - High Speed Wi-Fi */}
       <div className="absolute left-[50%] top-[35px] flex items-center space-x-3 rounded-full bg-white/10 backdrop-blur-md px-6 text-sm py-4 text-white shadow-lg animate-feature-highlight delay-[700ms]">
         <div className="w-3 h-3 bg-lime-400 rotate-45"></div>
-        <span>Private Airport Transfers</span>
+        <span className="text-nowrap">Private Airport Transfers</span>
       </div>
 
-      <div className="absolute left-[50%] top-[330px] flex items-center space-x-3 rounded-full bg-white/10 backdrop-blur-md px-6 text-sm py-4 text-white shadow-lg animate-feature-highlight delay-[1400ms]">
+      <div className="absolute left-[48%] top-[320px] flex items-center space-x-3 rounded-full bg-white/10 backdrop-blur-md px-6 text-sm py-4 text-white shadow-lg animate-feature-highlight delay-[1400ms]">
         <div className="w-3 h-3 bg-lime-400 rotate-45"></div>
-        <span>Exclusive Rooftop Views</span>
+        <span className="text-nowrap">Exclusive Rooftop Views</span>
       </div>
 
     </div>

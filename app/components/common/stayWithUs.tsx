@@ -4,53 +4,46 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import TitleBlack from "./titleBlack";
 import "swiper/css";
 import "swiper/css/scrollbar";
-import { Scrollbar } from "swiper/modules";
-import slide1 from "@/public/images/slide1.avif";
-import slide2 from "@/public/images/slide2.jpg";
-import slide3 from "@/public/images/slide3.jpg";
-
-const slides = [
-  {
-    title: "Exceptional Dining Experience",
-    description:
-      "Enjoy a diverse menu of international and Rwandan cuisine prepared by top chefs. Whether it’s a breakfast buffet or an evening à la carte dinner, we promise a delightful culinary experience.",
-    image: slide3,
-  },
-  {
-    title: "Prime Location in Kigali",
-    description:
-      "Located in the heart of the city, our hotel offers easy access to top attractions like the Kigali Convention Centre, Kigali Heights, and vibrant local markets — making your stay convenient and exciting.",
-    image: slide1,
-  },
-  {
-    title: "Modern & Comfortable Rooms",
-    description:
-      "Experience luxury and comfort in our fully equipped rooms featuring high-speed Wi-Fi, air conditioning, smart TVs, and breathtaking city views — perfect for both business and leisure travelers.",
-    image: slide2,
-  },
-];
+import { Scrollbar, Keyboard, Mousewheel, Autoplay } from "swiper/modules";
+import { slides } from "@/app/costants";
 
 const StayWithUs = () => {
   return (
-    <div className=" min-h-screen pt-16 gap-12 flex flex-col justify-between h-full">
-      <div className="mx-20 border border-[#F2FF04] p-3 rounded-full bg-[#BFC90014] w-fit">
+    <div className="max-lg:-mt-12 bg-white pt-16 gap-4 lg:gap-12 flex flex-col justify-between h-full">
+      <div className="mx-8 lg:mx-20 border border-[#F2FF04] p-3 rounded-full bg-[#BFC90014] w-fit">
         <h1 className="text-[#BFC900] font-semibold">What Makes Us Special</h1>
       </div>
-      <div className="px-20">
+      <div className="mx-8 lg:mx-20">
         <TitleBlack title={"Why Stay With Us"} />
-        <p className="text-medium max-w-2xl">
-        From our elegant accommodations to personalized services, we go above and beyond to create an exceptional guest experience. Whether you're here for business or leisure, you'll find the perfect blend of comfort, convenience, and hospitality.
+        <p className="text-medium max-lg:text-sm lg:max-w-2xl">
+          From our elegant accommodations to personalized services, we go above
+          and beyond to create an exceptional guest experience. Whether you're
+          here for business or leisure, you'll find the perfect blend of
+          comfort, convenience, and hospitality.
         </p>
       </div>
 
       <Swiper
-        spaceBetween={50}
+        spaceBetween={0}
         slidesPerView={1}
-        scrollbar={{ draggable: true }}
+        scrollbar={{
+          draggable: true,
+          dragClass: "custom-drag",
+        }}
+        keyboard={{
+          enabled: true,
+        }}
+        autoplay={{
+          delay: 7000,
+          disableOnInteraction: false,
+        }}
+        loop={true}
+        speed={1000}
+        mousewheel={false}
         freeMode={true}
         grabCursor={true}
         centeredSlides={true}
-        modules={[Scrollbar]}
+        modules={[Scrollbar, Keyboard, Mousewheel, Autoplay]}
         className="mySwiper w-full h-[600px] "
       >
         {slides.map((slide, index) => (
@@ -61,16 +54,16 @@ const StayWithUs = () => {
                 alt={slide.title}
                 className="w-full h-full object-cover "
               />
-              s
+
               <div className="absolute inset-0 bg-gradient-to-r from-primaryBlue/60 to-transparent flex items-end justify-between ">
-                <div className="backdrop-blur-[2px]  w-full flex items-end justify-between px-12 py-10">
+                <div className="backdrop-blur-[2px]  w-full flex flex-wrap items-end justify-between px-12 py-10">
                   <div className="max-w-lg space-y-4 ">
                     <h2 className="text-2xl font-bold text-white">
                       {slide.title}
                     </h2>
                     <p className="text-sm text-gray-200">{slide.description}</p>
                   </div>
-                  <button className="mt-4 px-6 py-3 bg-primaryGreen/50 text-primaryGreen backdrop-blur-xl font-medium rounded-md shadow-md hover:opacity-90 transition">
+                  <button className="max-sm:w-full mt-4 px-6 py-3 bg-primaryGreen text-primaryBlue backdrop-blur-xl font-semibold rounded-md shadow-md hover:opacity-90 transition">
                     Reserve Room
                   </button>
                 </div>

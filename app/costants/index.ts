@@ -3,6 +3,14 @@ import Room2 from "@/public/images/room2.jpg";
 import Room3 from "@/public/images/room3.jpg";
 import Room4 from "@/public/images/room4.jpg";
 import Room5 from "@/public/images/room5.png";
+import slide1 from "@/public/images/slide3.jpg";
+import slide3 from "@/public/images/dine.jpg";
+import profile from "@/public/images/profile.jpg";
+import p3 from "@/public/images/p3.png";
+import p2 from "@/public/images/p2.png";
+import rw from "@/public/images/rw.png";
+import us from "@/public/images/us.jpg";
+import kny from "@/public/images/kny.png";
 
 export const roomType = [
   {
@@ -67,7 +75,7 @@ export const roomType = [
   },
   {
     id: 5,
-    title: "Standard double rooom",
+    title: "Standard Double Room",
     description:
       "Our Standard Double Room provides simplicity and comfort for everyday travelers. A well-appointed space with modern essentials for a restful night.",
     amenities: [
@@ -82,14 +90,13 @@ export const roomType = [
   },
 ];
 
-
 export const testimonials = [
   {
     name: "Sophie M.",
     country: "Kenya",
-    flag: "/flags/kenya.png",
+    flag: kny,
     title: "A hidden gem in Kigali!",
-    image: Room5,
+    image: profile,
     description:
       "The rooms are beautiful, and the service is exceptional. Highly recommend!! 😊😇",
     rating: 4.5,
@@ -97,21 +104,42 @@ export const testimonials = [
   {
     name: "Jean-Pierre N.",
     country: "Rwanda",
-    flag: "/flags/rwanda.png",
+    flag: rw,
     title: "Feels like home",
-    image: Room5,
+    image: p2,
     description:
       "From the moment I arrived, I felt welcomed. The staff went above and beyond to make my stay comfortable.",
     rating: 5,
   },
   {
     name: "Grace A.",
-    country: "Ghana",
-    flag: "/flags/ghana.png",
+    country: "USA",
+    flag: us,
     title: "Impressive hospitality!",
-    image: Room5,
+    image: p3,
     description:
       "Clean rooms, quick service, and a peaceful environment. It’s the perfect escape in the heart of the city.",
     rating: 4,
+  },
+];
+
+export const slides = [
+  {
+    title: "Prime Location in Kigali",
+    description:
+      "Located in the heart of the city, our hotel offers easy access to top attractions like the Kigali Convention Centre, Kigali Heights, and vibrant local markets — making your stay convenient and exciting.",
+    image: slide1,
+  },
+  {
+    title: "Exceptional Dining Experience",
+    description:
+      "Enjoy a diverse menu of international and Rwandan cuisine prepared by top chefs. Whether it’s a breakfast buffet or an evening à la carte dinner, we promise a delightful culinary experience.",
+    image: slide3,
+  },
+  {
+    title: "Modern & Comfortable Rooms",
+    description:
+      "Experience luxury and comfort in our fully equipped rooms featuring high-speed Wi-Fi, air conditioning, smart TVs, and breathtaking city views — perfect for both business and leisure travelers.",
+    image: Room2,
   },
 ];

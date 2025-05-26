@@ -27,3 +27,24 @@ body {
   color: var(--foreground);
   font-family: var(--font-inter), sans-serif;
 }
+
+@layer components {
+  .swiper-scrollbar {
+    @apply bg-gray-300 rounded-full h-8;
+  }
+  .swiper-scrollbar-drag {
+    @apply bg-primaryGreen rounded-full h-full;
+  }
+  .swiper-scrollbar-horizontal {
+    @apply h-8;
+  }
+  .swiper-scrollbar-drag:hover {
+    @apply bg-secondaryGreen;
+  }
+  .swiper-scrollbar-drag:active {
+    @apply bg-thirdGreen;
+  }
+  .custom-drag {
+    @apply bg-white rounded-full shadow-lg h-full;
+  }
+}
