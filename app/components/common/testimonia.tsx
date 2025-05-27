@@ -36,8 +36,6 @@ const Testimonials = () => {
           purus id. Lobortis
         </p>
 
-        {/* bg-gradient-to-r from-[#3F31FF] from-[10%] via-[#1408b0] via-[50%] to-[#1408b0] to-[90%] */}
-
         <Swiper
           modules={[Autoplay, Keyboard]}
           spaceBetween={50}
@@ -66,7 +64,7 @@ const Testimonials = () => {
               spaceBetween: 40,
             },
             1024: {
-              slidesPerView: 1,
+              slidesPerView: 2,
               spaceBetween: 10,
             },
           }}

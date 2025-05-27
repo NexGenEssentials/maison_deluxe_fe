@@ -5,6 +5,8 @@ import { HiChevronDown, HiOutlinePlay } from "react-icons/hi";
 
 import FeatureBranch from "./branch";
 import { FaCalendarAlt } from "react-icons/fa";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const HeroSection = () => {
   const [checkIn, setCheckIn] = useState(
@@ -17,11 +19,10 @@ const HeroSection = () => {
   const [roomType, setRoomType] = useState("Deluxe");
   const [openModle, setOpenModle] = useState(false);
 
+  const router = useRouter();
+
   const handleBooking = () => {
-    console.log(
-      `Booking Info:\nCheck In: ${checkIn}\nCheck Out: ${checkOut}\nPeople: ${people}\nRoom Type: ${roomType}`
-    );
-    // You can replace alert with actual API call logic
+    router.push("/rooms");
   };
 
   return (
@@ -220,12 +221,14 @@ const HeroSection = () => {
         </div>
 
         {/* Book Button */}
-        <button
-          onClick={handleBooking}
-          className="bg-white/10 text-lime-400 font-semibold px-6 py-3 rounded-xl hover:bg-black/20 cursor-pointer transition backdrop-blur-sm"
-        >
-          Book Now
-        </button>
+        <Link href="/rooms" className="flex-shrink-0">
+          <button
+            onClick={handleBooking}
+            className=" bg-primaryGreen text-primaryBlue hover:bg-primaryGreen/70 font-semibold px-6 py-3 rounded-xl cursor-pointer transition backdrop-blur-sm"
+          >
+            Book Now
+          </button>
+        </Link>
       </div>
     </div>
   );

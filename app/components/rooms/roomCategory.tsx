@@ -12,6 +12,7 @@ import "swiper/css";
 import "swiper/css/scrollbar";
 import { Keyboard } from "swiper/modules";
 import { MdFilterListAlt } from "react-icons/md";
+import Link from "next/link";
 
 const RoomCategory = () => {
   const [room, setRoom] = useState("Room");
@@ -21,6 +22,7 @@ const RoomCategory = () => {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [openModle, setOpenModle] = useState(false);
 
   useEffect(() => {
     if (isHovered) return;
@@ -40,7 +42,10 @@ const RoomCategory = () => {
 
   return (
     <>
-      <div className="bg-[#000B28] pt-16 gap-8 hidden lg:flex flex-col items-center ">
+      <div
+        id={"rooms"}
+        className="bg-[#000B28] pt-16 gap-8 hidden lg:flex flex-col items-center "
+      >
         <Title title={"Select a Room"} />
 
         <div className="flex items-center justify-between gap-4 text-nowrap text-white px-4 py-4 rounded-lg border border-[#18274F] bg-[#000D2F] w-full max-w-4xl mx-auto  ">
@@ -166,12 +171,14 @@ const RoomCategory = () => {
               </div>
 
               <div className="flex space-x-4 mt-4">
-                <div className="p-3 font-semibold rounded-md bg-white/10 backdrop-blur-sm flex items-center gap-2 w-fit text-primaryGreen cursor-pointer hover:bg-white/20  transition">
+                {/* <div className="p-3 font-semibold rounded-md bg-white/10 backdrop-blur-sm flex items-center gap-2 w-fit text-primaryGreen cursor-pointer hover:bg-white/20  transition">
                   <HiOutlinePlay size={20} /> Take A Tour
-                </div>
-                <button className="bg-[#C6F123] text-black px-6 py-3 rounded-lg font-bold hover:bg-lime-400 transition">
-                  Reserve room
-                </button>
+                </div> */}
+                <Link href="/rooms">
+                  <button className="bg-[#C6F123] text-black px-6 py-3 rounded-lg font-bold hover:bg-lime-400 transition">
+                    Reserve room
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -234,7 +241,7 @@ const RoomCategory = () => {
         </div>
       </div>
 
-      <div className="lg:hidden gap-8 flex flex-col items-center ">
+      <div id={"rooms"} className="lg:hidden gap-8 flex flex-col items-center ">
         <Swiper
           spaceBetween={0}
           slidesPerView={1}
@@ -288,12 +295,17 @@ const RoomCategory = () => {
                       </ul>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 ">
-                      <div className="p-3 font-semibold rounded-md bg-white/10 backdrop-blur-sm flex items-center justify-center gap-2 text-center text-primaryGreen cursor-pointer hover:bg-white/20  transition">
+                      <div
+                        onClick={() => setOpenModle(true)}
+                        className="p-3 font-semibold rounded-md bg-white/10 backdrop-blur-sm flex items-center justify-center gap-2 text-center text-primaryGreen cursor-pointer hover:bg-white/20  transition"
+                      >
                         <HiOutlinePlay size={20} /> Take A Tour
                       </div>
-                      <button className="bg-[#C6F123] text-black px-6 py-3 rounded-lg font-bold hover:bg-lime-400 transition">
-                        Reserve room
-                      </button>
+                      <Link href="/rooms" className="flex-shrink-0">
+                        <button className="bg-[#C6F123] text-black px-6 py-3 rounded-lg font-bold hover:bg-lime-400 transition">
+                          Reserve room
+                        </button>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -302,6 +314,35 @@ const RoomCategory = () => {
           ))}
         </Swiper>
       </div>
+
+      {openModle && (
+        <div
+          className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4"
+          onClick={() => setOpenModle(false)}
+        >
+          <div
+            className="w-full max-w-8xl h-[90vh] bg-black rounded-lg overflow-hidden relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="absolute top-4 right-4 text-white cursor-pointer font-bold text-3xl shadow-2xl z-10"
+              onClick={() => setOpenModle(false)}
+            >
+              &times;
+            </button>
+
+            <iframe
+              title="Matterport Hotel Tour"
+              src="https://my.matterport.com/show/?m=wBEFkyJTUnW&play=1&qs=1&ts=1"
+              width="100%"
+              height="100%"
+              allow="fullscreen"
+              allowFullScreen
+              frameBorder="0"
+            ></iframe>
+          </div>
+        </div>
+      )}
     </>
   );
 };

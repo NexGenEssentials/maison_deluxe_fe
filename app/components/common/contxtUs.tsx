@@ -11,37 +11,54 @@ export default function ContactForm() {
     message: "",
     agree: false,
   });
+
   const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState({
+    name: "",
+    email: "",
+    message: "",
+    agree: "",
+  });
 
   const handleChange = (e: any) => {
-    setError("");
     const { name, value, type, checked } = e.target;
+
     setFormData((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
+
+    setErrors((prev) => ({ ...prev, [name]: "" }));
+  };
+
+  const validate = () => {
+    const newErrors: any = {};
+    if (!formData.name) newErrors.name = "Full name is required.";
+    if (!formData.email) newErrors.email = "Email address is required.";
+    if (!formData.message) newErrors.message = "Message cannot be empty.";
+    if (!formData.agree) newErrors.agree = "You must accept the terms.";
+    return newErrors;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Validation
-    if (
-      !formData.name ||
-      !formData.email ||
-      !formData.message ||
-      !formData.agree
-    ) {
-      setError("Please fill all required fields and accept terms.");
+
+    const newErrors = validate();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
+
     // Simulate submission
     console.log("Submitted Data:", formData);
     setSubmitted(true);
   };
 
   return (
-    <div className=" bg-gradient-to-t md:bg-gradient-to-tr from-[#3F31FF] from-[-55%] to-primaryBlue to-45%  text-white flex items-center justify-center px-4">
+    <div
+      id={"contact"}
+      className="bg-gradient-to-t md:bg-gradient-to-tr from-[#3F31FF] from-[-55%] to-primaryBlue to-45% text-white flex items-center justify-center px-4"
+    >
       <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 py-20">
         {/* Left content */}
         <div>
@@ -65,52 +82,73 @@ export default function ContactForm() {
           ) : (
             <>
               {/* Name */}
-              <div className="flex items-center gap-2 bg-white/10 px-4 py-3 rounded-full">
-                <FaUser className="text-gray-300" />
-                <input
-                  name="name"
-                  type="text"
-                  placeholder="Enter Full Name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="w-full bg-transparent outline-none text-white placeholder:text-gray-400"
-                />
+              <div>
+                <div className="flex items-center gap-2 bg-white/10 px-4 py-3 rounded-full">
+                  <FaUser className="text-gray-300" />
+                  <input
+                    name="name"
+                    type="text"
+                    placeholder="Enter Full Name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className="w-full bg-transparent outline-none text-white placeholder:text-gray-400"
+                  />
+                </div>
+                {errors.name && (
+                  <div className="text-red-400 text-sm mt-1">{errors.name}</div>
+                )}
               </div>
 
               {/* Email */}
-              <div className="flex items-center gap-2 bg-white/10 px-4 py-3 rounded-full">
-                <FaUser className="text-gray-300" />
-                <input
-                  name="email"
-                  type="email"
-                  placeholder="Enter Email Address"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="w-full bg-transparent outline-none text-white placeholder:text-gray-400"
-                />
+              <div>
+                <div className="flex items-center gap-2 bg-white/10 px-4 py-3 rounded-full">
+                  <FaUser className="text-gray-300" />
+                  <input
+                    name="email"
+                    type="email"
+                    placeholder="Enter Email Address"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="w-full bg-transparent outline-none text-white placeholder:text-gray-400"
+                  />
+                </div>
+                {errors.email && (
+                  <div className="text-red-400 text-sm mt-1">
+                    {errors.email}
+                  </div>
+                )}
               </div>
 
               {/* Phone */}
-              <div className="flex items-center gap-2 bg-white/10 px-4 py-3 rounded-full">
-                <FaUser className="text-gray-300" />
-                <input
-                  name="phone"
-                  type="text"
-                  placeholder="Phone Number"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="w-full bg-transparent outline-none text-white placeholder:text-gray-400"
-                />
+              <div>
+                <div className="flex items-center gap-2 bg-white/10 px-4 py-3 rounded-full">
+                  <FaUser className="text-gray-300" />
+                  <input
+                    name="phone"
+                    type="text"
+                    placeholder="Phone Number"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className="w-full bg-transparent outline-none text-white placeholder:text-gray-400"
+                  />
+                </div>
               </div>
 
               {/* Message */}
-              <textarea
-                name="message"
-                placeholder="Your Message goes here"
-                value={formData.message}
-                onChange={handleChange}
-                className="w-full h-32 rounded-xl px-4 py-3 bg-white/10 outline-none text-white placeholder:text-gray-400"
-              />
+              <div>
+                <textarea
+                  name="message"
+                  placeholder="Your Message goes here"
+                  value={formData.message}
+                  onChange={handleChange}
+                  className="w-full h-32 rounded-xl px-4 py-3 bg-white/10 outline-none text-white placeholder:text-gray-400"
+                />
+                {errors.message && (
+                  <div className="text-red-400 text-sm mt-1">
+                    {errors.message}
+                  </div>
+                )}
+              </div>
 
               {/* Checkbox */}
               <div className="flex items-start gap-2 text-sm text-gray-300">
@@ -128,6 +166,9 @@ export default function ContactForm() {
                   </a>
                 </label>
               </div>
+              {errors.agree && (
+                <div className="text-red-400 text-sm mt-1">{errors.agree}</div>
+              )}
 
               {/* Submit */}
               <button
@@ -136,11 +177,6 @@ export default function ContactForm() {
               >
                 Send Enquiries
               </button>
-              {error && (
-                <div className="text-red-500 text-sm mt-2 text-center">
-                  {error}
-                </div>
-              )}
             </>
           )}
         </form>
