@@ -44,11 +44,13 @@ const RoomCategory = () => {
   const router = useRouter();
 
   const handleBooking = () => {
-    if (room === "Room") {
-      router.push(`/rooms/${roomCategory.title.replace(/\s+/g, "-").toLowerCase()}`);
-    } else {
-      router.push(`/rooms/${room.replace(/\s+/g, "-").toLowerCase()}`);
-    }
+    // if (room === "Room") {
+    router.push(
+      `/rooms/${roomCategory.title.replace(/\s+/g, "-").toLowerCase()}`
+    );
+    // } else {
+    //   router.push(`/rooms/${room.replace(/\s+/g, "-").toLowerCase()}`);
+    // }
   };
   return (
     <>

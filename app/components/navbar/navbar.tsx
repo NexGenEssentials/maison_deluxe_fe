@@ -50,7 +50,9 @@ const Navbar = () => {
 
       {/* Mobile screen navbar */}
       <div className="relative max-lg:flex hidden w-full px-6 py-4 items-center justify-between text-white font-medium">
-        <Image src={whiteLogo} width={52} height={56} alt="White Logo" />
+        <Link href="/">
+          <Image src={whiteLogo} width={52} height={56} alt="White Logo" />
+        </Link>
 
         <div className="hover:bg-primaryGreen/15 duration-200 transition font-bold text-white p-4 rounded cursor-pointer">
           <CiMenuFries onClick={toggleNavbar} size={24} />
@@ -64,7 +66,9 @@ const Navbar = () => {
           }`}
         >
           <div className="flex justify-between items-center p-6 bg-white">
-            <Image src={redLogo} width={52} height={56} alt="White Logo" />
+            <Link href="/">
+              <Image src={redLogo} width={52} height={56} alt="White Logo" />
+            </Link>
             <button
               onClick={toggleNavbar}
               className="text-black text-2xl font-bold"
