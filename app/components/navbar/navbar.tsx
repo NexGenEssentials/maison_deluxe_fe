@@ -7,7 +7,7 @@ import { CiMenuFries } from "react-icons/ci";
 import Link from "next/link";
 import { FaAngleRight } from "react-icons/fa";
 
-const navbarLinks = [
+export const navbarLinks = [
   { name: "Rooms", href: "/rooms" },
   { name: "About", href: "#about" },
   { name: "Blog", href: "#blog" },

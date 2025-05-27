@@ -143,3 +143,46 @@ export const slides = [
     image: Room2,
   },
 ];
+
+export const rules = [
+  {
+    label: "Check-in:",
+    value: "From 2:00 PM",
+  },
+  {
+    label: "Check-out:",
+    value: "Until 11:00 AM",
+  },
+  {
+    label: "Cancellation/Prepayment:",
+    value:
+      "Policies vary by room type and booking conditions. Check your booking confirmation for more information.",
+  },
+  {
+    label: "Children & Extra Beds:",
+    value:
+      "All children are welcome. Extra beds are available on request (additional charges may apply).",
+  },
+  {
+    label: "Pets:",
+    value: "Pets are not allowed.",
+  },
+  {
+    label: "Smoking:",
+    value:
+      "Smoking is prohibited inside the rooms. Designated smoking areas are available.",
+  },
+  {
+    label: "ID & Age Requirements:",
+    value:
+      "Valid government-issued ID is required at check-in. Minimum age to book a room is 18.",
+  },
+  {
+    label: "Quiet Hours:",
+    value: "10:00 PM – 7:00 AM",
+  },
+  {
+    label: "Damage Deposit:",
+    value: "A refundable security deposit may be required upon arrival.",
+  },
+];

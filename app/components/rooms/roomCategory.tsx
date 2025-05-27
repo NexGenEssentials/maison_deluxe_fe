@@ -263,16 +263,16 @@ const RoomCategory = () => {
                   <img
                     src={slide.image.src}
                     alt={slide.title}
-                    className="w-full h-full object-cover "
+                    className="w-full h-96 object-cover "
                   />
                 </div>
                 {/* content section */}
-                <div className="-mt-14 bg-gradient-to-t from-[#3F31FF] from-[-50%] to-primaryBlue to-50% w-full rounded-t-[60px] flex items-end justify-between z-10 relative">
-                  <div className="  w-full flex gap-8 flex-col justify-between px-12 py-8">
+                <div className="-mt-9 bg-gradient-to-t from-[#3F31FF] from-[-50%] to-primaryBlue to-50% w-full rounded-t-[40px] flex items-end justify-between z-10 relative">
+                  <div className="  w-full flex gap-8 flex-col justify-between px-2 md:px-12 py-8">
                     <div className=" space-y-4 text-center">
                       <Title title={`0${slide.id}  ${slide.title}`} />
 
-                      <p className="text-sm text-gray-200">
+                      <p className="text-sm text-gray-200 line-clamp-2">
                         {slide.description}
                       </p>
                     </div>
@@ -294,15 +294,15 @@ const RoomCategory = () => {
                         ))}
                       </ul>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 ">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div
                         onClick={() => setOpenModle(true)}
-                        className="p-3 font-semibold rounded-md bg-white/10 backdrop-blur-sm flex items-center justify-center gap-2 text-center text-primaryGreen cursor-pointer hover:bg-white/20  transition"
+                        className="p-3 font-semibold rounded-md bg-white/10 backdrop-blur-sm flex items-center justify-center gap-2 text-center text-primaryGreen cursor-pointer hover:bg-white/20 transition"
                       >
                         <HiOutlinePlay size={20} /> Take A Tour
                       </div>
-                      <Link href="/rooms" className="flex-shrink-0">
-                        <button className="bg-[#C6F123] text-black px-6 py-3 rounded-lg font-bold hover:bg-lime-400 transition">
+                      <Link href="/rooms" className="w-full">
+                        <button className="bg-[#C6F123] text-black px-6 py-3 w-full rounded-lg font-bold hover:bg-lime-400 transition">
                           Reserve room
                         </button>
                       </Link>

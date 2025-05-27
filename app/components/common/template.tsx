@@ -6,13 +6,8 @@ import { CiMenuFries } from "react-icons/ci";
 import Link from "next/link";
 import { FaAngleRight } from "react-icons/fa";
 import redLogo from "@/public/images/red_logo.png";
+import { navbarLinks } from "../navbar/navbar";
 
-const navbarLinks = [
-  { name: "Rooms", href: "/#rooms" },
-  { name: "About", href: "/#about" },
-  { name: "Blog", href: "/#blog" },
-  { name: "Contact", href: "/#contact" },
-];
 const Tamplate = ({ children }: { children: ReactNode }) => {
   const [openNavbar, setOpenNavbar] = useState(false);
 
@@ -84,11 +79,6 @@ const Tamplate = ({ children }: { children: ReactNode }) => {
                 </Link>
               ))}
             </ul>
-            {/* <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2">
-            <button className="px-8 py-3 bg-white rounded-lg text-primaryGreen font-bold tracking-wide">
-              ENG
-            </button>
-          </div> */}
           </div>
         </div>
       </section>

@@ -13,7 +13,7 @@ const StayWithUs = () => {
   return (
     <div
       id={"about"}
-      className=" max-lg:-mt-12 bg-white pt-16 gap-4 lg:gap-12 flex flex-col justify-between h-full"
+      className=" bg-white pt-16 gap-4 lg:gap-12 flex flex-col justify-between h-full"
     >
       <div className="mx-8 lg:mx-20 border border-[#F2FF04] p-3 rounded-full bg-[#BFC90014] w-fit">
         <h1 className="text-[#BFC900] font-semibold">What Makes Us Special</h1>
