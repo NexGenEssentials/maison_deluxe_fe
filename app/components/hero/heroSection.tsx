@@ -16,13 +16,13 @@ const HeroSection = () => {
     new Date().toISOString().split("T")[0]
   );
   const [people, setPeople] = useState("1 Person");
-  const [roomType, setRoomType] = useState("Deluxe");
+  const [roomType, setRoomType] = useState("Penthouse Suite");
   const [openModle, setOpenModle] = useState(false);
 
   const router = useRouter();
 
   const handleBooking = () => {
-    router.push("/rooms");
+    router.push(`/rooms/${roomType.replace(/\s+/g, "-").toLowerCase()}`);
   };
 
   return (
@@ -87,13 +87,14 @@ const HeroSection = () => {
                 </div>
               </div>
             )}
-
-            <button
-              onClick={handleBooking}
-              className="lg:hidden bg-primaryGreen text-primaryBlue font-semibold px-6 py-3 rounded-lg hover:bg-primaryGreen/70 cursor-pointer transition backdrop-blur-sm"
-            >
-              Reserve Now
-            </button>
+            <Link href="/#rooms" className="flex-shrink-0">
+              <button
+                onClick={handleBooking}
+                className="lg:hidden bg-primaryGreen text-primaryBlue font-semibold px-6 py-3 rounded-lg hover:bg-primaryGreen/70 cursor-pointer transition backdrop-blur-sm"
+              >
+                Reserve Now
+              </button>
+            </Link>
           </div>
         </div>
 
@@ -221,14 +222,12 @@ const HeroSection = () => {
         </div>
 
         {/* Book Button */}
-        <Link href="/rooms" className="flex-shrink-0">
-          <button
-            onClick={handleBooking}
-            className=" bg-primaryGreen text-primaryBlue hover:bg-primaryGreen/70 font-semibold px-6 py-3 rounded-xl cursor-pointer transition backdrop-blur-sm"
-          >
-            Book Now
-          </button>
-        </Link>
+        <button
+          onClick={handleBooking}
+          className=" bg-primaryGreen text-primaryBlue hover:bg-primaryGreen/70 font-semibold px-6 py-3 rounded-xl cursor-pointer transition backdrop-blur-sm"
+        >
+          Book Now
+        </button>
       </div>
     </div>
   );

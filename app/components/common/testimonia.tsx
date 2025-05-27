@@ -44,7 +44,7 @@ const Testimonials = () => {
           loop={true}
           grabCursor={true}
           autoplay={{
-            delay: 4000,
+            delay: 2500,
             disableOnInteraction: false,
           }}
           keyboard={{
@@ -65,6 +65,10 @@ const Testimonials = () => {
             },
             1024: {
               slidesPerView: 2,
+              spaceBetween: 10,
+            },
+            1524: {
+              slidesPerView: 3,
               spaceBetween: 10,
             },
           }}

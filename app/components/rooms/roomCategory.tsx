@@ -13,6 +13,7 @@ import "swiper/css/scrollbar";
 import { Keyboard } from "swiper/modules";
 import { MdFilterListAlt } from "react-icons/md";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const RoomCategory = () => {
   const [room, setRoom] = useState("Room");
@@ -40,6 +41,15 @@ const RoomCategory = () => {
 
   const roomCategory = roomType[currentIndex];
 
+  const router = useRouter();
+
+  const handleBooking = () => {
+    if (room === "Room") {
+      router.push(`/rooms/${roomCategory.title.replace(/\s+/g, "-").toLowerCase()}`);
+    } else {
+      router.push(`/rooms/${room.replace(/\s+/g, "-").toLowerCase()}`);
+    }
+  };
   return (
     <>
       <div
@@ -174,11 +184,13 @@ const RoomCategory = () => {
                 {/* <div className="p-3 font-semibold rounded-md bg-white/10 backdrop-blur-sm flex items-center gap-2 w-fit text-primaryGreen cursor-pointer hover:bg-white/20  transition">
                   <HiOutlinePlay size={20} /> Take A Tour
                 </div> */}
-                <Link href="/rooms">
-                  <button className="bg-[#C6F123] text-black px-6 py-3 rounded-lg font-bold hover:bg-lime-400 transition">
-                    Reserve room
-                  </button>
-                </Link>
+
+                <button
+                  onClick={handleBooking}
+                  className="bg-[#C6F123] text-black px-6 py-3 rounded-lg font-bold hover:bg-lime-400 transition"
+                >
+                  Reserve room
+                </button>
               </div>
             </div>
           </div>
@@ -301,11 +313,13 @@ const RoomCategory = () => {
                       >
                         <HiOutlinePlay size={20} /> Take A Tour
                       </div>
-                      <Link href="/rooms" className="w-full">
-                        <button className="bg-[#C6F123] text-black px-6 py-3 w-full rounded-lg font-bold hover:bg-lime-400 transition">
-                          Reserve room
-                        </button>
-                      </Link>
+
+                      <button
+                        onClick={handleBooking}
+                        className="bg-[#C6F123] text-black px-6 py-3 w-full rounded-lg font-bold hover:bg-lime-400 transition"
+                      >
+                        Reserve room
+                      </button>
                     </div>
                   </div>
                 </div>

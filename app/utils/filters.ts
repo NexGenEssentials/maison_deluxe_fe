@@ -2,7 +2,7 @@ import { StaticImageData } from "next/image";
 import { roomType } from "../costants";
 
 export const getRoomByTitle = (
-  title: "Penthouse Suite"
+  title: string
 ): {
   id: number;
   title: string;

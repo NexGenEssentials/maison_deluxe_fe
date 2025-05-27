@@ -1,15 +1,16 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
-import Tamplate from "../components/common/template";
+import React, { use, useEffect, useRef, useState } from "react";
+import Tamplate from "../../components/common/template";
 import Image from "next/image";
 import { MdFilterListAlt } from "react-icons/md";
-import BookingForm from "../components/model/paymentModel";
+import BookingForm from "../../components/model/paymentModel";
 import { IoClose } from "react-icons/io5";
-import { getRoomByTitle } from "../utils/filters";
-import { roomType, rules } from "../costants";
+import { getRoomByTitle } from "../../utils/filters";
+import { roomType, rules } from "../../costants";
 
-const RoomsPage = ({ params }: { params: string }) => {
-  const room = getRoomByTitle("Penthouse Suite");
+const RoomsPage = ({ params }: { params: Promise<{ name: string }> }) => {
+  const { name } = use(params);
+  const room = getRoomByTitle(name.replace(/-/g, " "));
   const [selectedImage, setSelectedImage] = useState(room.image);
   const [activeTab, setActiveTab] = useState("Room Description");
   const [openModel, setOpenModel] = useState(false);
@@ -18,7 +19,7 @@ const RoomsPage = ({ params }: { params: string }) => {
 
   const openModal = () => {
     setOpenModel(true);
-    setTimeout(() => setAnimateModal(true), 10); 
+    setTimeout(() => setAnimateModal(true), 10);
   };
 
   const closeModal = () => {
@@ -32,7 +33,7 @@ const RoomsPage = ({ params }: { params: string }) => {
         modalRef.current &&
         !modalRef.current.contains(event.target as Node)
       ) {
-       closeModal();
+        closeModal();
       }
     };
 
@@ -123,13 +124,17 @@ const RoomsPage = ({ params }: { params: string }) => {
                       </li>
                     ))}
                   </ul>
-
-                  <button
-                    onClick={openModal}
-                    className=" text-primaryGreen mt-8 bg-primaryBlue/80 hover:bg-primaryBlue w-1/2 mx-auto font-semibold px-6 py-3 rounded-xl cursor-pointer transition"
-                  >
-                    Book Now
-                  </button>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                    <div className=" text-primaryBlue  border border-gray-400/50  text-center font-semibold px-6 py-3 rounded-xl transition">
+                      Available Rooms ( {room.available} )
+                    </div>
+                    <button
+                      onClick={openModal}
+                      className=" text-primaryGreen  bg-primaryBlue/80 hover:bg-primaryBlue  font-semibold px-6 py-3 rounded-xl cursor-pointer transition"
+                    >
+                      Book Now
+                    </button>
+                  </div>
                 </div>
               )}
 
