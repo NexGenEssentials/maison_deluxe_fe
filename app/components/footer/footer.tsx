@@ -9,7 +9,7 @@ import { RiTwitterXLine } from "react-icons/ri";
 import { ImFacebook } from "react-icons/im";
 
 const QuickLinks = [
-  { name: "Rooms", href: "/#rooms" },
+  { name: "Rooms", href: "/rooms" },
   { name: "About", href: "/#about" },
   { name: "Service", href: "/#service" },
   { name: "Contact Us", href: "/#contact" },

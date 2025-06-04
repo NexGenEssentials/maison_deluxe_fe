@@ -69,7 +69,7 @@ const StayWithUs = () => {
                     </h2>
                     <p className="text-sm text-gray-200">{slide.description}</p>
                   </div>
-                  <Link href="/rooms/junior-suit" className="flex-shrink-0">
+                  <Link href="/rooms" className="flex-shrink-0">
                     <button className="max-sm:w-full mt-4 px-6 py-3 bg-primaryGreen text-primaryBlue backdrop-blur-xl font-semibold rounded-md shadow-md hover:opacity-90 transition">
                       Reserve Room
                     </button>

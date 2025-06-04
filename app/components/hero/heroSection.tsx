@@ -87,7 +87,7 @@ const HeroSection = () => {
                 </div>
               </div>
             )}
-            <Link href="/#rooms" className="flex-shrink-0">
+            <Link href="/rooms" className="flex-shrink-0">
               <button
                 onClick={handleBooking}
                 className="lg:hidden bg-primaryGreen text-primaryBlue font-semibold px-6 py-3 rounded-lg hover:bg-primaryGreen/70 cursor-pointer transition backdrop-blur-sm"
