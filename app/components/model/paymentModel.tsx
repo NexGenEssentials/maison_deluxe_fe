@@ -9,16 +9,6 @@ const schema = yup.object().shape({
   phone: yup.string().required("Phone number is required"),
   email: yup.string().email("Invalid email").required("Email is required"),
   paymentMode: yup.string().required("Payment mode is required"),
-  cardNumber: yup
-    .string()
-    .min(16, "Card number must be 16 digits")
-    .required("Card number is required"),
-  cvc: yup
-    .string()
-    .min(3, "CVC must be at least 3 digits")
-    .required("CVC is required"),
-  expiry: yup.string().required("Expiration date is required"),
-  cardName: yup.string().required("Name on card is required"),
   terms: yup.bool().oneOf([true], "You must agree to the terms"),
   notes: yup.string().optional(),
 });
@@ -98,59 +88,10 @@ export default function BookingForm() {
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        <div>
-          <input
-            {...register("cardNumber")}
-            type="text"
-            placeholder="Card Number"
-            className="w-full border rounded px-4 py-2 focus:outline-none  border-gray-400 hover:border-lime-400 transition"
-          />
-          {errors.cardNumber && (
-            <p className="text-red-500 text-sm">{errors.cardNumber.message}</p>
-          )}
-        </div>
-
-        <div>
-          <input
-            {...register("cvc")}
-            type="text"
-            placeholder="CVC"
-            className="w-full border rounded px-4 py-2 focus:outline-none  border-gray-400 hover:border-lime-400 transition"
-          />
-          {errors.cvc && (
-            <p className="text-red-500 text-sm">{errors.cvc.message}</p>
-          )}
-        </div>
-
-        <div>
-          <input
-            {...register("expiry")}
-            type="text"
-            placeholder="MM/YY"
-            className="w-full border rounded px-4 py-2 focus:outline-none  border-gray-400 hover:border-lime-400 transition"
-          />
-          {errors.expiry && (
-            <p className="text-red-500 text-sm">{errors.expiry.message}</p>
-          )}
-        </div>
-      </div>
-
-      <div>
-        <input
-          {...register("cardName")}
-          type="text"
-          placeholder="Name on Card"
-          className="w-full border rounded px-4 py-2 focus:outline-none  border-gray-400 hover:border-lime-400 transition"
-        />
-        {errors.cardName && (
-          <p className="text-red-500 text-sm">{errors.cardName.message}</p>
-        )}
-      </div>
-
       <div>
         <textarea
           {...register("notes")}
+          rows={5}
           placeholder="Special Notes"
           className="w-full border rounded px-4 py-2 focus:outline-none  border-gray-400 hover:border-lime-400 transition"
         ></textarea>

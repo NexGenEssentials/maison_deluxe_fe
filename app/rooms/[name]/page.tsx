@@ -46,7 +46,7 @@ const RoomsPage = ({ params }: { params: Promise<{ name: string }> }) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [openModel]);
+  }, []);
 
   return (
     <Tamplate>

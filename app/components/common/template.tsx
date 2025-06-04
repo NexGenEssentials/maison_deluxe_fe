@@ -7,6 +7,7 @@ import Link from "next/link";
 import { FaAngleRight } from "react-icons/fa";
 import redLogo from "@/public/images/red_logo.png";
 import { navbarLinks } from "../navbar/navbar";
+import FooterSection from "../footer/footer";
 
 const Tamplate = ({ children }: { children: ReactNode }) => {
   const [openNavbar, setOpenNavbar] = useState(false);
@@ -87,6 +88,7 @@ const Tamplate = ({ children }: { children: ReactNode }) => {
       </section>
 
       <div className="max-w-[1756px] mx-auto">{children}</div>
+      <FooterSection />
     </div>
   );
 };

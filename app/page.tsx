@@ -1,6 +1,7 @@
 import ContactForm from "./components/common/contxtUs";
 import StayWithUs from "./components/common/stayWithUs";
 import Testimonials from "./components/common/testimonia";
+import FooterSection from "./components/footer/footer";
 import HeroSection from "./components/hero/heroSection";
 import Navbar from "./components/navbar/navbar";
 import RoomCategory from "./components/rooms/roomCategory";
@@ -34,6 +35,7 @@ export default function Home() {
         <StayWithUs />
         <Testimonials />
         <ContactForm />
+        <FooterSection/>
       </div>
     </section>
   );

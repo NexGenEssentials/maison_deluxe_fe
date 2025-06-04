@@ -27,6 +27,7 @@ export const roomType = [
     ],
     available: 1,
     image: familyRoom,
+    price: 350,
   },
   {
     id: 2,
@@ -42,6 +43,7 @@ export const roomType = [
     ],
     available: 1,
     image: Room2,
+    price: 350,
   },
   {
     id: 3,
@@ -57,6 +59,7 @@ export const roomType = [
     ],
     available: 1,
     image: Room3,
+    price: 350,
   },
   {
     id: 4,
@@ -72,6 +75,7 @@ export const roomType = [
     ],
     available: 2,
     image: Room4,
+    price: 350,
   },
   {
     id: 5,
@@ -87,6 +91,7 @@ export const roomType = [
     ],
     available: 6,
     image: Room5,
+    price: 350,
   },
 ];
 
