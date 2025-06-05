@@ -3,7 +3,7 @@
 import Link from "next/link";
 import React from "react";
 import Image from "next/image";
-import whiteLogo from "@/public/images/white_logo.png";
+import whiteLogo from "@/public/images/red_white_logo.png";
 import { FaArrowRightLong, FaLinkedinIn } from "react-icons/fa6";
 import { RiTwitterXLine } from "react-icons/ri";
 import { ImFacebook } from "react-icons/im";
@@ -36,7 +36,7 @@ const FooterSection = () => {
 
   return (
     <div className="py-4 md:py-16 px-8 md:px-28 bg-primaryBlue">
-      <div className=" text-fontColor grid max-sm:grid-cols-1 grid-cols-2 lg:grid-cols-3 items-center gap-8 border-b border-b-fontColor/30 pb-16">
+      <div className="w-full text-fontColor grid max-sm:grid-cols-1 grid-cols-2 lg:grid-cols-3 justify-center items-center gap-8 border-b border-b-fontColor/30 pb-16">
       
         <div className="flex flex-col gap-8 ">
           <Link href="/">
