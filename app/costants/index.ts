@@ -191,3 +191,4 @@ export const rules = [
     value: "A refundable security deposit may be required upon arrival.",
   },
 ];
+

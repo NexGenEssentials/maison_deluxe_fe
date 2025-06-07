@@ -10,7 +10,7 @@ import { FaAngleRight } from "react-icons/fa";
 export const navbarLinks = [
   { name: "Rooms", href: "/rooms" },
   { name: "About", href: "/#about" },
-  { name: "Service", href: "#service" },
+  { name: "Service", href: "/service" },
   { name: "Contact", href: "/#contact" },
 ];
 
