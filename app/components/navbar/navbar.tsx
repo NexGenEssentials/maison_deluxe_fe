@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import whiteLogo from "@/public/images/white_logo.png";
+import whiteLogo from "@/public/images/red_white_logo.png";
 import redLogo from "@/public/images/red_logo.png";
 import { CiMenuFries } from "react-icons/ci";
 import Link from "next/link";

@@ -10,6 +10,7 @@ export const getRoomByTitle = (
   amenities: string[];
   available: number;
   image: StaticImageData;
+  price: number;
 } => {
   const room = roomType.find(
     (room) => room.title.toLowerCase() === title.toLowerCase()
