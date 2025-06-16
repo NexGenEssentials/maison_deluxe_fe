@@ -135,7 +135,7 @@ type RoomType = {
                 key={room.id}
                 className="flex items-center justify-center px-4 w-full bg-gray-100 shadow-lg rounded-lg cursor-pointer duration-300 transition hover:bg-gray-50 hover:shadow-2xl"
               >
-                <div className="w-full h-64">
+                <div className="w-full max-w-sm h-64">
                   <Image
                     src={room.image}
                     alt={room.title}

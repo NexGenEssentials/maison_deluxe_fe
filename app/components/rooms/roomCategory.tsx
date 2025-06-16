@@ -142,7 +142,7 @@ const RoomCategory = () => {
           <div className="w-full flex flex-col justify-center items-start px-20 relative">
             <div className=" absolute left-0 top-1/2 transform -translate-y-1/2 h-full w-[1px] bg-white rounded-full">
               <div
-                className="absolute -left-1 h-1/4 transition duration-500   w-[2px] px-1 bg-[#7D9F43] rounded-full"
+                className="absolute -left-1 h-1/4 transition duration-500 w-[2px] px-1 bg-[#7D9F43] rounded-full"
                 style={{
                   top: `${(20 * currentIndex) % 100}%`,
                 }}
@@ -150,7 +150,7 @@ const RoomCategory = () => {
             </div>
 
             <div
-              className={`relative z-10 transition-all duration-500 ease-in-out ${
+              className={` transition-all duration-500 ease-in-out ${
                 isTransitioning
                   ? "opacity-0 translate-y-10"
                   : "opacity-100 translate-y-0"

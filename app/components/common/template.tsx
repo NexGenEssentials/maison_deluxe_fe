@@ -13,7 +13,7 @@ const Tamplate = ({ children }: { children: ReactNode }) => {
   const [openNavbar, setOpenNavbar] = useState(false);
 
   const toggleNavbar = () => {
-    console.log("Navbar toggled");
+   
     setOpenNavbar(!openNavbar);
   };
   return (
