@@ -18,7 +18,7 @@ type RoomType = {
   price: number;
 };
 
- const RoomCategory = () => {
+const RoomCategory = () => {
   const router = useRouter();
   const [active, setActive] = useState<number>(1);
   const [selectedRoom, setSelectedRoom] = useState<RoomType | null>(null);
@@ -144,26 +144,41 @@ type RoomType = {
                 </div>
                 <div className="p-6 space-y-4 ">
                   <div className="flex justify-between items-center text-4xl">
-                    <div className="flex items-start justify-between w-full">
+                    <div className="flex items-start flex-wrap justify-between w-full">
                       <h3 className=" font-semibold bg-gradient-to-r from-primaryBlue -from-10% to-primaryRed to-60% mb-2  bg-clip-text text-transparent font-[Playfair Display]">
                         {room.title}
                       </h3>
-                      <button className="bg-[#587AFF] p-3 rounded-lg cursor-none font-normal text-sm text-white  transition-colors">
+                      <button className="border border-primaryBlue p-3 rounded-lg cursor-none font-normal text-sm text-primaryBlue  transition-colors">
                         Only {room.available} left
                       </button>
                     </div>
                   </div>
                   <p className="text-gray-600 mb-4">{room.description}</p>
-                  <p className="text-gray-500 mb-4">
+                  <p className="max-lg:hidden text-gray-500 mb-4">
                     <span className="font-bold text-primaryBlue">Price:</span> $
                     {room.price}
+                  </p>
+                  <p className="lg:hidden text-gray-500 mb-4">
+                    <span className="font-bold text-primaryBlue">Price:</span> $
+                    {selectedPeople === 0
+                      ? room.price
+                      : room.price * selectedPeople}
                   </p>
                   <div className="flex items-start gap-4 justify-between w-full">
                     <button
                       onClick={() => handleBooking(room.title)}
-                      className="px-4 w-3/4 py-3 cursor-pointer bg-[#A6FF00] hover:bg-lime-500 font-semibold text-primaryBlue rounded-lg transition-colors"
+                      className="max-lg:hidden px-4 w-1/2 xl:1/4 py-3 cursor-pointer bg-[#a80024]/80 hover:bg-[#a80024] font-semibold text-white rounded-lg transition-colors"
                     >
                       view details
+                    </button>
+                    <button
+                      onClick={() => {
+                        openModal();
+                        setActive(2);
+                      }}
+                      className="lg:hidden px-4 w-1/2 xl:1/4 py-3 cursor-pointer bg-[#a80024]/80 hover:bg-[#a80024] font-semibold text-white rounded-lg transition-colors"
+                    >
+                      Book Now
                     </button>
                     <select
                       onChange={(e) => {
@@ -171,10 +186,11 @@ type RoomType = {
                         setSelectedPeople(Number(e.target.value));
                       }}
                       value={selectedPeople}
-                      className=" w-32 text-center px-2 py-3 bg-gray-200 border border-gray-300 rounded-lg focus:outline-none focus:ring-0"
-                 
+                      className="w-32 text-center px-2 py-3 bg-gray-200 border border-gray-300 rounded-lg focus:outline-none focus:ring-0"
                     >
-                      <option disabled value="1">0</option>
+                      <option disabled value="0">
+                        0
+                      </option>
                       <option value="1">1</option>
                       <option value="2">2</option>
                       <option value="3">3</option>
@@ -201,7 +217,9 @@ type RoomType = {
               <h2 className="text-xl font-semibold mb-4">
                 {selectedRoom.title}
               </h2>
-              <p className="text-gray-600 mb-4 line-clamp-2">{selectedRoom.description}</p>
+              <p className="text-gray-600 mb-4 line-clamp-2">
+                {selectedRoom.description}
+              </p>
               <ul className="list-disc list-inside text-gray-600 mb-4">
                 {selectedRoom.amenities.map((amenity, index) => (
                   <li key={index}>{amenity}</li>
@@ -217,7 +235,7 @@ type RoomType = {
                   openModal();
                   setActive(2);
                 }}
-                className="w-full bg-[#A6FF00] hover:bg-lime-500 text-primaryBlue font-semibold py-3 rounded-lg transition-colors"
+                className="w-full bg-[#a80024]/80 hover:bg-[#a80024] text-white font-semibold py-3 rounded-lg transition-colors"
               >
                 Book Now
               </button>

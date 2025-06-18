@@ -11,7 +11,9 @@ import { FaAngleRight } from "react-icons/fa";
 export const navbarLinks = [
   { name: "Rooms", href: "/rooms" },
   { name: "About", href: "/#about" },
-  { name: "Service", href: "/service" },
+  { name: "Reviews", href: "/#reviews" },
+  { name: "Pricing", href: "/pricing" },
+  { name: "Service", href: "/#service" },
   { name: "Contact", href: "/#contact" },
 ];
 
@@ -38,7 +40,7 @@ const Navbar = () => {
       {/* Default Navbar (top) - visible initially */}
       <div className="max-lg:hidden w-full p-4 gap-20 flex items-center justify-center text-white font-medium backdrop-blur-xs z-10 relative">
         <ul className="flex gap-20 py-6 items-center justify-center font-[Josefin_Slab]">
-          {navbarLinks.slice(0, 2).map((link) => (
+          {navbarLinks.slice(0, 3).map((link) => (
             <Link key={link.name} href={link.href}>
               <li className="hover:text-primaryGreen border-b border-b-transparent hover:border-b pb-2 hover:border-b-primaryGreen cursor-pointer duration-500 transition">
                 {link.name}
@@ -50,7 +52,7 @@ const Navbar = () => {
           <Image src={whiteLogo} width={52} height={56} alt="White Logo" />
         </Link>
         <ul className="flex gap-20 py-6 items-center justify-center font-[Josefin_Slab]">
-          {navbarLinks.slice(2, 4).map((link) => (
+          {navbarLinks.slice(3, 6).map((link) => (
             <Link key={link.name} href={link.href}>
               <li className="hover:text-primaryGreen border-b border-b-transparent hover:border-b pb-2 hover:border-b-primaryGreen cursor-pointer duration-500 transition">
                 {link.name}
@@ -71,7 +73,7 @@ const Navbar = () => {
         bg-white text-primaryBlue font-bold backdrop-blur-xs`}
       >
         <ul className="flex gap-20 py-6 items-center justify-center font-[Josefin_Slab]">
-          {navbarLinks.slice(0, 2).map((link) => (
+          {navbarLinks.slice(0, 3).map((link) => (
             <Link key={link.name} href={link.href}>
               <li className=" hover:text-primaryRed border-b border-b-transparent hover:border-b pb-2 hover:border-b-primaryRed  cursor-pointer duration-500 transition">
                 {link.name}
@@ -83,7 +85,7 @@ const Navbar = () => {
           <Image src={Logo} width={52} height={56} alt="De luxe Logo" />
         </Link>
         <ul className="flex gap-20 py-6 items-center justify-center font-[Josefin_Slab]">
-          {navbarLinks.slice(2, 4).map((link) => (
+          {navbarLinks.slice(3, 6).map((link) => (
             <Link key={link.name} href={link.href}>
               <li className="hover:text-primaryRed border-b border-b-transparent hover:border-b pb-2 hover:border-b-primaryRed cursor-pointer duration-500 transition">
                 {link.name}

@@ -22,7 +22,7 @@ const Tamplate = ({ children }: { children: ReactNode }) => {
         {/* Large screen navbar */}
         <div className="max-lg:hidden w-full p-4 gap-20 flex items-center justify-center text-white font-medium backdrop-blur-xs bg-primaryBlue bg-opacity-90">
           <ul className="flex gap-20 py-6 items-center justify-center font-[Josefin_Slab]">
-            {navbarLinks.slice(0, 2).map((link) => (
+            {navbarLinks.slice(0, 3).map((link) => (
               <Link key={link.name} href={link.href}>
                 <li className="hover:text-primaryGreen border-b border-b-transparent hover:border-b pb-2 hover:border-b-primaryGreen cursor-pointer duration-500 transition">
                   {link.name}
@@ -34,7 +34,7 @@ const Tamplate = ({ children }: { children: ReactNode }) => {
             <Image src={whiteLogo} width={52} height={56} alt="White Logo" />
           </Link>
           <ul className="flex gap-20 py-6 items-center justify-center font-[Josefin_Slab]">
-            {navbarLinks.slice(2, 4).map((link) => (
+            {navbarLinks.slice(3, 6).map((link) => (
               <Link key={link.name} href={link.href}>
                 <li className="hover:text-primaryGreen border-b border-b-transparent hover:border-b pb-2 hover:border-b-primaryGreen cursor-pointer duration-500 transition">
                   {link.name}

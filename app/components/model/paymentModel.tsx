@@ -112,7 +112,7 @@ export default function BookingForm() {
 
       <button
         type="submit"
-        className="w-full bg-primaryGreen/80 hover:bg-primaryGreen text-primaryBlue font-bold py-2 px-4 rounded transition"
+        className="w-full bg-secondaryRed/80 hover:bg-secondaryRed text-white font-bold py-2 px-4 rounded transition"
       >
         Continue
       </button>

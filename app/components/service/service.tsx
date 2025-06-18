@@ -13,7 +13,7 @@ const ServiceSection = () => {
   const router = useRouter();
 
   return (
-    <section className="bg-primaryBlue py-12 lg:px-24 text-white ">
+    <section id="service" className="bg-primaryBlue py-12 lg:px-24 text-white ">
       <div className="px-4">
         <Title title="Service" />
         <p className="text-sm md:text-base lg:w-1/2 text-gray-300 mb-12">
@@ -91,10 +91,10 @@ const ServiceSection = () => {
                   </p>
 
                   <button
-                    onClick={() => router.push("service")}
+                    onClick={() => router.push("pricing")}
                     className="text-white bg-[#9FB3FF14] hover:bg-blue-900 cursor-pointer p-2 sm:p-4 rounded-xl w-full"
                   >
-                    Check Availability
+                    View Price
                   </button>
                 </div>
               </div>

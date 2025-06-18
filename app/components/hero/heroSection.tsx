@@ -55,7 +55,7 @@ const HeroSection = () => {
           <div className="flex justify-between items-center text-nowrap flex-wrap gap-4 w-3/4 mx-auto">
             <div
               onClick={() => setOpenModle(true)}
-              className="p-3 font-semibold rounded-md bg-white/10 backdrop-blur-sm flex items-center gap-2 w-fit text-primaryGreen cursor-pointer hover:bg-white/20  transition"
+              className="py-3 px-7 font-semibold rounded-md bg-white/10 backdrop-blur-sm flex items-center gap-2 w-fit text-primaryGreen cursor-pointer hover:bg-white/20  transition"
             >
               <HiOutlinePlay size={20} /> Go Luxe
             </div>

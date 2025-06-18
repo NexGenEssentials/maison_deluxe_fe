@@ -7,7 +7,9 @@
 
 @theme inline {
   --color-primaryGreen: #a6ff00;
+  --color-primaryGreen: #a6ff00;
   --color-primaryRed: #e91a24;
+  --color-secondaryRed: #a80024;
   --color-secondaryGreen: #18274F;
   --color-thirdGreen: #F6FF00;
   --color-primaryBlue: #000435;

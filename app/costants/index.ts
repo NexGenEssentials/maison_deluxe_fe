@@ -285,3 +285,63 @@ export const Services = [
     image: "/images/tax.webp",
   },
 ];
+
+export const clientData: ClientData[] = [
+  {
+    id: "1",
+    name: "Mutamuliza Claudine",
+    status: "Success",
+    checkInOut: "06-06-2025",
+    bookingDate: "06-06-2025",
+    avatar: "MC",
+  },
+  {
+    id: "2",
+    name: "Mutamuliza Claudine",
+    status: "Destructive",
+    checkInOut: "06-06-2025",
+    bookingDate: "06-06-2025",
+    avatar: "MC",
+  },
+  {
+    id: "3",
+    name: "Mutamuliza Claudine",
+    status: "Available",
+    checkInOut: "06-06-2025",
+    bookingDate: "06-06-2025",
+    avatar: "MC",
+  },
+  {
+    id: "4",
+    name: "Mutamuliza Claudine",
+    status: "Destructive",
+    checkInOut: "06-06-2025",
+    bookingDate: "06-06-2025",
+    avatar: "MC",
+  },
+  {
+    id: "5",
+    name: "Mutamuliza Claudine",
+    status: "Available",
+    checkInOut: "06-06-2025",
+    bookingDate: "06-06-2025",
+    avatar: "MC",
+  },
+  {
+    id: "6",
+    name: "Mutamuliza Claudine",
+    status: "Pending",
+    checkInOut: "06-06-2025",
+    bookingDate: "06-06-2025",
+    avatar: "MC",
+  },
+];
+
+export interface ClientData {
+  id: string;
+  name: string;
+  status: "Success" | "Destructive" | "Available" | "Pending";
+  checkInOut: string;
+  bookingDate: string;
+  avatar: string;
+}

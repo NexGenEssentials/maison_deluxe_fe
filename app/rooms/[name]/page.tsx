@@ -51,7 +51,7 @@ const RoomsPage = ({ params }: { params: Promise<{ name: string }> }) => {
   return (
     <Tamplate>
       <>
-        <div className="w-full h-screen bg-[#F5F5F5] text-black py-10 px-4 md:px-12 lg:px-24">
+        <div className="w-full bg-[#F5F5F5] text-black py-10 px-4 md:px-12 lg:px-24">
           {/* Title */}
 
           <div className="font-[Playfair_Display] bg-gradient-to-r from-secondaryBlue  to-primaryGreen  text-center  mb-10 bg-clip-text text-transparent font-semibold text-[min(10vw,48px)]">
@@ -61,7 +61,7 @@ const RoomsPage = ({ params }: { params: Promise<{ name: string }> }) => {
           <div className="flex flex-col lg:flex-row items-stretch gap-8">
             {/* Left: Image Slider */}
             <div className="relative flex-1  overflow-hidden">
-              <div className="relative h-full w-full rounded-xl overflow-hidden">
+              <div className="relative h-[400px] lg:h-full w-full rounded-xl overflow-hidden">
                 <Image
                   src={selectedImage}
                   alt="Room Image"
