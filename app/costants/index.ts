@@ -8,6 +8,7 @@ import slide3 from "@/public/images/dine.jpg";
 import profile from "@/public/images/profile.jpg";
 import p3 from "@/public/images/p3.png";
 import p2 from "@/public/images/p2.png";
+import p4 from "@/public/images/placeholder.webp";
 import rw from "@/public/images/rw.png";
 import us from "@/public/images/us.jpg";
 import kny from "@/public/images/kny.png";
@@ -126,6 +127,16 @@ export const testimonials = [
       "Clean rooms, quick service, and a peaceful environment. It’s the perfect escape in the heart of the city.",
     rating: 4,
   },
+  {
+    name: "Makenzi A.",
+    country: "Rwanda",
+    flag: rw,
+    title: "Exceptional Experience!",
+    image: p4,
+    description:
+      "The attention to detail, warm staff, and serene atmosphere made my stay truly unforgettable. Highly recommended!",
+    rating: 5,
+  },
 ];
 
 export const slides = [
@@ -192,3 +203,85 @@ export const rules = [
   },
 ];
 
+export const TableHeaders = [
+  "Rooms Category",
+  "Room Facilities",
+  "Max Per Room",
+  "Price Per Room (USD)",
+  "Extra Person Rate (Adult)",
+  "Extra Person Rate (Child)",
+  "BreakFast Per Person (USD)",
+  "Airport TransfersPer Person (USD)",
+];
+
+export const ExtraInfoData = [
+  {
+    title: "Breakfast",
+    color: "text-red-600",
+    points: [
+      "Breakfast is served daily from 7.00 – 10.00am.",
+      "No Pets , No Smoking",
+    ],
+  },
+  {
+    title: "Check – in /Check-out",
+    color: "text-red-500",
+    points: [
+      "Check- out is not later than 10AM and Check – in starts at 11PM.",
+    ],
+  },
+  {
+    title: "Extra person rate",
+    color: "text-red-500",
+    points: [
+      "Extra person rate applies to any additional person staying in the room apart from the main guest.",
+    ],
+  },
+  {
+    title: "Extra Cost",
+    color: "text-red-600",
+    points: [
+      "$15.00 will be charged for late checkout.",
+      "$25.00 will be charged for private transportation in Kigali.",
+    ],
+  },
+];
+
+export const Services = [
+  {
+    title: "City Tour",
+    description:
+      "Discover the vibrant culture and hidden gems of our city with our guided tours. From historical landmarks to local food experiences, our city tour is perfect for travelers who want a deep dive into what makes the city unique.",
+    image: "/images/slide3.jpg",
+  },
+  {
+    title: "Airport Transfer",
+    description:
+      "Start and end your journey stress-free with our reliable airport transfer service. Our professional drivers ensure timely pick-up and drop-off, so you can travel with peace of mind.",
+    image: "/images/airport.jpg",
+  },
+  {
+    title: "Transport",
+    description:
+      "Need to get around town or travel to a nearby destination? Our transport services offer private and group options to fit your schedule, comfort, and budget. Travel with safety and ease.",
+    image: "/images/tax.webp",
+  },
+  {
+    title: "City Tour",
+    description:
+      "Discover the vibrant culture and hidden gems of our city with our guided tours. From historical landmarks to local food experiences, our city tour is perfect for travelers who want a deep dive into what makes the city unique.",
+    image: "/images/slide3.jpg",
+  },
+  {
+    title: "Airport Transfer",
+    description:
+      "Start and end your journey stress-free with our reliable airport transfer service. Our professional drivers ensure timely pick-up and drop-off, so you can travel with peace of mind.",
+    image: "/images/airport.jpg",
+  },
+  {
+    title: "Transport",
+    description:
+      "Need to get around town or travel to a nearby destination? Our transport services offer private and group options to fit your schedule, comfort, and budget. Travel with safety and ease.",
+    image: "/images/tax.webp",
+  },
+];

@@ -22,7 +22,7 @@ type RoomType = {
   const router = useRouter();
   const [active, setActive] = useState<number>(1);
   const [selectedRoom, setSelectedRoom] = useState<RoomType | null>(null);
-  const [selectedPeople, setSelectedPeople] = useState<number>(1);
+  const [selectedPeople, setSelectedPeople] = useState<number>(0);
   const [openModel, setOpenModel] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const [animateModal, setAnimateModal] = useState(false);
@@ -74,7 +74,7 @@ type RoomType = {
   return (
     <Tamplate>
       <div className="flex flex-col md:flex-row justify-between items-start gap-2 px-4 md:px-12 py-10">
-        <div className="w-3/4 bg-[#F5F5F5] text-black  ">
+        <div className="w-full lg:w1/2 xl:w-3/4 bg-[#F5F5F5] text-black  ">
           <div className="flex justify-between items-center mb-6 bg-[#E6EBFF]">
             <div
               className={` ${
@@ -118,7 +118,7 @@ type RoomType = {
             </div>
           </div>
           {/* Title */}
-          <div className=" px-4 md:px-12 ">
+          <div className="px-4 md:px-12 ">
             <div className="font-[Playfair_Display]  bg-gradient-to-r from-primaryBlue -from-10% to-primaryRed to-60%   bg-clip-text text-transparent font-semibold text-[min(10vw,48px)]">
               Room Categories
             </div>
@@ -133,9 +133,9 @@ type RoomType = {
             {roomType.map((room) => (
               <div
                 key={room.id}
-                className="flex items-center justify-center px-4 w-full bg-gray-100 shadow-lg rounded-lg cursor-pointer duration-300 transition hover:bg-gray-50 hover:shadow-2xl"
+                className="flex max-xl:flex-wrap items-center justify-center px-4 w-full bg-gray-100 shadow-lg rounded-lg cursor-pointer duration-300 transition hover:bg-gray-50 hover:shadow-2xl"
               >
-                <div className="w-full max-w-sm h-64">
+                <div className="w-full min-w-[200px] xl:max-w-sm h-64">
                   <Image
                     src={room.image}
                     alt={room.title}
@@ -158,7 +158,7 @@ type RoomType = {
                     <span className="font-bold text-primaryBlue">Price:</span> $
                     {room.price}
                   </p>
-                  <div className="flex items-start justify-between w-full">
+                  <div className="flex items-start gap-4 justify-between w-full">
                     <button
                       onClick={() => handleBooking(room.title)}
                       className="px-4 w-3/4 py-3 cursor-pointer bg-[#A6FF00] hover:bg-lime-500 font-semibold text-primaryBlue rounded-lg transition-colors"
@@ -172,8 +172,9 @@ type RoomType = {
                       }}
                       value={selectedPeople}
                       className=" w-32 text-center px-2 py-3 bg-gray-200 border border-gray-300 rounded-lg focus:outline-none focus:ring-0"
-                      defaultValue="1"
+                 
                     >
+                      <option disabled value="1">0</option>
                       <option value="1">1</option>
                       <option value="2">2</option>
                       <option value="3">3</option>
@@ -186,7 +187,8 @@ type RoomType = {
             ))}
           </div>
         </div>
-        <div className=" sticky top-[150px] right-0 h-[80vh]  w-1/4 bg-[#F9F9F9] text-black py-10 px-4 md:px-12 ">
+
+        <div className="max-lg:hidden sticky top-[150px] right-0 h-[80vh] lg:w-1/2 xl:w-1/4 bg-[#F9F9F9] text-black py-10 px-4 md:px-12 ">
           {!selectedRoom ? (
             <div className="text-center">
               <button className="hover:bg-gray-300  cursor-pointer w-full rounded-lg py-4 bg-[#E2E2E2] text-base font-bold mb-6">
@@ -199,7 +201,7 @@ type RoomType = {
               <h2 className="text-xl font-semibold mb-4">
                 {selectedRoom.title}
               </h2>
-              <p className="text-gray-600 mb-4">{selectedRoom.description}</p>
+              <p className="text-gray-600 mb-4 line-clamp-2">{selectedRoom.description}</p>
               <ul className="list-disc list-inside text-gray-600 mb-4">
                 {selectedRoom.amenities.map((amenity, index) => (
                   <li key={index}>{amenity}</li>

@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { GoChevronDown } from "react-icons/go";
 import Title from "../common/title";
 import { roomType } from "@/app/costants";
-import { FaPlay } from "react-icons/fa";
 import { BsHeadsetVr } from "react-icons/bs";
 import { HiOutlinePlay } from "react-icons/hi";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -12,7 +11,6 @@ import "swiper/css";
 import "swiper/css/scrollbar";
 import { Keyboard } from "swiper/modules";
 import { MdFilterListAlt } from "react-icons/md";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const RoomCategory = () => {

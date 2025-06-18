@@ -27,8 +27,8 @@ const Testimonials = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <section className="relative py-20 bg-primaryBlue text-white text-center">
-      <div className="bg-gradient-to-r from-transparent via-[#100699]/10 via-50%  py-12  to-transparent px-4">
+    <section className="relative  bg-primaryBlue text-white text-center">
+      <div className="bg-gradient-to-r from-transparent via-[#100699]/10 via-50%  py-20  to-transparent px-4">
         <Title title="What Our Customers say" />
         <p className="text-sm md:text-base text-gray-300 mb-12">
           Praesent volutpat augue sapien sapien. A sit neque viverra eleifend
@@ -76,7 +76,10 @@ const Testimonials = () => {
           onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
         >
           {testimonials.map((t, i) => (
-            <SwiperSlide key={i} className=" lg:py-40 relative flex justify-center">
+            <SwiperSlide
+              key={i}
+              className=" lg:py-40 lg:px-5 relative flex justify-center"
+            >
               <div
                 className={`max-lg:hidden transition-all overflow-hidden  duration-300 flex items-center gap-6 rounded-xl  text-left ${
                   activeIndex === i
@@ -84,14 +87,14 @@ const Testimonials = () => {
                     : "opacity-70 bg:white/10 blur-[2px] "
                 }`}
               >
-                <div className="relative w-[150px] h-[200px] overflow-hidden">
+                <div className="relative w-[150px] h-[220px] overflow-hidden">
                   <Image
                     src={t.image}
                     alt={t.name}
                     fill
                     className={` ${
                       activeIndex !== i
-                        ? " rounded-full !w-[100px]  !h-[100px] blur-[8px]"
+                        ? " rounded-full !w-[100px]  !h-[200px] blur-[8px]"
                         : " "
                     } object-cover h-full`}
                   />

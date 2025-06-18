@@ -5,6 +5,7 @@ import FooterSection from "./components/footer/footer";
 import HeroSection from "./components/hero/heroSection";
 import Navbar from "./components/navbar/navbar";
 import RoomCategory from "./components/rooms/roomCategory";
+import ServiceSection from "./components/service/service";
 
 export default function Home() {
   return (
@@ -34,8 +35,9 @@ export default function Home() {
         <RoomCategory />
         <StayWithUs />
         <Testimonials />
+        <ServiceSection />
         <ContactForm />
-        <FooterSection/>
+        <FooterSection />
       </div>
     </section>
   );

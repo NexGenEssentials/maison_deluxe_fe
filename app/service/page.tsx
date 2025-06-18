@@ -2,27 +2,7 @@
 import React, { useState } from "react";
 import Tamplate from "../components/common/template";
 import Pricing from "../components/pricing/pricing";
-
-const services = [
-  {
-    title: "City Tour",
-    description:
-      "Discover the vibrant culture and hidden gems of our city with our guided tours. From historical landmarks to local food experiences, our city tour is perfect for travelers who want a deep dive into what makes the city unique.",
-    image: "/images/slide3.jpg",
-  },
-  {
-    title: "Airport Transfer",
-    description:
-      "Start and end your journey stress-free with our reliable airport transfer service. Our professional drivers ensure timely pick-up and drop-off, so you can travel with peace of mind.",
-    image: "/images/airport.jpg",
-  },
-  {
-    title: "Transport",
-    description:
-      "Need to get around town or travel to a nearby destination? Our transport services offer private and group options to fit your schedule, comfort, and budget. Travel with safety and ease.",
-    image: "/images/tax.webp",
-  },
-];
+import { Services } from "../costants";
 
 const tabs = ["service", "pricing"];
 
@@ -38,7 +18,7 @@ const Service = () => {
               className={`${
                 tab !== activeTab
                   ? "bg-primaryRed/70 hover:bg-primaryRed text-white"
-                  : "text-gray-300"
+                  : "text-gray-300 hover:cursor-not-allowed"
               } w-full flex items-center justify-center py-3 font-semibold cursor-pointer capitalize`}
               key={tab}
             >
@@ -58,7 +38,7 @@ const Service = () => {
             </div>
 
             <div className="space-y-20">
-              {services.map((service, index) => (
+              {Services.slice(0, 3).map((service, index) => (
                 <div
                   key={index}
                   className={`flex flex-col-reverse md:flex-row ${
