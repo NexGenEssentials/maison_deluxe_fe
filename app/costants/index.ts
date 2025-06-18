@@ -1,10 +1,10 @@
-import familyRoom from "@/public/images/family_room.jpg";
-import Room2 from "@/public/images/room2.jpg";
-import Room3 from "@/public/images/room3.jpg";
-import Room4 from "@/public/images/room4.jpg";
-import Room5 from "@/public/images/room5.png";
+import familyRoom from "@/public/images/luxe/room1.jpg";
+import Room2 from "@/public/images/luxe/room4.jpg";
+import Room3 from "@/public/images/luxe/room3.jpg";
+import Room4 from "@/public/images/luxe/room8.jpg";
+import Room5 from "@/public/images/luxe/room5.jpg";
+import Room6 from "@/public/images/luxe/room6.jpg";
 import slide1 from "@/public/images/slide3.jpg";
-import slide3 from "@/public/images/dine.jpg";
 import profile from "@/public/images/profile.jpg";
 import p3 from "@/public/images/p3.png";
 import p2 from "@/public/images/p2.png";
@@ -12,6 +12,8 @@ import p4 from "@/public/images/placeholder.webp";
 import rw from "@/public/images/rw.png";
 import us from "@/public/images/us.jpg";
 import kny from "@/public/images/kny.png";
+import rec from "@/public/images/luxe/room3.jpg";
+import dine from "@/public/images/luxe/dine.jpg";
 
 export const roomType = [
   {
@@ -20,7 +22,7 @@ export const roomType = [
     description:
       "The epitome of luxury living. Our Penthouse Suite features expansive interiors, panoramic city views, and a private terrace with a fireplace. Perfect for distinguished guests seeking sophistication, space, and complete privacy.",
     amenities: [
-      "Up to 4 Guests",
+      "Up to 2 Guests",
       "1 King-Sized Bed + Lounge Area",
       "Private Terrace with Fireplace",
       "Panoramic City View",
@@ -28,7 +30,7 @@ export const roomType = [
     ],
     available: 1,
     image: familyRoom,
-    price: 350,
+    price: 150,
   },
   {
     id: 2,
@@ -36,7 +38,7 @@ export const roomType = [
     description:
       "Experience refined comfort in our Executive Room, thoughtfully designed for the modern traveler. Featuring elegant decor, a spacious layout, and premium amenities, it’s ideal for business or leisure.",
     amenities: [
-      "Up to 3 Guests",
+      "Up to 2 Guests",
       "1 King-Sized Bed",
       "Dedicated Workspace",
       "Complimentary Mini-Bar",
@@ -44,7 +46,7 @@ export const roomType = [
     ],
     available: 1,
     image: Room2,
-    price: 350,
+    price: 130,
   },
   {
     id: 3,
@@ -60,11 +62,11 @@ export const roomType = [
     ],
     available: 1,
     image: Room3,
-    price: 350,
+    price: 140,
   },
   {
     id: 4,
-    title: "Deluxe Room",
+    title: "Deluxe City View",
     description:
       "Designed with comfort and elegance in mind, the Deluxe Room offers a cozy retreat with tasteful furnishings and all the essentials for a relaxing stay.",
     amenities: [
@@ -76,7 +78,7 @@ export const roomType = [
     ],
     available: 2,
     image: Room4,
-    price: 350,
+    price: 120,
   },
   {
     id: 5,
@@ -90,9 +92,25 @@ export const roomType = [
       "Private Bathroom",
       "Air Conditioning",
     ],
-    available: 6,
+    available: 4,
     image: Room5,
-    price: 350,
+    price: 100,
+  },
+  {
+    id: 6,
+    title: "Standard single Room",
+    description:
+      "Our Standard Double Room provides simplicity and comfort for everyday travelers. A well-appointed space with modern essentials for a restful night.",
+    amenities: [
+      "1 Guests",
+      "1 Double Bed",
+      "Compact Work Desk",
+      "Private Bathroom",
+      "Air Conditioning",
+    ],
+    available: 2,
+    image: Room6,
+    price: 90,
   },
 ];
 
@@ -150,24 +168,24 @@ export const slides = [
     title: "Exceptional Dining Experience",
     description:
       "Enjoy a diverse menu of international and Rwandan cuisine prepared by top chefs. Whether it’s a breakfast buffet or an evening à la carte dinner, we promise a delightful culinary experience.",
-    image: slide3,
+    image: dine,
   },
   {
     title: "Modern & Comfortable Rooms",
     description:
       "Experience luxury and comfort in our fully equipped rooms featuring high-speed Wi-Fi, air conditioning, smart TVs, and breathtaking city views — perfect for both business and leisure travelers.",
-    image: Room2,
+    image: rec,
   },
 ];
 
 export const rules = [
   {
     label: "Check-in:",
-    value: "From 2:00 PM",
+    value: "From 11:00 PM",
   },
   {
     label: "Check-out:",
-    value: "Until 11:00 AM",
+    value: "Until 10:00 AM",
   },
   {
     label: "Cancellation/Prepayment:",
@@ -177,7 +195,7 @@ export const rules = [
   {
     label: "Children & Extra Beds:",
     value:
-      "All children are welcome. Extra beds are available on request (additional charges may apply).",
+      "Extra person rate applies to any additional person staying in the room apart from the main guest.",
   },
   {
     label: "Pets:",
@@ -185,8 +203,7 @@ export const rules = [
   },
   {
     label: "Smoking:",
-    value:
-      "Smoking is prohibited inside the rooms. Designated smoking areas are available.",
+    value: "Smoking is not allowed.",
   },
   {
     label: "ID & Age Requirements:",
@@ -194,12 +211,12 @@ export const rules = [
       "Valid government-issued ID is required at check-in. Minimum age to book a room is 18.",
   },
   {
-    label: "Quiet Hours:",
-    value: "10:00 PM – 7:00 AM",
+    label: "Extra Cost:",
+    value: "$15.00 will be charged for late checkout. ",
   },
   {
-    label: "Damage Deposit:",
-    value: "A refundable security deposit may be required upon arrival.",
+    label: "Transport:",
+    value: "$25.00 will be charged for private transportation in kigali.",
   },
 ];
 

@@ -27,7 +27,7 @@ const Testimonials = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <section className="relative  bg-primaryBlue text-white text-center">
+    <section id={'reviews'} className="relative  bg-primaryBlue text-white text-center">
       <div className="bg-gradient-to-r from-transparent via-[#100699]/10 via-50%  py-20  to-transparent px-4">
         <Title title="What Our Customers say" />
         <p className="text-sm md:text-base text-gray-300 mb-12">

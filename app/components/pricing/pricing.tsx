@@ -11,13 +11,13 @@ const Pricing = () => {
       />
 
       <div className="relative z-10 px-4 py-10">
-        <h1 className="text-primaryRed font-bold text-4xl mb-6 text-center">
+        <h1 className="text-secondaryRed font-bold text-4xl mb-6 text-center">
           Maison De Luxe Price List
         </h1>
 
         <div className="overflow-x-auto">
           <table className="min-w-full table-auto border-collapse border border-slate-700 text-sm md:text-base ">
-            <thead className="bg-primaryRed text-white">
+            <thead className="bg-secondaryRed text-white">
               <tr>
                 {TableHeaders.map((header, idx) => (
                   <th
@@ -60,14 +60,14 @@ const Pricing = () => {
         </div>
 
         <div className="px-4 py-10">
-          <h2 className="text-2xl font-bold text-primaryRed mb-6 uppercase">
+          <h2 className="text-2xl font-bold text-secondaryRed mb-6 uppercase">
             Extra Information
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {ExtraInfoData.map((section, index) => (
               <div key={index}>
-                <h3 className={`text-lg font-bold mb-2 ${section.color}`}>
+                <h3 className={`text-lg font-bold mb-2 text-secondaryRed`}>
                   {section.title}
                 </h3>
                 <ul className="list-disc pl-5 space-y-1 text-sm text-gray-800">

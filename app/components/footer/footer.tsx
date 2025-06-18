@@ -12,6 +12,7 @@ const QuickLinks = [
   { name: "Rooms", href: "/rooms" },
   { name: "About", href: "/#about" },
   { name: "Service", href: "/#service" },
+  { name: "Pricing", href: "/pricing" },
   { name: "Contact Us", href: "/#contact" },
   { name: "Privacy Policy", href: "/#about" },
 ];
@@ -43,10 +44,10 @@ const FooterSection = () => {
             <Image src={whiteLogo} width={66} height={64} alt="White Logo" />
           </Link>
           <ul className="flex flex-col gap-2 text-sm ">
-            <li>KN 22 Street</li>
-            <li>deluxe@gmail.com</li>
+            <li>KG 263 Streets</li>
+            <li>maisondeluxerw@gmail.com</li>
             <li>Kigali-Rwanda</li>
-            <li>Tel:+250788884300</li>
+            <li>Tel:+250796890907</li>
           </ul>
         </div>
 
@@ -97,7 +98,7 @@ const FooterSection = () => {
           </div>
         </div>
         <div className="text-sm text-white">
-          © 2025 Maison luxe. All rights reserved
+          © 2025 Maison De luxe. All rights reserved
         </div>
       </div>
     </div>
