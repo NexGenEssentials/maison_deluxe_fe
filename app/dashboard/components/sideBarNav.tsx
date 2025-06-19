@@ -16,11 +16,6 @@ const menuItems = [
     path: "/dashboard",
   },
   {
-    label: "Bookings",
-    icon: <FiCalendar />,
-    path: "/bookings",
-  },
-  {
     label: "Room Type",
     icon: <FiBriefcase />,
     path: "/room",

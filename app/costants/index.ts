@@ -362,3 +362,101 @@ export interface ClientData {
   bookingDate: string;
   avatar: string;
 }
+
+export interface RoomCategory {
+  id: number;
+  name: string;
+  description: string;
+  units: number;
+  price: string;
+  capacity: number;
+}
+
+export interface Booking {
+  id: number;
+  room_category: RoomCategory;
+  room_category_id: number;
+  guest_name: string;
+  guest_email: string;
+  guest_phone: string;
+  check_in: string;
+  check_out: string;
+  guests: number;
+  total_price: string;
+  status: string;
+  booking_reference: string;
+  created_at: string;
+  note?: string;
+}
+
+export const dummyBookings: Booking[] = [
+  {
+    id: 1,
+    room_category: {
+      id: 1,
+      name: "Deluxe Room",
+      description: "A deluxe room with all amenities",
+      units: 2,
+      price: "150.00",
+      capacity: 2,
+    },
+    room_category_id: 1,
+    guest_name: "John Doe",
+    guest_email: "john@example.com",
+    guest_phone: "1234567890",
+    check_in: "2025-07-01",
+    check_out: "2025-07-05",
+    guests: 2,
+    total_price: "600.00",
+    status: "Confirmed",
+    booking_reference: "ABC123456",
+    created_at: "2025-06-01T10:00:00Z",
+    note: "Early check-in if possible",
+  },
+  {
+    id: 2,
+    room_category: {
+      id: 1,
+      name: "Deluxe Room",
+      description: "A deluxe room with all amenities",
+      units: 2,
+      price: "150.00",
+      capacity: 2,
+    },
+    room_category_id: 1,
+    guest_name: "John Doe",
+    guest_email: "john@example.com",
+    guest_phone: "1234567890",
+    check_in: "2025-07-01",
+    check_out: "2025-07-05",
+    guests: 2,
+    total_price: "600.00",
+    status: "Confirmed",
+    booking_reference: "ABC123456",
+    created_at: "2025-06-01T10:00:00Z",
+    note: "Early check-in if possible",
+  },
+  {
+    id: 3,
+    room_category: {
+      id: 1,
+      name: "Deluxe Room",
+      description: "A deluxe room with all amenities",
+      units: 2,
+      price: "150.00",
+      capacity: 2,
+    },
+    room_category_id: 1,
+    guest_name: "John Doe",
+    guest_email: "john@example.com",
+    guest_phone: "1234567890",
+    check_in: "2025-07-01",
+    check_out: "2025-07-05",
+    guests: 2,
+    total_price: "600.00",
+    status: "Confirmed",
+    booking_reference: "ABC123456",
+    created_at: "2025-06-01T10:00:00Z",
+    note: "Early check-in if possible",
+  },
+];
