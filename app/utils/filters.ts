@@ -1,5 +1,6 @@
 import { StaticImageData } from "next/image";
 import { roomType } from "../costants";
+import { RoomType } from "../types/rooms";
 
 export const getRoomByTitle = (
   title: string
@@ -19,4 +20,8 @@ export const getRoomByTitle = (
     throw new Error(`Room with title "${title}" not found`);
   }
   return room;
+};
+
+export const filterRoomNames = (rooms: RoomType[]): string[] => {
+  return rooms.map((room) => room.name);
 };

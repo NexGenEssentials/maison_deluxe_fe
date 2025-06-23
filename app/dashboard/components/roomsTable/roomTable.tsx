@@ -1,5 +1,12 @@
-import { roomType } from "@/app/costants";
-import React, { useState } from "react";
+"use client";
+import {
+  DeleteRoomTypeAPI,
+  getAllRoomTypeAPI,
+} from "@/app/api/roomtype/action";
+import Loader from "@/app/components/common/loader";
+import { useAppContext } from "@/app/context";
+import { RoomType } from "@/app/types/rooms";
+import React, { useEffect, useState } from "react";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 // adjust to your path
 
@@ -7,19 +14,51 @@ const ITEMS_PER_PAGE = 10;
 
 const RoomTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedRoom, setSelectedRoom] = useState<(typeof roomType)[0] | null>(
-    null
-  );
+  const [selectedRoom, setSelectedRoom] = useState<RoomType | null>(null);
+  const [room, setRoom] = useState<RoomType[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { activeTab } = useAppContext();
 
-  const handleView = (room: (typeof roomType)[0]) => setSelectedRoom(room);
+  useEffect(() => {
+    handleGetRoomType();
+  }, [activeTab]);
+
+  const handleGetRoomType = async () => {
+    try {
+      const result = await getAllRoomTypeAPI();
+      if (result.status === 200) {
+        setRoom(result.data);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleView = (room: RoomType) => setSelectedRoom(room);
   const handleCloseModal = () => setSelectedRoom(null);
 
-  const paginatedData = roomType.slice(
+  const handleDelete = async (id: number) => {
+    try {
+      const result = await DeleteRoomTypeAPI(id);
+
+      if (result) {
+        setRoom((prev) => prev.filter((room) => room.id !== id));
+      }
+    } catch (error) {
+      console.error("Error deleting Accommodation:", error);
+    }
+  };
+
+  const paginatedData = room.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
 
-  const totalPages = Math.ceil(roomType.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(room.length / ITEMS_PER_PAGE);
+
+  if (loading) return <Loader />;
 
   return (
     <div className="p-4">
@@ -29,7 +68,7 @@ const RoomTable = () => {
           <thead className="bg-gray-100 text-gray-700 ">
             <tr className="">
               <th className="px-4 py-4 text-center">#</th>
-              <th className="px-4 py-4">Title</th>
+              <th className="px-4 py-4">Name</th>
               <th className="px-4 py-4 text-center">Available</th>
               <th className="px-4 py-4 text-center">Price ($)</th>
               <th className="px-4 py-4 text-center">Actions</th>
@@ -44,8 +83,8 @@ const RoomTable = () => {
                 <td className="px-4 py-2 text-center">
                   {(currentPage - 1) * ITEMS_PER_PAGE + index + 1}
                 </td>
-                <td className="px-4 py-2">{room.title}</td>
-                <td className="px-4 py-2 text-center">{room.available}</td>
+                <td className="px-4 py-2">{room.name}</td>
+                <td className="px-4 py-2 text-center">{room.units}</td>
                 <td className="px-4 py-2 text-center">${room.price}</td>
                 <td className="py-4 px-4">
                   <div className="flex items-center justify-center gap-8">
@@ -63,6 +102,7 @@ const RoomTable = () => {
                       <FaEdit className="w-4 h-4" />
                     </button>
                     <button
+                      onClick={() => handleDelete(room.id)}
                       title="Delete"
                       className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                     >
@@ -115,23 +155,34 @@ const RoomTable = () => {
             >
               &times;
             </button>
-            <h3 className="text-xl font-bold mb-4">{selectedRoom.title}</h3>
+            <h3 className="text-xl font-bold mb-4">
+              {selectedRoom.name}({selectedRoom.capacity} Adults)
+            </h3>
             <img
-              src={selectedRoom.image.src}
-              alt={selectedRoom.title}
+              src={selectedRoom.images[0]?.image || "./images/luxe/room1.jpg"}
+              alt={selectedRoom.name}
               className="w-full h-72 object-cover mb-4 rounded"
             />
             <p className="mb-2">{selectedRoom.description}</p>
             <h4 className="font-semibold mb-1">Amenities:</h4>
             <ul className="list-disc list-inside text-sm mb-4">
-              {selectedRoom.amenities.map((a, i) => (
+              {/* {selectedRoom.amenities.map((a, i) => (
+                <li key={i}>{a}</li>
+                ))} */}
+
+              <li>{selectedRoom.amenities}</li>
+            </ul>
+            <p className="text-sm">
+              <strong>Available:</strong> {selectedRoom.units} |{" "}
+              <strong>Price:</strong> ${selectedRoom.price}|{" "}
+              <strong>Units:</strong> ${selectedRoom.units}
+            </p>
+            <h4 className="font-semibold mb-1">Room Policies:</h4>
+            <ul className="list-disc list-inside text-sm mb-4">
+              {selectedRoom.policies.map((a, i) => (
                 <li key={i}>{a}</li>
               ))}
             </ul>
-            <p className="text-sm">
-              <strong>Available:</strong> {selectedRoom.available} |{" "}
-              <strong>Price:</strong> ${selectedRoom.price}
-            </p>
           </div>
         </div>
       )}

@@ -11,9 +11,12 @@ export function middleware(request: NextRequest) {
   }
 
   try {
-    const decoded = jwt.decode(token) as { exp?: number; role?: string } | null;
+    const decoded = jwt.decode(token) as {
+      exp?: number;
+      is_verified?: boolean;
+    } | null;
 
-    if (!decoded || !decoded.exp || !decoded.role) {
+    if (!decoded || !decoded.exp || !decoded.is_verified) {
       return NextResponse.redirect(loginUrl);
     }
 
@@ -30,7 +33,6 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // "/dashboard:path*",
-    "/service:path*",
+    "/dashboard:path*",
   ],
 };

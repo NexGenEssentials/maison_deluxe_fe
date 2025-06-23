@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { GoChevronDown } from "react-icons/go";
 import Title from "../common/title";
-import { roomType } from "@/app/costants";
 import { BsHeadsetVr } from "react-icons/bs";
 import { HiOutlinePlay } from "react-icons/hi";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -12,9 +11,14 @@ import "swiper/css/scrollbar";
 import { Keyboard } from "swiper/modules";
 import { MdFilterListAlt } from "react-icons/md";
 import { useRouter } from "next/navigation";
+import { getAllRoomTypeAPI } from "@/app/api/roomtype/action";
+import { filterRoomNames } from "@/app/utils/filters";
+import { RoomType } from "@/app/types/rooms";
 
 const RoomCategory = () => {
-  const [room, setRoom] = useState("Room");
+  const [room, setRoom] = useState<string[]>([]);
+  const [roomType, setRoomType] = useState<RoomType[]>([]);
+   const [selectedRoom, setSelectedRoom] = useState("Penthouse Suite");
   const [price, setPrice] = useState("Price");
   const [filter, setFilter] = useState("Amenities");
   const [isHovered, setIsHovered] = useState(false);
@@ -37,6 +41,21 @@ const RoomCategory = () => {
     return () => clearInterval(interval);
   }, [isHovered]);
 
+  useEffect(() => {
+    handleGetRoomType();
+  }, []);
+
+  const handleGetRoomType = async () => {
+    try {
+      const result = await getAllRoomTypeAPI();
+      if (result.status === 200) {
+        setRoomType(result.data);
+        setRoom(filterRoomNames(result.data));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const roomCategory = roomType[currentIndex];
 
   const router = useRouter();
@@ -44,12 +63,13 @@ const RoomCategory = () => {
   const handleBooking = () => {
     // if (room === "Room") {
     router.push(
-      `/rooms/${roomCategory.title.replace(/\s+/g, "-").toLowerCase()}`
+      `/rooms/${roomCategory?.name.replace(/\s+/g, "-").toLowerCase()}`
     );
     // } else {
     //   router.push(`/rooms/${room.replace(/\s+/g, "-").toLowerCase()}`);
     // }
   };
+
   return (
     <>
       <div
@@ -64,18 +84,18 @@ const RoomCategory = () => {
             <span className="text-sm text-gray-400">Sort By:</span>
 
             <select
-              value={room}
-              onChange={(e) => setRoom(e.target.value)}
+              value={selectedRoom}
+              onChange={(e) => setSelectedRoom(e.target.value)}
               className="bg-transparent appearance-none p-2 text-white font-bold outline-none w-full  transition"
             >
               <option disabled className="text-black">
                 Room
               </option>
-              <option className="text-black">Penthouse Suite</option>
-              <option className="text-black">Executive Room</option>
-              <option className="text-black">Junior Suit</option>
-              <option className="text-black">Deluxe Room</option>
-              <option className="text-black">Standard Double Room</option>
+              {room.map((room, idx) => (
+                <option key={idx} className="text-black">
+                  {room}
+                </option>
+              ))}
             </select>
             <GoChevronDown
               size={18}
@@ -153,17 +173,17 @@ const RoomCategory = () => {
                   ? "opacity-0 translate-y-10"
                   : "opacity-100 translate-y-0"
               }`}
-              key={roomCategory.id}
+              key={roomCategory?.id}
             >
               <h2 className=" font-bold mb-4 flex gap-4">
-                <Title title={`0${roomCategory.id}  ${roomCategory.title}`} />
+                <Title title={`0${roomCategory?.id}  ${roomCategory?.name}`} />
               </h2>
               <p className="mb-4 text-base font-normal max-w-md leading-relaxed text-gray-300">
-                {roomCategory.description}
+                {roomCategory?.description}
               </p>
               <div className="py-2 px-4 bg-primaryGreen/20 w-fit rounded-md mb-4">
                 Available Room(s) :{" "}
-                <span className=" font-bold">{roomCategory.available}</span>
+                <span className=" font-bold">{roomCategory?.units}</span>
               </div>
 
               <div className="mb-8">
@@ -172,11 +192,9 @@ const RoomCategory = () => {
                   Amenities
                 </h4>
                 <ul className="list-disc font-normal pl-8 space-y-2">
-                  {roomCategory.amenities.map((item, idx) => (
-                    <li key={idx} className="text-gray-200">
-                      {item}
-                    </li>
-                  ))}
+                  {/* {roomCategory?.amenities.map((item, idx) => (
+                  ))} */}
+                  <li className="text-gray-200">{roomCategory?.amenities}</li>
                 </ul>
               </div>
 
@@ -207,7 +225,7 @@ const RoomCategory = () => {
                   ? "opacity-0 translate-y-10"
                   : "opacity-100 translate-y-0"
               }`}
-              key={roomCategory.id}
+              key={roomCategory?.id}
             >
               <div className="h-[550px] w-full overflow-hidden">
                 <iframe
@@ -273,8 +291,8 @@ const RoomCategory = () => {
               <div className="relative w-full h-full rounded-lg overflow-visible ">
                 <div>
                   <img
-                    src={slide.image.src}
-                    alt={slide.title}
+                    src={slide.images[0]?.image}
+                    alt={slide.name}
                     className="w-full h-96 object-cover "
                   />
                 </div>
@@ -282,7 +300,7 @@ const RoomCategory = () => {
                 <div className="-mt-9 bg-gradient-to-t from-[#3F31FF] from-[-50%] to-primaryBlue to-50% w-full rounded-t-[40px] flex items-end justify-between z-10 relative">
                   <div className="  w-full flex gap-8 flex-col justify-between px-2 md:px-12 py-8">
                     <div className=" space-y-4 text-center">
-                      <Title title={`0${slide.id}  ${slide.title}`} />
+                      <Title title={`0${slide.id}  ${slide.name}`} />
 
                       <p className="text-sm text-gray-200 line-clamp-2">
                         {slide.description}
@@ -296,14 +314,14 @@ const RoomCategory = () => {
                         Amenities
                       </h4>
                       <ul className=" font-normal pl-8 space-y-3">
-                        {slide.amenities.map((item, idx) => (
-                          <li
-                            key={idx}
-                            className="text-gray-200 text-sm font-bold flex gap-1 items-center"
-                          >
-                            <MdFilterListAlt /> {item}
-                          </li>
-                        ))}
+                        {/* {slide.amenities.map((item, idx) => (
+                        ))} */}
+                        <li
+                          // key={idx}
+                          className="text-gray-200 text-sm font-bold flex gap-1 items-center"
+                        >
+                          <MdFilterListAlt /> {slide.amenities}
+                        </li>
                       </ul>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

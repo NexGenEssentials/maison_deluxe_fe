@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 const base_url = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
 
 export const LoginAPI = async (data: {
-  username: string;
+  email: string;
   password: string;
 }): Promise<{
   access: string;
@@ -13,7 +13,7 @@ export const LoginAPI = async (data: {
   status: number;
 }> => {
   try {
-    const response = await fetch(`${base_url}/tours/`, {
+    const response = await fetch(`${base_url}/users/token/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -22,12 +22,10 @@ export const LoginAPI = async (data: {
     });
 
     const result = await response.json();
-    const payload = result.access.split(".")[1];
-    const decodedPayload = JSON.parse(atob(payload));
-    const role = decodedPayload.role;
-
-    console.log(result);
-
+    // const payload = result.access.split(".")[1];
+    // const decodedPayload = JSON.parse(atob(payload));
+    // const role = decodedPayload.role;
+   
     if (!response.ok) {
       return {
         access: "",
@@ -36,8 +34,7 @@ export const LoginAPI = async (data: {
       };
     }
 
-    // if (data.access && role === "admin") {
-    if (result.access && (role === "service_provider" || role === "admin")) {
+    if (result.access) {
       (await cookies()).set("accessToken", result.access);
 
       return {

@@ -5,27 +5,36 @@ import RedWhiteLogo from "@/public/images/red_white_logo.png";
 import Link from "next/link";
 import { LoginAPI } from "../api/auth/action";
 import { useRouter } from "next/navigation";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const LoginPage = () => {
-  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setError("");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
-      console.log(formData);
       const result = await LoginAPI(formData);
-      if (result.status) {
+      if (result.access) {
         router.push("/dashboard");
+      } else if (result.status === 401) {
+        setError("Invalid credentials, check your email or password.");
+      } else {
+        setError(result.message);
       }
     } catch (error) {
-      console.log("something went wrong");
+      setError(error as string);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -56,34 +65,46 @@ const LoginPage = () => {
             credentials below to Sign In
           </p>
 
+          {error && (
+            <div className="text-red-500 w-full text-sm font-semibold text-center">
+              {error}
+            </div>
+          )}
+
           <div>
             <input
               type="text"
-              name="username"
-              placeholder="Username"
-              value={formData.username}
+              name="email"
+              placeholder="Email"
+              value={formData.email}
               onChange={handleChange}
               className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
 
-          <div>
+          <div className="relative">
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               name="password"
               placeholder="Password"
               value={formData.password}
               onChange={handleChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
-            <div className="text-right mt-2">
+            <div
+              className="absolute inset-y-0 right-4 flex items-center cursor-pointer text-gray-500"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
+            </div>
+          </div>
+            <div className="text-right">
               <a href="#" className="text-sm text-blue-800 hover:underline">
                 Forgot Password
               </a>
             </div>
-          </div>
 
           <div className="flex justify-between items-center space-x-4">
             <Link href="/" className="w-full">
@@ -100,7 +121,7 @@ const LoginPage = () => {
               type="submit"
               className="w-1/2 py-3 bg-primaryBlue/70 text-white rounded-md hover:bg-primaryBlue transition"
             >
-              {loading ? "login..." : " Continue"}
+              {loading ? "Logging in..." : "Continue"}
             </button>
           </div>
         </form>

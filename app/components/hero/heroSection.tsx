@@ -1,13 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HiChevronDown, HiOutlinePlay } from "react-icons/hi";
 
 import FeatureBranch from "./branch";
 import { FaCalendarAlt } from "react-icons/fa";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
+import { getAllRoomTypeAPI } from "@/app/api/roomtype/action";
+import { filterRoomNames } from "@/app/utils/filters";
 const HeroSection = () => {
   const [checkIn, setCheckIn] = useState(
     new Date().toISOString().split("T")[0]
@@ -18,11 +19,27 @@ const HeroSection = () => {
   const [people, setPeople] = useState("1 Person");
   const [roomType, setRoomType] = useState("Penthouse Suite");
   const [openModle, setOpenModle] = useState(false);
+  const [room, setRoom] = useState<string[]>([]);
 
   const router = useRouter();
 
   const handleBooking = () => {
     router.push(`/rooms/${roomType.replace(/\s+/g, "-").toLowerCase()}`);
+  };
+
+  useEffect(() => {
+    handleGetRoomType();
+  }, []);
+
+  const handleGetRoomType = async () => {
+    try {
+      const result = await getAllRoomTypeAPI();
+      if (result.status === 200) {
+        setRoom(filterRoomNames(result.data));
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -207,11 +224,11 @@ const HeroSection = () => {
                 onChange={(e) => setRoomType(e.target.value)}
                 className="bg-transparent appearance-none p-2 text-white outline-none w-full  transition"
               >
-                <option className="text-black">Penthouse Suite</option>
-                <option className="text-black">Executive Room</option>
-                <option className="text-black">Junior Suit</option>
-                <option className="text-black">Deluxe Room</option>
-                <option className="text-black">Standard Double Room</option>
+                {room.map((room, idx) => (
+                  <option key={idx} className="text-black">
+                    {room}
+                  </option>
+                ))}
               </select>
               <HiChevronDown
                 size={18}
