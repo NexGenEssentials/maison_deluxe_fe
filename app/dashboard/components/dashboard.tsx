@@ -10,19 +10,26 @@ import {
   FiChevronDown,
 } from "react-icons/fi";
 import MetricCard from "./cards";
-import { ClientData, clientData } from "@/app/costants";
-import { getAllBookings } from "@/app/api/bookings/action";
+import { DeleteBooking, getAllBookings } from "@/app/api/bookings/action";
 import Loader from "@/app/components/common/loader";
 import { BookingData } from "@/app/types/booking";
+import { formatToDateOnly } from "@/app/utils/filters";
+import CenterModal from "@/app/components/model/centerModel";
+import BookingDetails from "./bookings/bookingDetails";
+import { useAppContext } from "@/app/context";
 
-const StatusBadge: React.FC<{ status: ClientData["status"] }> = ({
-  status,
-}) => {
-  const statusStyles = {
-    Success: "bg-green-100 text-green-800 border-green-200",
-    Destructive: "bg-red-100 text-red-800 border-red-200",
-    Available: "bg-blue-100 text-blue-800 border-blue-200",
-    Pending: "bg-orange-100 text-orange-800 border-orange-200",
+const StatusBadge: React.FC<{
+  status: "approved" | "failed" | "available" | "pending" | "rejected";
+}> = ({ status }) => {
+  const statusStyles: Record<
+    "approved" | "failed" | "available" | "pending" | "rejected",
+    string
+  > = {
+    approved: "bg-green-100 text-green-800 border-green-200",
+    failed: "bg-red-100 text-red-800 border-red-200",
+    available: "bg-blue-100 text-blue-800 border-blue-200",
+    pending: "bg-orange-100 text-orange-800 border-orange-200",
+    rejected: "bg-gray-100 text-gray-800 border-gray-200",
   };
 
   return (
@@ -36,11 +43,13 @@ const StatusBadge: React.FC<{ status: ClientData["status"] }> = ({
 
 const DashboardAnalytics: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedRows, setSelectedRows] = useState<string[]>([]);
+  const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [loading, setLoading] = useState(true);
   const [bookings, setBookings] = useState<BookingData[]>([]);
+  const [viewBooking, setViewBooking] = useState<BookingData | null>(null);
+  const { setActiveModalId } = useAppContext();
 
-  const handleRowSelect = (id: string) => {
+  const handleRowSelect = (id: number) => {
     setSelectedRows((prev) =>
       prev.includes(id) ? prev.filter((rowId) => rowId !== id) : [...prev, id]
     );
@@ -48,9 +57,9 @@ const DashboardAnalytics: React.FC = () => {
 
   const handleSelectAll = () => {
     setSelectedRows(
-      selectedRows.length === clientData.length
+      selectedRows.length === bookings.length
         ? []
-        : clientData.map((client) => client.id)
+        : bookings.map((client) => Number(client.id))
     );
   };
 
@@ -68,6 +77,18 @@ const DashboardAnalytics: React.FC = () => {
       console.log(error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async (bookingId: number) => {
+    try {
+      const result = await DeleteBooking(bookingId);
+      if (result)
+        setBookings((prev) =>
+          prev.filter((booking) => booking.id !== bookingId)
+        );
+    } catch (error) {
+      console.error("Error deleting booking:", error);
     }
   };
 
@@ -117,8 +138,8 @@ const DashboardAnalytics: React.FC = () => {
                   Client Management
                 </h2>
                 <p className="text-gray-600">
-                  Lorem ipsum dolor sit amet consectetur. Amet tellus diam
-                  blandit sit leo feugiat sit leo.
+                  Easily track, manage, and confirm guest reservations in
+                  real-time.
                 </p>
               </div>
 
@@ -168,7 +189,7 @@ const DashboardAnalytics: React.FC = () => {
                       <th className="text-left py-3 px-4">
                         <input
                           type="checkbox"
-                          checked={selectedRows.length === clientData.length}
+                          checked={selectedRows.length === bookings.length}
                           onChange={handleSelectAll}
                           className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                         />
@@ -191,47 +212,67 @@ const DashboardAnalytics: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {clientData.map((client) => (
+                    {bookings.map((booking) => (
                       <tr
-                        key={client.id}
+                        key={booking.id}
                         className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
                       >
                         <td className="py-4 px-4">
                           <input
                             type="checkbox"
-                            checked={selectedRows.includes(client.id)}
-                            onChange={() => handleRowSelect(client.id)}
+                            checked={selectedRows.includes(booking.id)}
+                            onChange={() => handleRowSelect(booking.id)}
                             className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                           />
                         </td>
                         <td className="py-4 px-4">
                           <div className="flex items-center gap-3">
                             <div className="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-medium">
-                              {client.avatar}
+                              {booking.guest_name
+                                .slice(0, 2)
+                                .toLocaleUpperCase()}
                             </div>
                             <span className="font-medium text-gray-900">
-                              {client.name}
+                              {booking.guest_name}
                             </span>
                           </div>
                         </td>
                         <td className="py-4 px-4">
-                          <StatusBadge status={client.status} />
+                          <StatusBadge
+                            status={
+                              booking.status as
+                                | "approved"
+                                | "rejected"
+                                | "available"
+                                | "pending"
+                            }
+                          />
                         </td>
                         <td className="py-4 px-4 text-sm text-gray-600">
-                          {client.checkInOut}
+                          <strong> {booking.check_in}</strong> to{" "}
+                          <strong>{booking.check_out}</strong>
                         </td>
                         <td className="py-4 px-4 text-sm text-gray-600">
-                          {client.bookingDate}
+                          {formatToDateOnly(booking.created_at)}
                         </td>
                         <td className="py-4 px-4">
                           <div className="flex items-center gap-2">
-                            <button className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+                            <button
+                              onClick={() => {
+                                setActiveModalId("booking-details");
+                                setViewBooking(booking);
+                              }}
+                              className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                            >
                               <FiEye className="w-4 h-4" />
                             </button>
                             <button className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
                               <FiEdit2 className="w-4 h-4" />
                             </button>
-                            <button className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                            <button
+                              onClick={() => handleDelete(booking.id)}
+                              className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                            >
                               <FiTrash2 className="w-4 h-4" />
                             </button>
                           </div>
@@ -245,6 +286,11 @@ const DashboardAnalytics: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <CenterModal
+        children={viewBooking && <BookingDetails data={viewBooking} />}
+        id={"booking-details"}
+      />
     </div>
   );
 };

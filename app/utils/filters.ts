@@ -21,3 +21,8 @@ export type RoomNameId = {
 export const filterRoomNames = (rooms: RoomType[]): RoomNameId[] => {
   return rooms.map((room) => ({ id: room.id, name: room.name }));
 };
+
+
+export const formatToDateOnly = (isoString: string): string => {
+  return new Date(isoString).toISOString().split("T")[0];
+};
