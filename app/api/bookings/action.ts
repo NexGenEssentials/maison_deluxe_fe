@@ -1,7 +1,6 @@
 "use server";
 
 import {
-  BookingData,
   BookingDetails,
   BookingResponse,
   PaymentResponseType,
@@ -9,23 +8,21 @@ import {
 import { cookies } from "next/headers";
 const base_url = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
 
-export const CreateBooking = async (
+export const CreateBookingAPI = async (
   bookingData: BookingDetails
-): Promise<BookingData> => {
-  const accessToken = (await cookies()).get("accessToken")?.value;
+): Promise<BookingResponse> => {
   try {
-    const response = await fetch(`${base_url}/bookings//create/`, {
+    const response = await fetch(`${base_url}/bookings/create/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify(bookingData),
     });
 
     const data = await response.json();
 
-    return data;
+    return data[0];
   } catch (error) {
     throw error;
   }
@@ -117,7 +114,6 @@ export const CreatePaymentMethod = async (bookingData: {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify(bookingData),
     });

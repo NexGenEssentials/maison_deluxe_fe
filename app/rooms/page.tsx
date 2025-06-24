@@ -11,50 +11,16 @@ import { RoomType } from "../types/rooms";
 import { useAppContext } from "../context";
 import CenterModal from "../components/model/centerModel";
 import CheckAvailabilityModel from "../components/model/checkAvailabilityModel";
+import RightModal from "../components/model/rightSideModel";
 
 const RoomCategory = () => {
   const router = useRouter();
   const [active, setActive] = useState<number>(1);
   const [selectedRoom, setSelectedRoom] = useState<RoomType | null>(null);
   const [selectedPeople, setSelectedPeople] = useState<number>(0);
-  const [openModel, setOpenModel] = useState(false);
-  const modalRef = useRef<HTMLDivElement>(null);
-  const [animateModal, setAnimateModal] = useState(false);
   const [roomType, setRoomType] = useState<RoomType[]>([]);
   const [loading, setLoading] = useState(true);
   const { setActiveModalId } = useAppContext();
-
-  const openModal = () => {
-    setOpenModel(true);
-    setTimeout(() => setAnimateModal(true), 10);
-  };
-
-  const closeModal = () => {
-    setAnimateModal(false);
-    setTimeout(() => setOpenModel(false), 300);
-    setActive(1);
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        modalRef.current &&
-        !modalRef.current.contains(event.target as Node)
-      ) {
-        closeModal();
-      }
-    };
-
-    if (openModel) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   useEffect(() => {
     handleGetRoomType();
@@ -192,7 +158,7 @@ const RoomCategory = () => {
                       </button>
                       <button
                         onClick={() => {
-                          openModal();
+                          setActiveModalId("booking");
                           setActive(2);
                         }}
                         className="lg:hidden px-4 w-1/2 xl:1/4 py-3 cursor-pointer bg-[#a80024]/80 hover:bg-[#a80024] font-semibold text-white rounded-lg transition-colors"
@@ -268,7 +234,7 @@ const RoomCategory = () => {
 
               <button
                 onClick={() => {
-                  openModal();
+                  setActiveModalId("booking");
                   setActive(2);
                 }}
                 className="w-full bg-[#a80024]/80 hover:bg-[#a80024] text-white font-semibold py-3 rounded-lg transition-colors"
@@ -279,34 +245,12 @@ const RoomCategory = () => {
           )}
         </div>
       </div>
+
       {/* Modal for Booking */}
-      {openModel && (
-        <div className="fixed inset-0 bg-primaryBlue/50 flex justify-end z-50 transition-opacity duration-300">
-          <div
-            className={`transform transition-all duration-300 ease-in-out
-              ${
-                animateModal
-                  ? "translate-x-0 opacity-100"
-                  : "translate-x-full opacity-0"
-              }
-              bg-white p-6 rounded-lg shadow-lg w-full md:w-3/4 lg:w-1/2 2xl:w-1/3 h-full overflow-y-auto`}
-          >
-            <div
-              ref={modalRef}
-              className="flex items-center justify-between mb-4"
-            >
-              <h2 className="text-xl font-semibold">Booking Form</h2>
-              <button
-                onClick={closeModal}
-                className="text-red-500 font-bold px-2 py-2 rounded"
-              >
-                <IoClose size={20} />
-              </button>
-            </div>
-            <BookingForm />
-          </div>
-        </div>
-      )}
+      <RightModal
+        children={selectedRoom && <BookingForm room={selectedRoom} />}
+        id={"booking"}
+      />
       <CenterModal
         children={<CheckAvailabilityModel Id={selectedRoom?.id ?? 1} />}
         id={"check-room-availability"}

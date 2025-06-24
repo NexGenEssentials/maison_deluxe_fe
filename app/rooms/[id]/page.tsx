@@ -12,6 +12,7 @@ import { rules } from "@/app/costants";
 import CenterModal from "@/app/components/model/centerModel";
 import CheckAvailabilityModel from "@/app/components/model/checkAvailabilityModel";
 import { useAppContext } from "@/app/context";
+import RightModal from "@/app/components/model/rightSideModel";
 
 const RoomsPage = ({ params }: { params: Promise<{ id: number }> }) => {
   const { id } = use(params);
@@ -20,42 +21,10 @@ const RoomsPage = ({ params }: { params: Promise<{ id: number }> }) => {
   const [activeTab, setActiveTab] = useState<
     "Room Description" | "Room Policies"
   >("Room Description");
-  const [openModal, setOpenModal] = useState(false);
-  const [animateModal, setAnimateModal] = useState(false);
-  const modalRef = useRef<HTMLDivElement>(null);
+
   const [room, setRoom] = useState<RoomType | null>(null);
   const [loading, setLoading] = useState(true);
   const { setActiveModalId } = useAppContext();
-
-  const openBookingModal = () => {
-    setOpenModal(true);
-    setTimeout(() => setAnimateModal(true), 10);
-  };
-
-  const closeBookingModal = () => {
-    setAnimateModal(false);
-    setTimeout(() => setOpenModal(false), 300);
-  };
-
-  // Close modal on outside click
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        modalRef.current &&
-        !modalRef.current.contains(event.target as Node)
-      ) {
-        closeBookingModal();
-      }
-    };
-
-    if (openModal) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [openModal]);
 
   // Fetch room data
   useEffect(() => {
@@ -161,7 +130,7 @@ const RoomsPage = ({ params }: { params: Promise<{ id: number }> }) => {
                     Check Room Availability
                   </div>
                   <button
-                    onClick={openBookingModal}
+                    onClick={() => setActiveModalId("booking")}
                     className="text-white bg-primaryBlue hover:bg-primaryBlue/90 font-semibold px-6 py-3 rounded-xl transition"
                   >
                     Book Now
@@ -192,32 +161,8 @@ const RoomsPage = ({ params }: { params: Promise<{ id: number }> }) => {
         </div>
       </div>
 
-      {/* Booking Modal */}
-      {openModal && (
-        <div className="fixed inset-0 bg-primaryBlue/50 flex justify-end z-50">
-          <div
-            className={`transform transition-all duration-300 ease-in-out ${
-              animateModal
-                ? "translate-x-0 opacity-100"
-                : "translate-x-full opacity-0"
-            } bg-white p-6 rounded-lg shadow-lg w-full md:w-3/4 lg:w-1/2 2xl:w-1/3 h-full overflow-y-auto`}
-          >
-            <div
-              ref={modalRef}
-              className="flex items-center justify-between mb-4"
-            >
-              <h2 className="text-xl font-semibold">Booking Form</h2>
-              <button
-                onClick={closeBookingModal}
-                className="text-red-500 font-bold px-2 py-2 rounded"
-              >
-                <IoClose size={20} />
-              </button>
-            </div>
-            <BookingForm />
-          </div>
-        </div>
-      )}
+      <RightModal children={<BookingForm room={room} />} id={"booking"} />
+
       <CenterModal
         children={<CheckAvailabilityModel Id={room.id} />}
         id={"check-room-availability"}

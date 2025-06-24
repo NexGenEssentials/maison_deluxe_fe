@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   FiSearch,
@@ -11,6 +11,9 @@ import {
 } from "react-icons/fi";
 import MetricCard from "./cards";
 import { ClientData, clientData } from "@/app/costants";
+import { getAllBookings } from "@/app/api/bookings/action";
+import Loader from "@/app/components/common/loader";
+import { BookingData } from "@/app/types/booking";
 
 const StatusBadge: React.FC<{ status: ClientData["status"] }> = ({
   status,
@@ -34,6 +37,8 @@ const StatusBadge: React.FC<{ status: ClientData["status"] }> = ({
 const DashboardAnalytics: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [bookings, setBookings] = useState<BookingData[]>([]);
 
   const handleRowSelect = (id: string) => {
     setSelectedRows((prev) =>
@@ -47,6 +52,23 @@ const DashboardAnalytics: React.FC = () => {
         ? []
         : clientData.map((client) => client.id)
     );
+  };
+
+  useEffect(() => {
+    getAllBBookings();
+  }, []);
+
+  const getAllBBookings = async () => {
+    try {
+      const result = await getAllBookings();
+      if (result.status) {
+        setBookings(result.data);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -131,91 +153,95 @@ const DashboardAnalytics: React.FC = () => {
               </div>
               <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                 <FiDownload className="w-4 h-4" />
-                Export Excel
+                Export Document
               </button>
             </div>
 
             {/* Table */}
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-3 px-4">
-                      <input
-                        type="checkbox"
-                        checked={selectedRows.length === clientData.length}
-                        onChange={handleSelectAll}
-                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                      />
-                    </th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
-                      Client Name
-                    </th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
-                      Status
-                    </th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
-                      Check-in & Out date
-                    </th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
-                      Booking Date
-                    </th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
-                      Action
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {clientData.map((client) => (
-                    <tr
-                      key={client.id}
-                      className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
-                    >
-                      <td className="py-4 px-4">
+            {loading ? (
+              <Loader />
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-gray-200">
+                      <th className="text-left py-3 px-4">
                         <input
                           type="checkbox"
-                          checked={selectedRows.includes(client.id)}
-                          onChange={() => handleRowSelect(client.id)}
+                          checked={selectedRows.length === clientData.length}
+                          onChange={handleSelectAll}
                           className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                         />
-                      </td>
-                      <td className="py-4 px-4">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-medium">
-                            {client.avatar}
-                          </div>
-                          <span className="font-medium text-gray-900">
-                            {client.name}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="py-4 px-4">
-                        <StatusBadge status={client.status} />
-                      </td>
-                      <td className="py-4 px-4 text-sm text-gray-600">
-                        {client.checkInOut}
-                      </td>
-                      <td className="py-4 px-4 text-sm text-gray-600">
-                        {client.bookingDate}
-                      </td>
-                      <td className="py-4 px-4">
-                        <div className="flex items-center gap-2">
-                          <button className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
-                            <FiEye className="w-4 h-4" />
-                          </button>
-                          <button className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
-                            <FiEdit2 className="w-4 h-4" />
-                          </button>
-                          <button className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
-                            <FiTrash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </td>
+                      </th>
+                      <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
+                        Client Name
+                      </th>
+                      <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
+                        Status
+                      </th>
+                      <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
+                        Check-in & Out date
+                      </th>
+                      <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
+                        Booking Date
+                      </th>
+                      <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
+                        Action
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {clientData.map((client) => (
+                      <tr
+                        key={client.id}
+                        className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
+                      >
+                        <td className="py-4 px-4">
+                          <input
+                            type="checkbox"
+                            checked={selectedRows.includes(client.id)}
+                            onChange={() => handleRowSelect(client.id)}
+                            className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                          />
+                        </td>
+                        <td className="py-4 px-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-medium">
+                              {client.avatar}
+                            </div>
+                            <span className="font-medium text-gray-900">
+                              {client.name}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="py-4 px-4">
+                          <StatusBadge status={client.status} />
+                        </td>
+                        <td className="py-4 px-4 text-sm text-gray-600">
+                          {client.checkInOut}
+                        </td>
+                        <td className="py-4 px-4 text-sm text-gray-600">
+                          {client.bookingDate}
+                        </td>
+                        <td className="py-4 px-4">
+                          <div className="flex items-center gap-2">
+                            <button className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+                              <FiEye className="w-4 h-4" />
+                            </button>
+                            <button className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+                              <FiEdit2 className="w-4 h-4" />
+                            </button>
+                            <button className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                              <FiTrash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         </div>
       </div>
