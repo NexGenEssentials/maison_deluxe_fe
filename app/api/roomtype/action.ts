@@ -63,7 +63,7 @@ export const CreateRoomTypeImageAPI = async (
     });
 
     const data = await response.json();
-   
+
     if (!response.ok) {
       return { success: false };
     }
@@ -84,7 +84,7 @@ export const DeleteRoomTypeAPI = async (id: number): Promise<boolean> => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-   
+
     if (response.ok) {
       return true;
     }
@@ -129,5 +129,81 @@ export const getAllRoomTypeAPI = async (): Promise<{
       message: "An error occurred while processing your request",
       status: 500,
     };
+  }
+};
+
+export const getRoomByIdAPI = async (
+  id: number
+): Promise<{
+  message: string;
+  status: number;
+  data: RoomType | null;
+}> => {
+  try {
+    const response = await fetch(`${base_url}/room-categories/${id}/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      return {
+        data: null,
+        message: response.statusText,
+        status: response.status,
+      };
+    } else {
+      return {
+        data: result,
+        message: "rooms",
+        status: response.status,
+      };
+    }
+  } catch (error) {
+    return {
+      data: null,
+      message: "An error occurred while processing your request",
+      status: 500,
+    };
+  }
+};
+
+export const checkRoomAvailabilityAPI = async (
+  Id: number,
+  checkIn: string,
+  checkOut: string
+): Promise<{
+  available: boolean;
+  message: string;
+}> => {
+  try {
+    const response = await fetch(
+      `${base_url}/room-categories/availability/?id=${Id}&check_in=${checkIn}&check_out=${checkOut}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const data = await response.json();
+    console.log({ response, data });
+    if (response.ok) {
+      return {
+        available: true,
+        message: "Room is available",
+      };
+    }
+
+    return {
+      available: false,
+      message: "Room is not available",
+    };
+  } catch (error) {
+    throw error;
   }
 };

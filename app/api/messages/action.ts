@@ -1,4 +1,4 @@
-'use server'
+"use server";
 import { cookies } from "next/headers";
 
 const base_url = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
@@ -15,8 +15,8 @@ export const getMessages = async (): Promise<{
   message: string;
   data: Message[];
 }> => {
-    const cookieStore = await cookies();
-    const accessToken = cookieStore.get("accessToken")?.value;
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("accessToken")?.value;
   try {
     const response = await fetch(`${base_url}/contact-us/`, {
       method: "GET",

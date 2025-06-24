@@ -49,7 +49,7 @@ const Navbar = () => {
           ))}
         </ul>
         <Link href="/">
-          <Image src={whiteLogo} width={52} height={56} alt="White Logo" />
+          <Image src={whiteLogo} width={80} height={64} alt="White Logo" />
         </Link>
         <ul className="flex gap-20 py-6 items-center justify-center font-[Josefin_Slab]">
           {navbarLinks.slice(3, 6).map((link) => (
@@ -72,7 +72,7 @@ const Navbar = () => {
         }
         bg-white text-primaryBlue font-bold backdrop-blur-xs`}
       >
-        <ul className="flex gap-20 py-6 items-center justify-center font-[Josefin_Slab]">
+        <ul className="flex gap-20 py-2 items-center justify-center font-[Josefin_Slab]">
           {navbarLinks.slice(0, 3).map((link) => (
             <Link key={link.name} href={link.href}>
               <li className=" hover:text-primaryRed border-b border-b-transparent hover:border-b pb-2 hover:border-b-primaryRed  cursor-pointer duration-500 transition">
@@ -82,9 +82,9 @@ const Navbar = () => {
           ))}
         </ul>
         <Link href="/">
-          <Image src={Logo} width={52} height={56} alt="De luxe Logo" />
+          <Image src={Logo} width={60} height={56} alt="De luxe Logo" />
         </Link>
-        <ul className="flex gap-20 py-6 items-center justify-center font-[Josefin_Slab]">
+        <ul className="flex gap-20 py-4 items-center justify-center font-[Josefin_Slab]">
           {navbarLinks.slice(3, 6).map((link) => (
             <Link key={link.name} href={link.href}>
               <li className="hover:text-primaryRed border-b border-b-transparent hover:border-b pb-2 hover:border-b-primaryRed cursor-pointer duration-500 transition">

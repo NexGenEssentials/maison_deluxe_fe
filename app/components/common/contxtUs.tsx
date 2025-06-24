@@ -1,7 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaUser } from "react-icons/fa";
 import Title from "./title";
+import { ContactUs } from "@/app/api/common/action";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -19,6 +20,7 @@ export default function ContactForm() {
     message: "",
     agree: "",
   });
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleChange = (e: any) => {
     const { name, value, type, checked } = e.target;
@@ -40,7 +42,13 @@ export default function ContactForm() {
     return newErrors;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    setTimeout(() => {
+      setSubmitted(false);
+    }, 5000);
+  }, [submitted]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const newErrors = validate();
@@ -49,9 +57,29 @@ export default function ContactForm() {
       return;
     }
 
-    // Simulate submission
-    console.log("Submitted Data:", formData);
     setSubmitted(true);
+    try {
+      const res = await ContactUs({
+        full_name: formData.name,
+        email: formData.email,
+        message: formData.message,
+      });
+      if (res.status !== "success") {
+        setErrors((prev) => ({ ...prev, message: res.message }));
+        return;
+      }
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        message: "",
+        agree: false,
+      });
+
+      setSuccessMessage("Your message has been sent successfully!");
+    } catch (err) {
+      console.log("Failed to send message. Please try again later.");
+    }
   };
 
   return (
@@ -74,112 +102,108 @@ export default function ContactForm() {
         </div>
 
         {/* Right form */}
-        <form onSubmit={handleSubmit} className="space-y-5">
-          {submitted ? (
-            <div className="text-green-400 text-lg font-medium">
-              Thank you! We’ll get back to you shortly.
-            </div>
-          ) : (
-            <>
-              {/* Name */}
-              <div>
-                <div className="flex items-center gap-2 bg-white/10 px-4 py-3 rounded-full">
-                  <FaUser className="text-gray-300" />
-                  <input
-                    name="name"
-                    type="text"
-                    placeholder="Enter Full Name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="w-full bg-transparent outline-none text-white placeholder:text-gray-400"
-                  />
-                </div>
-                {errors.name && (
-                  <div className="text-red-400 text-sm mt-1">{errors.name}</div>
-                )}
-              </div>
-
-              {/* Email */}
-              <div>
-                <div className="flex items-center gap-2 bg-white/10 px-4 py-3 rounded-full">
-                  <FaUser className="text-gray-300" />
-                  <input
-                    name="email"
-                    type="email"
-                    placeholder="Enter Email Address"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="w-full bg-transparent outline-none text-white placeholder:text-gray-400"
-                  />
-                </div>
-                {errors.email && (
-                  <div className="text-red-400 text-sm mt-1">
-                    {errors.email}
-                  </div>
-                )}
-              </div>
-
-              {/* Phone */}
-              <div>
-                <div className="flex items-center gap-2 bg-white/10 px-4 py-3 rounded-full">
-                  <FaUser className="text-gray-300" />
-                  <input
-                    name="phone"
-                    type="text"
-                    placeholder="Phone Number"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className="w-full bg-transparent outline-none text-white placeholder:text-gray-400"
-                  />
-                </div>
-              </div>
-
-              {/* Message */}
-              <div>
-                <textarea
-                  name="message"
-                  placeholder="Your Message goes here"
-                  value={formData.message}
-                  onChange={handleChange}
-                  className="w-full h-32 rounded-xl px-4 py-3 bg-white/10 outline-none text-white placeholder:text-gray-400"
-                />
-                {errors.message && (
-                  <div className="text-red-400 text-sm mt-1">
-                    {errors.message}
-                  </div>
-                )}
-              </div>
-
-              {/* Checkbox */}
-              <div className="flex items-start gap-2 text-sm text-gray-300">
+        {submitted ? (
+          <div className="text-green-400 text-lg font-medium">
+            {successMessage || "Thank you! We’ll get back to you shortly."}
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Name */}
+            <div>
+              <div className="flex items-center gap-2 bg-white/10 px-4 py-3 rounded-full">
+                <FaUser className="text-gray-300" />
                 <input
-                  type="checkbox"
-                  name="agree"
-                  checked={formData.agree}
+                  name="name"
+                  type="text"
+                  placeholder="Enter Full Name"
+                  value={formData.name}
                   onChange={handleChange}
-                  className="mt-1"
+                  className="w-full bg-transparent outline-none text-white placeholder:text-gray-400"
                 />
-                <label>
-                  I agree to receiving promotional emails &{" "}
-                  <a href="#" className="text-blue-400 underline">
-                    Terms and Conditions
-                  </a>
-                </label>
               </div>
-              {errors.agree && (
-                <div className="text-red-400 text-sm mt-1">{errors.agree}</div>
+              {errors.name && (
+                <div className="text-red-400 text-sm mt-1">{errors.name}</div>
               )}
+            </div>
 
-              {/* Submit */}
-              <button
-                type="submit"
-                className="w-full bg-[#201E92] hover:bg-indigo-700 py-3 rounded-md text-white font-medium transition"
-              >
-                Send Enquiries
-              </button>
-            </>
-          )}
-        </form>
+            {/* Email */}
+            <div>
+              <div className="flex items-center gap-2 bg-white/10 px-4 py-3 rounded-full">
+                <FaUser className="text-gray-300" />
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="Enter Email Address"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full bg-transparent outline-none text-white placeholder:text-gray-400"
+                />
+              </div>
+              {errors.email && (
+                <div className="text-red-400 text-sm mt-1">{errors.email}</div>
+              )}
+            </div>
+
+            {/* Phone */}
+            <div>
+              <div className="flex items-center gap-2 bg-white/10 px-4 py-3 rounded-full">
+                <FaUser className="text-gray-300" />
+                <input
+                  name="phone"
+                  type="text"
+                  placeholder="Phone Number"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className="w-full bg-transparent outline-none text-white placeholder:text-gray-400"
+                />
+              </div>
+            </div>
+
+            {/* Message */}
+            <div>
+              <textarea
+                name="message"
+                placeholder="Your Message goes here"
+                value={formData.message}
+                onChange={handleChange}
+                className="w-full h-32 rounded-xl px-4 py-3 bg-white/10 outline-none text-white placeholder:text-gray-400"
+              />
+              {errors.message && (
+                <div className="text-red-400 text-sm mt-1">
+                  {errors.message}
+                </div>
+              )}
+            </div>
+
+            {/* Checkbox */}
+            <div className="flex items-start gap-2 text-sm text-gray-300">
+              <input
+                type="checkbox"
+                name="agree"
+                checked={formData.agree}
+                onChange={handleChange}
+                className="mt-1"
+              />
+              <label>
+                I agree to receiving promotional emails &{" "}
+                <a href="#" className="text-blue-400 underline">
+                  Terms and Conditions
+                </a>
+              </label>
+            </div>
+            {errors.agree && (
+              <div className="text-red-400 text-sm mt-1">{errors.agree}</div>
+            )}
+
+            {/* Submit */}
+            <button
+              type="submit"
+              className="w-full bg-[#201E92] hover:bg-indigo-700 py-3 rounded-md text-white font-medium transition"
+            >
+              Send Enquiries
+            </button>
+          </form>
+        )}
       </div>
     </div>
   );

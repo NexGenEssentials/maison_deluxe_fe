@@ -31,9 +31,9 @@ const Tamplate = ({ children }: { children: ReactNode }) => {
             ))}
           </ul>
           <Link href="/">
-            <Image src={whiteLogo} width={52} height={56} alt="White Logo" />
+            <Image src={whiteLogo} width={70} height={56} alt="White Logo" />
           </Link>
-          <ul className="flex gap-20 py-6 items-center justify-center font-[Josefin_Slab]">
+          <ul className="flex gap-20 py-4 items-center justify-center font-[Josefin_Slab]">
             {navbarLinks.slice(3, 6).map((link) => (
               <Link key={link.name} href={link.href}>
                 <li className="hover:text-primaryGreen border-b border-b-transparent hover:border-b pb-2 hover:border-b-primaryGreen cursor-pointer duration-500 transition">

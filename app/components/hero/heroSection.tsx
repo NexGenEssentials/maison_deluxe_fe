@@ -8,7 +8,8 @@ import { FaCalendarAlt } from "react-icons/fa";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { getAllRoomTypeAPI } from "@/app/api/roomtype/action";
-import { filterRoomNames } from "@/app/utils/filters";
+import { filterRoomNames, RoomNameId } from "@/app/utils/filters";
+
 const HeroSection = () => {
   const [checkIn, setCheckIn] = useState(
     new Date().toISOString().split("T")[0]
@@ -17,14 +18,14 @@ const HeroSection = () => {
     new Date().toISOString().split("T")[0]
   );
   const [people, setPeople] = useState("1 Person");
-  const [roomType, setRoomType] = useState("Penthouse Suite");
+  const [roomType, setRoomType] = useState<RoomNameId | null>(null);
   const [openModle, setOpenModle] = useState(false);
-  const [room, setRoom] = useState<string[]>([]);
+  const [room, setRoom] = useState<RoomNameId[]>([]);
 
   const router = useRouter();
 
   const handleBooking = () => {
-    router.push(`/rooms/${roomType.replace(/\s+/g, "-").toLowerCase()}`);
+    router.push(`/rooms/${roomType?.id}`);
   };
 
   useEffect(() => {
@@ -35,7 +36,9 @@ const HeroSection = () => {
     try {
       const result = await getAllRoomTypeAPI();
       if (result.status === 200) {
-        setRoom(filterRoomNames(result.data));
+        const activeRoom = filterRoomNames(result.data);
+        setRoom(activeRoom);
+        setRoomType(activeRoom[0]);
       }
     } catch (error) {
       console.log(error);
@@ -220,13 +223,16 @@ const HeroSection = () => {
             <span className="text-sm font-semibold">Room Type</span>
             <div className="flex items-center gap-1 text-sm text-gray-300 border-b border-white/20  hover:border-lime-400 rounded cursor-pointer focus:border-lime-400">
               <select
-                value={roomType}
-                onChange={(e) => setRoomType(e.target.value)}
+                value={roomType?.name}
+                onChange={(e) => {
+                  const selectedRoom = room.find(r => r.name === e.target.value);
+                  setRoomType(selectedRoom || null);
+                }}
                 className="bg-transparent appearance-none p-2 text-white outline-none w-full  transition"
               >
                 {room.map((room, idx) => (
                   <option key={idx} className="text-black">
-                    {room}
+                    {room.name}
                   </option>
                 ))}
               </select>

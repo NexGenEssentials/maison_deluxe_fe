@@ -22,7 +22,7 @@ export default function BookingForm() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data:any) => {
     console.log("Form data:", data);
   };
 

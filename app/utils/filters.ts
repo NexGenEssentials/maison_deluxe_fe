@@ -1,20 +1,12 @@
-import { StaticImageData } from "next/image";
-import { roomType } from "../costants";
+
 import { RoomType } from "../types/rooms";
 
 export const getRoomByTitle = (
-  title: string
-): {
-  id: number;
-  title: string;
-  description: string;
-  amenities: string[];
-  available: number;
-  image: StaticImageData;
-  price: number;
-} => {
+  title: string,
+  roomType: RoomType[]
+): RoomType => {
   const room = roomType.find(
-    (room) => room.title.toLowerCase() === title.toLowerCase()
+    (room) => room.name.toLowerCase() === title.toLowerCase()
   );
   if (!room) {
     throw new Error(`Room with title "${title}" not found`);
@@ -22,6 +14,10 @@ export const getRoomByTitle = (
   return room;
 };
 
-export const filterRoomNames = (rooms: RoomType[]): string[] => {
-  return rooms.map((room) => room.name);
+export type RoomNameId = {
+  id: number;
+  name: string;
+};
+export const filterRoomNames = (rooms: RoomType[]): RoomNameId[] => {
+  return rooms.map((room) => ({ id: room.id, name: room.name }));
 };

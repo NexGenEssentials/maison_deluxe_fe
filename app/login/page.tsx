@@ -100,11 +100,11 @@ const LoginPage = () => {
               {showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
             </div>
           </div>
-            <div className="text-right">
+            {/* <div className="text-right">
               <a href="#" className="text-sm text-blue-800 hover:underline">
                 Forgot Password
               </a>
-            </div>
+            </div> */}
 
           <div className="flex justify-between items-center space-x-4">
             <Link href="/" className="w-full">

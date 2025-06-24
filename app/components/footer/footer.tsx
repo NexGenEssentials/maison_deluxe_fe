@@ -1,12 +1,14 @@
-'use client';
+"use client";
 
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import whiteLogo from "@/public/images/red_white_logo.png";
 import { FaArrowRightLong, FaLinkedinIn } from "react-icons/fa6";
 import { RiTwitterXLine } from "react-icons/ri";
 import { ImFacebook } from "react-icons/im";
+import { Subscribe } from "@/app/api/common/action";
+import { FiLoader } from "react-icons/fi";
 
 const QuickLinks = [
   { name: "Rooms", href: "/rooms" },
@@ -24,21 +26,46 @@ const icons = [
 ];
 
 const FooterSection = () => {
-  const [email, setEmail] = React.useState("");
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+ useEffect(() => {
+   setTimeout(() => {
+     setMessage("");
+   }, 5000);
+ }, [message]);
 
   const handleSubscribe = async () => {
     if (!email) {
       return;
     }
+    if (!email || !email.includes("@")) {
+      setMessage("Please enter a valid email address.");
+      return;
+    }
 
-    console.log(`Subscribed with email: ${email}`);
-    setEmail("");
+    try {
+      setLoading(true);
+      const res = await Subscribe(email);
+      if (res.status === "error") {
+        setMessage(`❌ Email already exists.`);
+      }
+      if (res.status === "success") {
+        setMessage("✅ Successfully subscribed to our newsletter.");
+      }
+
+      setEmail("");
+    } catch (error: any) {
+      setMessage(`❌ ${error.message}`);
+    } finally {
+      setLoading(false);
+      setEmail("");
+    }
   };
 
   return (
     <div className="py-4 md:py-16 px-8 md:px-28 bg-primaryBlue">
       <div className="w-full text-fontColor grid max-sm:grid-cols-1 grid-cols-2 lg:grid-cols-3 justify-center items-center gap-8 border-b border-b-fontColor/30 pb-16">
-      
         <div className="flex flex-col gap-8 ">
           <Link href="/">
             <Image src={whiteLogo} width={66} height={64} alt="White Logo" />
@@ -77,10 +104,28 @@ const FooterSection = () => {
               placeholder="Stay in the loop.."
               className="py-3 pl-3 w-full text-primaryBlue outline-none"
             />
-            <button onClick={handleSubscribe} className="bg-blue-400 p-3 hover:bg-blue-500 transition duration-300 cursor-pointer">
-              <FaArrowRightLong size={24} className="text-white" />
+            <button
+              onClick={handleSubscribe}
+              className="bg-blue-400 p-3 hover:bg-blue-500 transition duration-300 cursor-pointer"
+            >
+              {loading ? (
+                <FiLoader size={24} className="text-white" />
+              ) : (
+                <FaArrowRightLong size={24} className="text-white" />
+              )}
             </button>
           </div>
+          {message && (
+            <div
+              className={`${
+                message.includes("Successfully")
+                  ? "text-green-500"
+                  : "text-red-500"
+              } text-xs `}
+            >
+              {message}
+            </div>
+          )}
         </div>
       </div>
       <div className="flex justify-between items-center pt-8 text-fontColor">

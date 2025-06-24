@@ -1,22 +1,16 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import Tamplate from "../components/common/template";
-import { roomType } from "../costants";
-import Image, { StaticImageData } from "next/image";
 import { useRouter } from "next/navigation";
 import { getRoomByTitle } from "../utils/filters";
 import { IoClose } from "react-icons/io5";
 import BookingForm from "../components/model/paymentModel";
-
-type RoomType = {
-  id: number;
-  title: string;
-  description: string;
-  amenities: string[];
-  available: number;
-  image: StaticImageData;
-  price: number;
-};
+import { getAllRoomTypeAPI } from "../api/roomtype/action";
+import Loader from "../components/common/loader";
+import { RoomType } from "../types/rooms";
+import { useAppContext } from "../context";
+import CenterModal from "../components/model/centerModel";
+import CheckAvailabilityModel from "../components/model/checkAvailabilityModel";
 
 const RoomCategory = () => {
   const router = useRouter();
@@ -26,6 +20,9 @@ const RoomCategory = () => {
   const [openModel, setOpenModel] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const [animateModal, setAnimateModal] = useState(false);
+  const [roomType, setRoomType] = useState<RoomType[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { setActiveModalId } = useAppContext();
 
   const openModal = () => {
     setOpenModel(true);
@@ -35,6 +32,7 @@ const RoomCategory = () => {
   const closeModal = () => {
     setAnimateModal(false);
     setTimeout(() => setOpenModel(false), 300);
+    setActive(1);
   };
 
   useEffect(() => {
@@ -58,8 +56,25 @@ const RoomCategory = () => {
     };
   }, []);
 
+  useEffect(() => {
+    handleGetRoomType();
+  }, []);
+
+  const handleGetRoomType = async () => {
+    try {
+      const result = await getAllRoomTypeAPI();
+      if (result.status === 200) {
+        setRoomType(result.data);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleRoomSelect = (name: string) => {
-    const room = getRoomByTitle(name);
+    const room = getRoomByTitle(name, roomType);
     if (!room) {
       console.error(`Room with title "${name}" not found`);
       return;
@@ -67,8 +82,8 @@ const RoomCategory = () => {
     setSelectedRoom(room);
   };
 
-  const handleBooking = (room: string) => {
-    router.push(`/rooms/${room.replace(/\s+/g, "-").toLowerCase()}`);
+  const handleBooking = (room: number) => {
+    router.push(`/rooms/${room}/`);
   };
 
   return (
@@ -129,79 +144,92 @@ const RoomCategory = () => {
             </p>
           </div>
           {/* Room Categories */}
-          <div className="grid grid-cols-1 gap-6 py-10 px-4 md:px-12 ">
-            {roomType.map((room) => (
-              <div
-                key={room.id}
-                className="flex max-xl:flex-wrap items-center justify-center px-4 w-full bg-gray-100 shadow-lg rounded-lg cursor-pointer duration-300 transition hover:bg-gray-50 hover:shadow-2xl"
-              >
-                <div className="w-full min-w-[200px] xl:max-w-sm h-64">
-                  <Image
-                    src={room.image}
-                    alt={room.title}
-                    className="w-full h-full rounded-lg object-cover"
-                  />
-                </div>
-                <div className="p-6 space-y-4 ">
-                  <div className="flex justify-between items-center text-4xl">
-                    <div className="flex items-start flex-wrap justify-between w-full">
-                      <h3 className=" font-semibold bg-gradient-to-r from-primaryBlue -from-10% to-primaryRed to-60% mb-2  bg-clip-text text-transparent font-[Playfair Display]">
-                        {room.title}
-                      </h3>
-                      <button className="border border-primaryBlue p-3 rounded-lg cursor-none font-normal text-sm text-primaryBlue  transition-colors">
-                        Only {room.available} left
+          {loading ? (
+            <Loader />
+          ) : (
+            <div className="grid grid-cols-1 gap-6 py-10 px-4 md:px-12 ">
+              {roomType.map((room) => (
+                <div
+                  key={room.id}
+                  className="flex max-xl:flex-wrap items-center justify-center px-4 w-full bg-gray-100 shadow-lg rounded-lg cursor-pointer duration-300 transition hover:bg-gray-50 hover:shadow-2xl"
+                >
+                  <div className="w-full min-w-[200px] xl:max-w-sm h-64">
+                    <img
+                      src={room.images[0]?.image}
+                      alt={room.name}
+                      className="w-full h-full rounded-lg object-cover"
+                    />
+                  </div>
+                  <div className="p-6 space-y-4 ">
+                    <div className="flex justify-between items-center text-4xl">
+                      <div className="flex items-start flex-wrap justify-between w-full">
+                        <h3 className=" font-semibold bg-gradient-to-r from-primaryBlue -from-10% to-primaryRed to-60% mb-2  bg-clip-text text-transparent font-[Playfair Display]">
+                          {room.name}
+                        </h3>
+                        <button className="border border-primaryBlue p-3 rounded-lg cursor-none font-normal text-sm text-primaryBlue  transition-colors">
+                          Only {room.units} left
+                        </button>
+                      </div>
+                    </div>
+                    <p className="text-gray-600 mb-4">{room.description}</p>
+                    <p className="max-lg:hidden text-gray-500 mb-4">
+                      <span className="font-bold text-primaryBlue">Price:</span>{" "}
+                      ${room.price}
+                    </p>
+                    <p className="lg:hidden text-gray-500 mb-4">
+                      <span className="font-bold text-primaryBlue">Price:</span>{" "}
+                      $
+                      {selectedPeople === 0
+                        ? room.price
+                        : Number(room.price) * selectedPeople}
+                    </p>
+                    <div className="flex items-start gap-4 justify-between w-full">
+                      <button
+                        onClick={() => handleBooking(room.id)}
+                        className="max-lg:hidden px-4 w-1/2 xl:1/4 py-3 cursor-pointer bg-[#a80024]/80 hover:bg-[#a80024] font-semibold text-white rounded-lg transition-colors"
+                      >
+                        view details
                       </button>
+                      <button
+                        onClick={() => {
+                          openModal();
+                          setActive(2);
+                        }}
+                        className="lg:hidden px-4 w-1/2 xl:1/4 py-3 cursor-pointer bg-[#a80024]/80 hover:bg-[#a80024] font-semibold text-white rounded-lg transition-colors"
+                      >
+                        Book Now
+                      </button>
+                      <select
+                        title="select number of people"
+                        onChange={(e) => {
+                          handleRoomSelect(room.name);
+                          setSelectedPeople(Number(e.target.value));
+                        }}
+                        value={selectedPeople}
+                        className={`${
+                          selectedPeople > 0
+                            ? "bg-red-200 border border-red-300"
+                            : "bg-gray-200 border border-gray-300"
+                        } w-32 text-center px-2 py-3  rounded-lg focus:outline-none focus:ring-0`}
+                      >
+                        <option disabled value="0">
+                          0
+                        </option>
+                        {Array.from(
+                          { length: room.capacity },
+                          (_, i) => i + 1
+                        ).map((people) => (
+                          <option key={people} value={people}>
+                            {people}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                   </div>
-                  <p className="text-gray-600 mb-4">{room.description}</p>
-                  <p className="max-lg:hidden text-gray-500 mb-4">
-                    <span className="font-bold text-primaryBlue">Price:</span> $
-                    {room.price}
-                  </p>
-                  <p className="lg:hidden text-gray-500 mb-4">
-                    <span className="font-bold text-primaryBlue">Price:</span> $
-                    {selectedPeople === 0
-                      ? room.price
-                      : room.price * selectedPeople}
-                  </p>
-                  <div className="flex items-start gap-4 justify-between w-full">
-                    <button
-                      onClick={() => handleBooking(room.title)}
-                      className="max-lg:hidden px-4 w-1/2 xl:1/4 py-3 cursor-pointer bg-[#a80024]/80 hover:bg-[#a80024] font-semibold text-white rounded-lg transition-colors"
-                    >
-                      view details
-                    </button>
-                    <button
-                      onClick={() => {
-                        openModal();
-                        setActive(2);
-                      }}
-                      className="lg:hidden px-4 w-1/2 xl:1/4 py-3 cursor-pointer bg-[#a80024]/80 hover:bg-[#a80024] font-semibold text-white rounded-lg transition-colors"
-                    >
-                      Book Now
-                    </button>
-                    <select
-                      onChange={(e) => {
-                        handleRoomSelect(room.title);
-                        setSelectedPeople(Number(e.target.value));
-                      }}
-                      value={selectedPeople}
-                      className="w-32 text-center px-2 py-3 bg-gray-200 border border-gray-300 rounded-lg focus:outline-none focus:ring-0"
-                    >
-                      <option disabled value="0">
-                        0
-                      </option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                    </select>
-                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="max-lg:hidden sticky top-[150px] right-0 h-[80vh] lg:w-1/2 xl:w-1/4 bg-[#F9F9F9] text-black py-10 px-4 md:px-12 ">
@@ -215,21 +243,29 @@ const RoomCategory = () => {
             <div className="space-y-8">
               <h2 className="text-2xl font-semibold mb-4">Confirm Booking</h2>
               <h2 className="text-xl font-semibold mb-4">
-                {selectedRoom.title}
+                {selectedRoom.name}
               </h2>
               <p className="text-gray-600 mb-4 line-clamp-2">
                 {selectedRoom.description}
               </p>
               <ul className="list-disc list-inside text-gray-600 mb-4">
-                {selectedRoom.amenities.map((amenity, index) => (
+                {/* {selectedRoom.amenities.map((amenity, index) => (
                   <li key={index}>{amenity}</li>
-                ))}
+                  ))} */}
+                <li>{selectedRoom.amenities}</li>
               </ul>
               <p className="text-gray-800 mb-4">
                 <span className="font-bold text-3xl">
-                  Amount: ${selectedRoom.price * selectedPeople}
+                  Amount: ${Number(selectedRoom.price) * selectedPeople}
                 </span>
               </p>
+              <div
+                onClick={() => setActiveModalId("check-room-availability")}
+                className="text-primaryBlue border border-gray-400/50 text-center font-semibold px-6 py-3 rounded-xl"
+              >
+                Check Room Availability
+              </div>
+
               <button
                 onClick={() => {
                   openModal();
@@ -271,6 +307,10 @@ const RoomCategory = () => {
           </div>
         </div>
       )}
+      <CenterModal
+        children={<CheckAvailabilityModel Id={selectedRoom?.id ?? 1} />}
+        id={"check-room-availability"}
+      />
     </Tamplate>
   );
 };
