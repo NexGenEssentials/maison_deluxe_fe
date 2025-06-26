@@ -164,7 +164,7 @@ const DashboardAnalytics: React.FC = () => {
 
           <div className="p-6">
             <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4 border px-4 py-2 rounded-lg border-gray-300">
                 <span className="text-sm font-medium text-gray-700">
                   Status
                 </span>
@@ -172,9 +172,9 @@ const DashboardAnalytics: React.FC = () => {
                   2
                 </span>
               </div>
-              <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+              <button className="flex items-center gap-2 px-4 py-2 bg-black/20 text-white font-semibold text-sm rounded-lg hover:bg-red-800 transition-colors">
                 <FiDownload className="w-4 h-4" />
-                Export Document
+                Export PDF
               </button>
             </div>
 
@@ -199,6 +199,12 @@ const DashboardAnalytics: React.FC = () => {
                       </th>
                       <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
                         Status
+                      </th>
+                      <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
+                        Booking Reference
+                      </th>
+                      <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
+                        Room Type
                       </th>
                       <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
                         Check-in & Out date
@@ -247,6 +253,12 @@ const DashboardAnalytics: React.FC = () => {
                                 | "pending"
                             }
                           />
+                        </td>
+                        <td className="py-4 px-4 text-sm text-gray-600">
+                          {booking.booking_reference}
+                        </td>
+                        <td className="py-4 px-4 text-sm text-gray-600">
+                          {booking.room_category.name}
                         </td>
                         <td className="py-4 px-4 text-sm text-gray-600">
                           <strong> {booking.check_in}</strong> to{" "}

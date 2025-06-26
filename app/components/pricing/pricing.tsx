@@ -92,15 +92,8 @@ const Pricing = () => {
               >
                 maisondeluxerw@gmail.com
               </a>{" "}
-              /{" "}
-              <a
-                href="https://www.maisondeluxe.rw"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primaryBlue hover:text-blue-800 underline"
-              >
-                www.maisondeluxe.rw
-              </a>
+          
+             
             </p>
           </div>
         </div>

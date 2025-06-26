@@ -13,6 +13,8 @@ import { RoomType } from "@/app/types/rooms";
 import { useRouter } from "next/navigation";
 import DatePicker from "react-datepicker";
 import { FaCalendarAlt } from "react-icons/fa";
+import { formatToDateOnly } from "@/app/utils/filters";
+import { useAppContext } from "@/app/context";
 
 const schema = yup.object().shape({
   fullName: yup.string().required("Full name is required"),
@@ -35,6 +37,8 @@ export default function BookingForm({ room }: { room: RoomType }) {
   const router = useRouter();
   const [checkIn, setCheckIn] = useState<Date | null>(null);
   const [checkOut, setCheckOut] = useState<Date | null>(null);
+  const [payButton, setPayButton] = useState(false);
+  const { setActiveTab } = useAppContext();
 
   const onSubmit = async (data: yup.InferType<typeof schema>) => {
     if (!data.terms) {
@@ -47,33 +51,36 @@ export default function BookingForm({ room }: { room: RoomType }) {
       guest_email: data.email,
       guest_phone: data.phone,
       note: data.notes || "",
-      check_in: String(checkIn),
-      check_out: String(checkOut),
+      check_in: formatToDateOnly(String(checkIn)),
+      check_out: formatToDateOnly(String(checkOut)),
       total_price: Number(room.price),
       guests: room.capacity,
     };
-    let method;
-    if (data.paymentMode.toLowerCase() === "momo" && data.phone.trim() === "") {
-      method = "mm";
-    }
-    if (data.paymentMode.toLowerCase() === "card") {
-      method = "cc";
-    }
+
     try {
       const result = await CreateBookingAPI(formdata);
-      if (result.status) {
-        const formData = {
+
+      if (result.status === "success" && payButton) {
+        const paymentBody = {
           booking_id: result.data.id,
-          pmethod: method,
+          pmethod: data.paymentMode,
           amount: Number(room.price),
           redirect_url: "http://localhost:3000/rooms/",
+          phone: result.data.guest_phone,
+          email: result.data.guest_email,
+          full_name: result.data.guest_name,
+          
         };
 
-        const response = await CreatePaymentMethod(formData);
+        const response = await CreatePaymentMethod(paymentBody);
+
+        console.log("payment response", response);
 
         if (response.url) {
           router.push(`${response.url}`);
         }
+      } else {
+        
       }
     } catch (error) {
       console.log(error);
@@ -206,7 +213,15 @@ export default function BookingForm({ room }: { room: RoomType }) {
         type="submit"
         className="w-full bg-secondaryRed/80 hover:bg-secondaryRed text-white font-bold py-2 px-4 rounded transition"
       >
-        {loading ? "Submitting..." : "Continue"}
+        {loading ? "Submitting..." : "Book"}
+      </button>
+
+      <button
+        onClick={() => setPayButton(true)}
+        type="submit"
+        className="w-full bg-blue-500/80 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded transition"
+      >
+        {loading && payButton ? "Submitting..." : "Pay"}
       </button>
     </form>
   );

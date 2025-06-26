@@ -50,19 +50,18 @@ export const CreateRoomTypeAPI = async (
 
 export const CreateRoomTypeImageAPI = async (
   roomImages: FormData,
-  id: number
+  id?: number
 ): Promise<{ success: boolean }> => {
   try {
-    // const accessToken = (await cookies()).get("accessToken")?.value;
     const response = await fetch(`${base_url}/room-categories/${id}/images/`, {
       method: "POST",
-      headers: {
-        // Authorization: `Bearer ${accessToken}`,
-      },
+      headers: {},
       body: roomImages,
     });
 
     const data = await response.json();
+
+    console.log({ response, data });
 
     if (!response.ok) {
       return { success: false };

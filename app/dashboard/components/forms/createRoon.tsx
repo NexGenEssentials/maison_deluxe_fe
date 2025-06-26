@@ -8,11 +8,12 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDropzone } from "react-dropzone";
 import { FaImage, FaX } from "react-icons/fa6";
+import { useRouter } from "next/navigation";
 
 export type CreateRoomTypeFormData = {
   name: string;
   description: string;
-  amenities: Record<string, string>; // empty object or key-value pairs
+  amenities: Record<string, string>;
   units: number;
   price: string;
   capacity: number;
@@ -26,6 +27,7 @@ export default function RoomTypeForm() {
   });
   const [images, setImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const router = useRouter();
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: { "image/*": [".jpeg", ".jpg", ".png", ".webp"] },
@@ -43,6 +45,7 @@ export default function RoomTypeForm() {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<CreateRoomTypeFormData>();
 
@@ -52,33 +55,35 @@ export default function RoomTypeForm() {
       const result = await CreateRoomTypeAPI(data);
 
       if (result.status) {
-        setError({ status: true, message: result.message });
-
         const formData = new FormData();
         images.forEach((img) => {
-          formData.append("images", img);
+          formData.append("image", img);
         });
 
-        if (result.data?.id !== undefined) {
-          const response = await CreateRoomTypeImageAPI(
-            formData,
-            result.data.id
-          );
+        const response = await CreateRoomTypeImageAPI(
+          formData,
+          result?.data?.id
+        );
 
-          if (response.success) {
-            window.location.reload();
-            // setError({ status: true, message: "Image uploaded successfully!" });
-          } else {
-            setError({ status: true, message: "Failed to upload image." });
-          }
+        console.log({ result, formData, response });
+
+        if (response.success) {
+          setError({ status: true, message: "Image uploaded successfully!" });
+          setActiveTab("Room Type");
+          router.push("dashboard");
+        } else {
           setError({ status: true, message: "Failed to upload image." });
         }
-      } else {
-        setError({ status: true, message: result.message });
       }
     } catch (error) {
       setError({ status: true, message: error as string });
     } finally {
+      setValue("name", "");
+      setValue("description", "");
+      setValue("amenities", {});
+      setValue("units", 0);
+      setValue("price", "");
+      setValue("capacity", 0);
       setLoading(false);
       setActiveTab("Room Type");
     }

@@ -27,7 +27,12 @@ export type BookingDetails = {
 };
 
 export type BookingResponse = {
-  status: "success";
+  status: string;
+  message: string;
+  data: BookingData;
+};
+export type AllBookingType = {
+  status: string;
   message: string;
   data: BookingData[];
 };

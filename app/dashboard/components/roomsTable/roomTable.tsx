@@ -67,7 +67,8 @@ const RoomTable = () => {
         <table className="min-w-full text-sm text-left">
           <thead className="bg-gray-100 text-gray-700 ">
             <tr className="">
-              <th className="px-4 py-4 text-center">#</th>
+              {/* <th className="px-4 py-4 text-center">#</th> */}
+              <th className="px-4 py-4 text-center">Room Id</th>
               <th className="px-4 py-4">Name</th>
               <th className="px-4 py-4 text-center">Available</th>
               <th className="px-4 py-4 text-center">Price ($)</th>
@@ -80,9 +81,10 @@ const RoomTable = () => {
                 key={room.id}
                 className="border-t border-gray-100 hover:bg-gray-50"
               >
-                <td className="px-4 py-2 text-center">
+                {/* <td className="px-4 py-2 text-center">
                   {(currentPage - 1) * ITEMS_PER_PAGE + index + 1}
-                </td>
+                </td> */}
+                <td className="px-4 py-2 text-center">{room.id}</td>
                 <td className="px-4 py-2">{room.name}</td>
                 <td className="px-4 py-2 text-center">{room.units}</td>
                 <td className="px-4 py-2 text-center">${room.price}</td>

@@ -1,6 +1,7 @@
 "use server";
 
 import {
+  AllBookingType,
   BookingDetails,
   BookingResponse,
   PaymentResponseType,
@@ -21,14 +22,13 @@ export const CreateBookingAPI = async (
     });
 
     const data = await response.json();
-
-    return data[0];
+    return data;
   } catch (error) {
     throw error;
   }
 };
 
-export const getAllBookings = async (): Promise<BookingResponse> => {
+export const getAllBookings = async (): Promise<AllBookingType> => {
   const accessToken = (await cookies()).get("accessToken")?.value;
   try {
     const response = await fetch(`${base_url}/bookings/`, {
@@ -103,10 +103,13 @@ export const DeleteBooking = async (objectId: number): Promise<boolean> => {
 };
 
 export const CreatePaymentMethod = async (bookingData: {
-  booking_id?: number;
-  pmethod?: string;
+  booking_id: number;
+  pmethod: string;
   amount: number;
   redirect_url: string;
+  phone: string;
+  email: string;
+  full_name: string;
 }): Promise<PaymentResponseType> => {
   const accessToken = (await cookies()).get("accessToken")?.value;
   try {
@@ -114,12 +117,12 @@ export const CreatePaymentMethod = async (bookingData: {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify(bookingData),
     });
 
     const data = await response.json();
-
     return data;
   } catch (error) {
     throw error;
