@@ -4,10 +4,10 @@ export type RoomType = {
   description: string;
   amenities: string;
   capacity: number;
-  price: string; // consider using number if it's always numeric
+  price: string; 
   units: number;
-  images: ImagesType[]; // update to a custom Image type if needed
-  policies: string[]; // update to a custom Policy type if needed
+  images: ImagesType[]; 
+  policies: string[]; 
 };
 
 export type ImagesType = {

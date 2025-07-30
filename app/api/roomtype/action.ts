@@ -61,8 +61,6 @@ export const CreateRoomTypeImageAPI = async (
 
     const data = await response.json();
 
-    console.log({ response, data });
-
     if (!response.ok) {
       return { success: false };
     }
@@ -190,7 +188,7 @@ export const checkRoomAvailabilityAPI = async (
     );
 
     const data = await response.json();
-    console.log({ response, data });
+  
     if (response.ok) {
       return {
         available: true,

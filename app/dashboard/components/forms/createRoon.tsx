@@ -65,7 +65,6 @@ export default function RoomTypeForm() {
           result?.data?.id
         );
 
-        console.log({ result, formData, response });
 
         if (response.success) {
           setError({ status: true, message: "Image uploaded successfully!" });

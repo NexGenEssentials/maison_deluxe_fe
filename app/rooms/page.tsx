@@ -17,7 +17,10 @@ const RoomCategory = () => {
   const router = useRouter();
   const [active, setActive] = useState<number>(1);
   const [selectedRoom, setSelectedRoom] = useState<RoomType | null>(null);
-  const [selectedPeople, setSelectedPeople] = useState<number>(0);
+  const [selectedPeopleMap, setSelectedPeopleMap] = useState<{
+    [roomId: number]: number;
+  }>({});
+
   const [roomType, setRoomType] = useState<RoomType[]>([]);
   const [loading, setLoading] = useState(true);
   const { setActiveModalId } = useAppContext();
@@ -132,7 +135,7 @@ const RoomCategory = () => {
                         <h3 className=" font-semibold bg-gradient-to-r from-primaryBlue -from-10% to-primaryRed to-60% mb-2  bg-clip-text text-transparent font-[Playfair Display]">
                           {room.name}
                         </h3>
-                        <button className="border border-primaryBlue p-3 rounded-lg cursor-none font-normal text-sm text-primaryBlue  transition-colors">
+                        <button className="border border-primaryBlue p-3 rounded-lg  font-normal text-sm text-primaryBlue  transition-colors">
                           Only {room.units} left
                         </button>
                       </div>
@@ -145,11 +148,11 @@ const RoomCategory = () => {
                     <p className="lg:hidden text-gray-500 mb-4">
                       <span className="font-bold text-primaryBlue">Price:</span>{" "}
                       $
-                      {selectedPeople === 0
+                      {(selectedRoom && (selectedPeopleMap[selectedRoom.id] || 1)) === 0
                         ? room.price
-                        : Number(room.price) * selectedPeople}
+                        : selectedRoom ? Number(room.price) * (selectedPeopleMap[selectedRoom.id] || 1) : room.price}
                     </p>
-                    <div className="flex items-start gap-4 justify-between w-full">
+                    <div className="flex items-end gap-4 justify-between w-full">
                       <button
                         onClick={() => handleBooking(room.id)}
                         className="max-lg:hidden px-4 w-1/2 xl:1/4 py-3 cursor-pointer bg-[#a80024]/80 hover:bg-[#a80024] font-semibold text-white rounded-lg transition-colors"
@@ -165,31 +168,31 @@ const RoomCategory = () => {
                       >
                         Book Now
                       </button>
-                      <select
-                        title="select number of people"
-                        onChange={(e) => {
-                          handleRoomSelect(room.name);
-                          setSelectedPeople(Number(e.target.value));
-                        }}
-                        value={selectedPeople}
-                        className={`${
-                          selectedPeople > 0
-                            ? "bg-red-200 border border-red-300"
-                            : "bg-gray-200 border border-gray-300"
-                        } w-32 text-center px-2 py-3  rounded-lg focus:outline-none focus:ring-0`}
-                      >
-                        <option disabled value="0">
-                          0
-                        </option>
-                        {Array.from(
-                          { length: room.capacity },
-                          (_, i) => i + 1
-                        ).map((people) => (
-                          <option key={people} value={people}>
-                            {people}
-                          </option>
-                        ))}
-                      </select>
+                      <div className="flex flex-col items-center gap-2">
+                        <label htmlFor="" className="text-xs font-semibold">
+                          People
+                        </label>
+
+                        <select
+                          className="w-32 border rounded-md p-2"
+                          value={selectedPeopleMap[room.id] || 0}
+                          onChange={(e) => {
+                              handleRoomSelect(room.name);
+                            const people = Number(e.target.value);
+                            setSelectedPeopleMap((prev) => ({
+                              ...prev,
+                              [room.id]: people,
+                            }));
+                          }}
+                        >
+                          <option value={0}>Select People</option>
+                          {[...Array(room.capacity)].map((_, index) => (
+                            <option key={index + 1} value={index + 1}>
+                              {index + 1} Person{index > 0 ? "s" : ""}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -222,7 +225,7 @@ const RoomCategory = () => {
               </ul>
               <p className="text-gray-800 mb-4">
                 <span className="font-bold text-3xl">
-                  Amount: ${Number(selectedRoom.price) * selectedPeople}
+                  Amount: ${Number(selectedRoom.price) * (selectedRoom && (selectedPeopleMap[selectedRoom.id] || 1))}
                 </span>
               </p>
               <div

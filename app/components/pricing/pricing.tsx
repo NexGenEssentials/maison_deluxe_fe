@@ -36,22 +36,35 @@ const Pricing = () => {
                     {row.title} <br /> ({row.available} Room
                     {row.available > 1 ? "s" : ""})
                   </td>
-                  <td className="border border-slate-700 px-4 py-2">
-                    {row.amenities}
+                  <td className="border-b flex flex-col gap-1 border-slate-700 px-4 py-2">
+                    {row.amenities.map((amenity, index) => (
+                      <span
+                        key={index}
+                        className="text-gray-800 px-2 py-1 flex gap-4 text-nowrap items-center rounded-full text-sm "
+                      >
+                        <span className="w-2 h-2 bg-slate-700 rounded-full block" /> {amenity}
+                      </span>
+                    ))}
                   </td>
                   <td className="border border-slate-700 px-4 py-2">
-                    {"2 Adults"}
+                    {row.people} Adults
                   </td>
                   <td className="border border-slate-700 px-4 py-2">
                     $ {row.price}
                   </td>
-                  <td className="border border-slate-700 px-4 py-2">{`20%`}</td>
-                  <td className="border border-slate-700 px-4 py-2">{`10%`}</td>
                   <td className="border border-slate-700 px-4 py-2">
-                    $ {15.0}
+                    {row.extraAdults}
                   </td>
                   <td className="border border-slate-700 px-4 py-2">
-                    $ {20.0}
+                    {row.extraChildren}
+                  </td>
+                  <td className="border border-slate-700 px-4 py-2">
+                    {row.breakfast.toLocaleLowerCase() === "included"
+                      ? "Included"
+                      : row.breakfast}
+                  </td>
+                  <td className="border border-slate-700 px-4 py-2">
+                    $ {row.airportTransfer}
                   </td>
                 </tr>
               ))}
@@ -92,8 +105,6 @@ const Pricing = () => {
               >
                 maisondeluxerw@gmail.com
               </a>{" "}
-          
-             
             </p>
           </div>
         </div>

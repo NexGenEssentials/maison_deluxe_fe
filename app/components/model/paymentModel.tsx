@@ -30,6 +30,7 @@ export default function BookingForm({ room }: { room: RoomType }) {
     register,
     handleSubmit,
     formState: { errors },
+    reset, 
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -38,7 +39,7 @@ export default function BookingForm({ room }: { room: RoomType }) {
   const [checkIn, setCheckIn] = useState<Date | null>(null);
   const [checkOut, setCheckOut] = useState<Date | null>(null);
   const [payButton, setPayButton] = useState(false);
-  const { setActiveTab } = useAppContext();
+  const { setActiveModalId } = useAppContext();
 
   const onSubmit = async (data: yup.InferType<typeof schema>) => {
     if (!data.terms) {
@@ -74,8 +75,6 @@ export default function BookingForm({ room }: { room: RoomType }) {
 
         const response = await CreatePaymentMethod(paymentBody);
 
-        console.log("payment response", response);
-
         if (response.url) {
           router.push(`${response.url}`);
         }
@@ -85,7 +84,9 @@ export default function BookingForm({ room }: { room: RoomType }) {
     } catch (error) {
       console.log(error);
     } finally {
+      reset()
       setLoading(false);
+      setActiveModalId(null);
     }
   };
 
