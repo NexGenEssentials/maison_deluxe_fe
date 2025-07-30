@@ -5,6 +5,7 @@ import clsx from "clsx";
 import { useAppContext } from "@/app/context";
 import { RiLogoutCircleLine } from "react-icons/ri";
 import { useRouter } from "next/navigation";
+import { IoIosPeople } from "react-icons/io";
 
 const menuItems = [
   {
@@ -21,6 +22,11 @@ const menuItems = [
     label: "Message",
     icon: <FiMessageSquare />,
     path: "/message",
+  },
+  {
+    label: "Subscribers",
+    icon: <IoIosPeople />,
+    path: "/subscribers",
   },
 ];
 

@@ -33,3 +33,26 @@ export const getMessages = async (): Promise<{
     throw error;
   }
 };
+export const getSubscribers = async (): Promise<{
+  status: string;
+  message: string;
+  data: { email: string }[];
+}> => {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("accessToken")?.value;
+  try {
+    const response = await fetch(`${base_url}/subscribe/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
