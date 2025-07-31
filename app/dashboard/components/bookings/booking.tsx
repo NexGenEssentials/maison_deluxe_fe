@@ -9,14 +9,17 @@ import {
   FiTrash2,
   FiChevronDown,
 } from "react-icons/fi";
-import MetricCard from "./cards";
-import { DeleteBooking, getAllBookings } from "@/app/api/bookings/action";
+import {
+  DeleteBooking,
+  getAllBookings,
+  updateBookingStatus,
+} from "@/app/api/bookings/action";
 import Loader from "@/app/components/common/loader";
 import { BookingData } from "@/app/types/booking";
 import { formatToDateOnly } from "@/app/utils/filters";
 import CenterModal from "@/app/components/model/centerModel";
-import BookingDetails from "./bookings/bookingDetails";
 import { useAppContext } from "@/app/context";
+import BookingDetails from "./bookingDetails";
 
 const StatusBadge: React.FC<{
   status: "confirmed" | "failed" | "available" | "pending" | "rejected";
@@ -41,9 +44,8 @@ const StatusBadge: React.FC<{
   );
 };
 
-const DashboardAnalytics: React.FC = () => {
+const BookingPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [loading, setLoading] = useState(true);
   const [bookings, setBookings] = useState<BookingData[]>([]);
   const [viewBooking, setViewBooking] = useState<BookingData | null>(null);
@@ -52,18 +54,21 @@ const DashboardAnalytics: React.FC = () => {
   const [sortField, setSortField] = useState<"room" | "date" | null>(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
-  const handleRowSelect = (id: number) => {
-    setSelectedRows((prev) =>
-      prev.includes(id) ? prev.filter((rowId) => rowId !== id) : [...prev, id]
-    );
-  };
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
-  const handleSelectAll = () => {
-    setSelectedRows(
-      selectedRows.length === bookings.length
-        ? []
-        : bookings.map((client) => Number(client.id))
-    );
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentBookings = filteredBookings.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+
+  const totalPages = Math.ceil(filteredBookings.length / itemsPerPage);
+
+  const goToPage = (pageNumber: number) => {
+    if (pageNumber < 1 || pageNumber > totalPages) return;
+    setCurrentPage(pageNumber);
   };
 
   useEffect(() => {
@@ -130,50 +135,35 @@ const DashboardAnalytics: React.FC = () => {
     }
   };
 
+  const handleStatusChange = async (id: number, newStatus: string) => {
+    try {
+      const result = await updateBookingStatus(id, newStatus);
+
+      if (result.status === "success") {
+        setBookings((prev) =>
+          prev.map((booking) =>
+            booking.id === id ? { ...booking, status: newStatus } : booking
+          )
+        );
+      } else {
+        console.error("Failed to update booking status:", result.message);
+      }
+    } catch (error) {
+      console.error("Error updating booking status:", error);
+    } finally {
+      setActiveModalId("");
+    }
+  };
+
   return (
     <div className="bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto space-y-8">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-gray-900">Overview</h1>
-          <div className="flex items-center gap-2">
-            <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
-              Period
-              <FiChevronDown className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <MetricCard
-            title="Total Revenue"
-            value="6,123,000,123"
-            currency="RWF"
-            trend={-3.5}
-            bgColor="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-800"
-            textColor="text-white"
-          />
-          <MetricCard
-            title="Total Bookings"
-            value="6,123"
-            trend={-3.5}
-            bgColor="bg-white border border-gray-200"
-            textColor="text-gray-900"
-          />
-          <MetricCard
-            title="Total"
-            value="6,123"
-            trend={-3.5}
-            bgColor="bg-white border border-gray-200"
-            textColor="text-gray-900"
-          />
-        </div>
-
         <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
           <div className="p-6 border-b border-gray-200">
             <div className="flex flex-col gap-4">
               <div>
                 <h2 className="text-xl font-bold text-gray-900 mb-2">
-                  Recent Bookings
+                  Booking List
                 </h2>
                 <p className="text-gray-600">
                   Easily track, manage, and confirm guest reservations in
@@ -221,7 +211,6 @@ const DashboardAnalytics: React.FC = () => {
                     setSearchTerm("");
                     setSortField(null);
                     setSortOrder("asc");
-                    setSelectedRows([]);
                   }}
                   className="flex items-center gap-2 px-4 py-2 text-primaryRed hover:text-white bg-red-50 hover:bg-red-800 text-sm font-semibold rounded-lg transition-colors"
                 >
@@ -235,11 +224,9 @@ const DashboardAnalytics: React.FC = () => {
           <div className="p-6">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-4 border px-4 py-2 rounded-lg border-gray-300">
-                <span className="text-sm font-medium text-gray-700">
-                  Recent bookings
-                </span>
+                <span className="text-sm font-medium text-gray-700">Total</span>
                 <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">
-                  5
+                  {filteredBookings.length}
                 </span>
               </div>
               <button className="flex items-center gap-2 px-4 py-2 bg-black/20 text-white font-semibold text-sm rounded-lg hover:bg-red-800 transition-colors">
@@ -255,14 +242,9 @@ const DashboardAnalytics: React.FC = () => {
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-gray-200">
-                      <th className="text-left py-3 px-4">
-                        <input
-                          type="checkbox"
-                          checked={selectedRows.length === bookings.length}
-                          onChange={handleSelectAll}
-                          className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                        />
+                    <tr className="border-b border-gray-200 text-nowrap">
+                      <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
+                        #
                       </th>
                       <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
                         Client Name
@@ -282,25 +264,18 @@ const DashboardAnalytics: React.FC = () => {
                       <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
                         Booking Date
                       </th>
-                      <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
+                      <th className="text-center py-3 px-4 text-sm font-medium text-gray-700">
                         Action
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredBookings.slice(0, 5).map((booking) => (
+                    {currentBookings.map((booking, index) => (
                       <tr
                         key={booking.id}
                         className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
                       >
-                        <td className="py-4 px-4">
-                          <input
-                            type="checkbox"
-                            checked={selectedRows.includes(booking.id)}
-                            onChange={() => handleRowSelect(booking.id)}
-                            className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                          />
-                        </td>
+                        <td className="text-center">{index + 1}</td>
                         <td className="py-4 px-4">
                           <div className="flex items-center gap-3">
                             <div className="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-medium">
@@ -339,6 +314,16 @@ const DashboardAnalytics: React.FC = () => {
                         </td>
                         <td className="py-4 px-4">
                           <div className="flex items-center gap-2">
+                            <select
+                              className="text-sm border border-gray-300 rounded px-3 py-2"
+                              onChange={(e) =>
+                                handleStatusChange(booking.id, e.target.value)
+                              }
+                            >
+                              <option value="">pending</option>
+                              <option value="confirm">Confirm</option>
+                              <option value="reject">Reject</option>
+                            </select>
                             <button
                               onClick={() => {
                                 setActiveModalId("booking-details");
@@ -363,6 +348,40 @@ const DashboardAnalytics: React.FC = () => {
                     ))}
                   </tbody>
                 </table>
+                <div className="flex justify-between items-center mt-6 px-6">
+                  <div className="text-sm text-gray-600">
+                    Page {currentPage} of {totalPages}
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => goToPage(currentPage - 1)}
+                      disabled={currentPage === 1}
+                      className="px-3 py-1 border rounded disabled:opacity-50"
+                    >
+                      Previous
+                    </button>
+                    {[...Array(totalPages)].map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => goToPage(i + 1)}
+                        className={`px-3 py-1 border rounded ${
+                          currentPage === i + 1
+                            ? "bg-primaryBlue text-white"
+                            : ""
+                        }`}
+                      >
+                        {i + 1}
+                      </button>
+                    ))}
+                    <button
+                      onClick={() => goToPage(currentPage + 1)}
+                      disabled={currentPage === totalPages}
+                      className="px-3 py-1 border rounded disabled:opacity-50"
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
               </div>
             )}
           </div>
@@ -377,4 +396,4 @@ const DashboardAnalytics: React.FC = () => {
   );
 };
 
-export default DashboardAnalytics;
+export default BookingPage;

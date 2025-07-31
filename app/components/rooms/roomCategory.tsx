@@ -172,7 +172,7 @@ const RoomCategory = () => {
               }`}
               key={roomCategory?.id}
             >
-              <Title title={`0${roomCategory?.id}  ${roomCategory?.name}`} />
+              <Title title={`0${currentIndex+1}  ${roomCategory?.name}`} />
               <p className="mb-4 text-base font-normal max-w-md leading-relaxed text-gray-300">
                 {roomCategory?.description}
               </p>

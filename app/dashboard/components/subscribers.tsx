@@ -35,7 +35,7 @@ const Subbscribers = () => {
             key={index}
             className="py-2 px-2 text-gray-800 text-sm font-semibold"
           >
-            {index + 1}. 📧 {subscriber.email}
+            {index + 1}. {subscriber.email}
           </li>
         ))}
       </ul>

@@ -3,9 +3,12 @@ import React, { useState } from "react";
 import { FiHome, FiBriefcase, FiMessageSquare } from "react-icons/fi";
 import clsx from "clsx";
 import { useAppContext } from "@/app/context";
-import { RiLogoutCircleLine } from "react-icons/ri";
+import { RiLogoutCircleLine, RiSecurePaymentFill } from "react-icons/ri";
 import { useRouter } from "next/navigation";
 import { IoIosPeople } from "react-icons/io";
+import { Logout } from "@/app/utils/logout";
+import { TbBrandBooking } from "react-icons/tb";
+import { FaUsers } from "react-icons/fa6";
 
 const menuItems = [
   {
@@ -14,9 +17,24 @@ const menuItems = [
     path: "/dashboard",
   },
   {
+    label: "Bookings",
+    icon: <TbBrandBooking />,
+    path: "/bookings",
+  },
+  {
     label: "Room Type",
     icon: <FiBriefcase />,
     path: "/room",
+  },
+  {
+    label: "Payments",
+    icon: <RiSecurePaymentFill />,
+    path: "/payments",
+  },
+  {
+    label: "Users",
+    icon: <FaUsers />,
+    path: "/users",
   },
   {
     label: "Message",
@@ -30,10 +48,16 @@ const menuItems = [
   },
 ];
 
+
 const SideBarNav = () => {
   const [active, setActive] = useState("Dashboard");
   const { setActiveTab } = useAppContext();
   const router = useRouter();
+
+  const handleLogout = () => {
+    Logout();
+    router.push("/");
+  };
 
   return (
     <aside className="bg-[#F4F7FF] h-screen fixed top-25 left-0 min-w-[240px] pt-10 shadow-md">
@@ -57,7 +81,7 @@ const SideBarNav = () => {
           </button>
         ))}
         <div
-          onClick={() => router.push("/")}
+          onClick={handleLogout}
           className="hover:bg-white hover:text-primaryBlue hover:font-semibold hover:shadow cursor-pointer flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium text-gray-700 transition-all duration-200"
         >
           {" "}

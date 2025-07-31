@@ -61,7 +61,7 @@ const Pricing = () => {
                   <td className="border border-slate-700 px-4 py-2">
                     {row.breakfast.toLocaleLowerCase() === "included"
                       ? "Included"
-                      : row.breakfast}
+                      : "$ "+ row.breakfast}
                   </td>
                   <td className="border border-slate-700 px-4 py-2">
                     $ {row.airportTransfer}
