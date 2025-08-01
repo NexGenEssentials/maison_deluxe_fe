@@ -1,13 +1,9 @@
 "use client";
 
+import { DeleteUser, getUser } from "@/app/api/common/action";
+import { User } from "@/app/types/user";
 import React, { useEffect, useState } from "react";
-
-interface User {
-  id: number;
-  email: string;
-  phone: string;
-  full_name: string;
-}
+import { FiEdit2, FiTrash2 } from "react-icons/fi";
 
 const UsersPage = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -18,8 +14,8 @@ const UsersPage = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/users"); // Replace with your actual endpoint
-      const result = await res.json();
+      const result = await getUser();
+
       if (result.status === "success") {
         setUsers(result.data);
       } else {
@@ -36,8 +32,19 @@ const UsersPage = () => {
     fetchUsers();
   }, []);
 
+  const handleDelete = async (id: number) => {
+    try {
+      const result = await DeleteUser(id);
+      if (result) {
+        setUsers((prev) => prev.filter((client) => client.id !== id));
+      }
+    } catch (error) {
+      console.error(`something went wrong`);
+    }
+  };
+
   return (
-    <div className="bg-gray-50 p-6">
+    <div className=" p-6">
       <div className="max-w-7xl  mx-auto space-y-8">
         <div className="bg-white p-8 rounded-2xl border border-gray-200 overflow-hidden">
           <h1 className="text-2xl font-semibold text-gray-800 mb-6">
@@ -51,7 +58,7 @@ const UsersPage = () => {
           ) : users.length === 0 ? (
             <div className="text-gray-500 text-center">No users found.</div>
           ) : (
-            <div className="overflow-x-auto shadow rounded-md border">
+            <div className="overflow-x-auto shadow rounded-md ">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-100">
                   <tr>
@@ -66,6 +73,9 @@ const UsersPage = () => {
                     </th>
                     <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">
                       Phone
+                    </th>
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">
+                      Action
                     </th>
                   </tr>
                 </thead>
@@ -83,6 +93,19 @@ const UsersPage = () => {
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-700">
                         {user.phone || "-"}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-700">
+                        <div className="flex items-center gap-2">
+                          <button className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+                            <FiEdit2 className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(user.id)}
+                            className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                          >
+                            <FiTrash2 className="w-4 h-4" />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}

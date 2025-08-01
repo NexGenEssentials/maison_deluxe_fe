@@ -156,7 +156,7 @@ const BookingPage: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-50 p-6">
+    <div className="p-6">
       <div className="max-w-7xl mx-auto space-y-8">
         <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
           <div className="p-6 border-b border-gray-200">
@@ -240,148 +240,159 @@ const BookingPage: React.FC = () => {
               <Loader />
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-gray-200 text-nowrap">
-                      <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
-                        #
-                      </th>
-                      <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
-                        Client Name
-                      </th>
-                      <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
-                        Status
-                      </th>
-                      <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
-                        Booking Reference
-                      </th>
-                      <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
-                        Room Type
-                      </th>
-                      <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
-                        Check-in & Out date
-                      </th>
-                      <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
-                        Booking Date
-                      </th>
-                      <th className="text-center py-3 px-4 text-sm font-medium text-gray-700">
-                        Action
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {currentBookings.map((booking, index) => (
-                      <tr
-                        key={booking.id}
-                        className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
-                      >
-                        <td className="text-center">{index + 1}</td>
-                        <td className="py-4 px-4">
-                          <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-medium">
-                              {booking.guest_name
-                                .slice(0, 2)
-                                .toLocaleUpperCase()}
-                            </div>
-                            <span className="font-medium text-gray-900">
-                              {booking.guest_name}
-                            </span>
-                          </div>
-                        </td>
-                        <td className="py-4 px-4">
-                          <StatusBadge
-                            status={
-                              booking.status as
-                                | "confirmed"
-                                | "rejected"
-                                | "available"
-                                | "pending"
-                            }
-                          />
-                        </td>
-                        <td className="py-4 px-4 text-sm text-gray-600">
-                          {booking.booking_reference}
-                        </td>
-                        <td className="py-4 px-4 text-sm text-gray-600">
-                          {booking.room_category.name}
-                        </td>
-                        <td className="py-4 px-4 text-sm text-gray-600">
-                          <strong> {booking.check_in}</strong> to{" "}
-                          <strong>{booking.check_out}</strong>
-                        </td>
-                        <td className="py-4 px-4 text-sm text-gray-600">
-                          {formatToDateOnly(booking.created_at)}
-                        </td>
-                        <td className="py-4 px-4">
-                          <div className="flex items-center gap-2">
-                            <select
-                              className="text-sm border border-gray-300 rounded px-3 py-2"
-                              onChange={(e) =>
-                                handleStatusChange(booking.id, e.target.value)
-                              }
-                            >
-                              <option value="">pending</option>
-                              <option value="confirm">Confirm</option>
-                              <option value="reject">Reject</option>
-                            </select>
-                            <button
-                              onClick={() => {
-                                setActiveModalId("booking-details");
-                                setViewBooking(booking);
-                              }}
-                              className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
-                            >
-                              <FiEye className="w-4 h-4" />
-                            </button>
-                            <button className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
-                              <FiEdit2 className="w-4 h-4" />
-                            </button>
-                            <button
-                              onClick={() => handleDelete(booking.id)}
-                              className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                            >
-                              <FiTrash2 className="w-4 h-4" />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <div className="flex justify-between items-center mt-6 px-6">
-                  <div className="text-sm text-gray-600">
-                    Page {currentPage} of {totalPages}
+                {filteredBookings.slice(0, 5).length === 0 ? (
+                  <div className="text-center py-4 text-gray-500">
+                    No bookings found
                   </div>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => goToPage(currentPage - 1)}
-                      disabled={currentPage === 1}
-                      className="px-3 py-1 border rounded disabled:opacity-50"
-                    >
-                      Previous
-                    </button>
-                    {[...Array(totalPages)].map((_, i) => (
-                      <button
-                        key={i}
-                        onClick={() => goToPage(i + 1)}
-                        className={`px-3 py-1 border rounded ${
-                          currentPage === i + 1
-                            ? "bg-primaryBlue text-white"
-                            : ""
-                        }`}
-                      >
-                        {i + 1}
-                      </button>
-                    ))}
-                    <button
-                      onClick={() => goToPage(currentPage + 1)}
-                      disabled={currentPage === totalPages}
-                      className="px-3 py-1 border rounded disabled:opacity-50"
-                    >
-                      Next
-                    </button>
-                  </div>
-                </div>
+                ) : (
+                  <>
+                    <table className="w-full">
+                      <thead>
+                        <tr className="border-b border-gray-200 text-nowrap">
+                          <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
+                            #
+                          </th>
+                          <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
+                            Client Name
+                          </th>
+                          <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
+                            Status
+                          </th>
+                          <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
+                            Booking Reference
+                          </th>
+                          <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
+                            Room Type
+                          </th>
+                          <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
+                            Check-in & Out date
+                          </th>
+                          <th className="text-left py-3 px-4 text-sm font-medium text-gray-700">
+                            Booking Date
+                          </th>
+                          <th className="text-center py-3 px-4 text-sm font-medium text-gray-700">
+                            Action
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {currentBookings.map((booking, index) => (
+                          <tr
+                            key={booking.id}
+                            className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
+                          >
+                            <td className="text-center">{index + 1}</td>
+                            <td className="py-4 px-4">
+                              <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-medium">
+                                  {booking.guest_name
+                                    .slice(0, 2)
+                                    .toLocaleUpperCase()}
+                                </div>
+                                <span className="font-medium text-gray-900">
+                                  {booking.guest_name}
+                                </span>
+                              </div>
+                            </td>
+                            <td className="py-4 px-4">
+                              <StatusBadge
+                                status={
+                                  booking.status as
+                                    | "confirmed"
+                                    | "rejected"
+                                    | "available"
+                                    | "pending"
+                                }
+                              />
+                            </td>
+                            <td className="py-4 px-4 text-sm text-gray-600">
+                              {booking.booking_reference}
+                            </td>
+                            <td className="py-4 px-4 text-sm text-gray-600">
+                              {booking.room_category.name}
+                            </td>
+                            <td className="py-4 px-4 text-sm text-gray-600">
+                              <strong> {booking.check_in}</strong> to{" "}
+                              <strong>{booking.check_out}</strong>
+                            </td>
+                            <td className="py-4 px-4 text-sm text-gray-600">
+                              {formatToDateOnly(booking.created_at)}
+                            </td>
+                            <td className="py-4 px-4">
+                              <div className="flex items-center gap-2">
+                                <select
+                                  className="text-sm border border-gray-300 rounded px-3 py-2"
+                                  onChange={(e) =>
+                                    handleStatusChange(
+                                      booking.id,
+                                      e.target.value
+                                    )
+                                  }
+                                >
+                                  <option value="">pending</option>
+                                  <option value="confirm">Confirm</option>
+                                  <option value="reject">Reject</option>
+                                </select>
+                                <button
+                                  onClick={() => {
+                                    setActiveModalId("booking-details");
+                                    setViewBooking(booking);
+                                  }}
+                                  className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                                >
+                                  <FiEye className="w-4 h-4" />
+                                </button>
+                                <button className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+                                  <FiEdit2 className="w-4 h-4" />
+                                </button>
+                                <button
+                                  onClick={() => handleDelete(booking.id)}
+                                  className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                >
+                                  <FiTrash2 className="w-4 h-4" />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    <div className="flex justify-between items-center mt-6 px-6">
+                      <div className="text-sm text-gray-600">
+                        Page {currentPage} of {totalPages}
+                      </div>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => goToPage(currentPage - 1)}
+                          disabled={currentPage === 1}
+                          className="px-3 py-1 border rounded disabled:opacity-50"
+                        >
+                          Previous
+                        </button>
+                        {[...Array(totalPages)].map((_, i) => (
+                          <button
+                            key={i}
+                            onClick={() => goToPage(i + 1)}
+                            className={`px-3 py-1 border rounded ${
+                              currentPage === i + 1
+                                ? "bg-primaryBlue text-white"
+                                : ""
+                            }`}
+                          >
+                            {i + 1}
+                          </button>
+                        ))}
+                        <button
+                          onClick={() => goToPage(currentPage + 1)}
+                          disabled={currentPage === totalPages}
+                          className="px-3 py-1 border rounded disabled:opacity-50"
+                        >
+                          Next
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
             )}
           </div>
