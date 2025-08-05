@@ -2,13 +2,17 @@
 
 import { DeleteUser, getUser } from "@/app/api/common/action";
 import { User } from "@/app/types/user";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { FaPause, FaPlay } from "react-icons/fa6";
 import { FiEdit2, FiTrash2 } from "react-icons/fi";
 
 const UsersPage = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+  const { push } = router;
 
   const fetchUsers = async () => {
     setLoading(true);
@@ -43,14 +47,34 @@ const UsersPage = () => {
     }
   };
 
+  const handleAddUser = () => {
+    push("/dashboard/users");
+  };
+
+  const handleActivateUser = async (id: number) => {
+    setUsers((prev) =>
+      prev.map((user) =>
+        user.id === id ? { ...user, active: !user.active } : user
+      )
+    );
+  };
+
   return (
     <div className=" p-6">
       <div className="max-w-7xl  mx-auto space-y-8">
         <div className="bg-white p-8 rounded-2xl border border-gray-200 overflow-hidden">
-          <h1 className="text-2xl font-semibold text-gray-800 mb-6">
-            Users List
-          </h1>
-
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-2xl font-semibold text-gray-800 mb-6">
+              Users List
+            </h1>
+            <button
+              type="button"
+              onClick={handleAddUser}
+              className="bg-primaryRed/70 hover:bg-primaryRed duration-300 cursor-pointer text-white font-semibold py-2 px-4 rounded-lg"
+            >
+              Add New User
+            </button>
+          </div>
           {loading ? (
             <div className="text-center text-gray-600">Loading users...</div>
           ) : error ? (
@@ -96,6 +120,12 @@ const UsersPage = () => {
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-700">
                         <div className="flex items-center gap-2">
+                          <div
+                            onClick={() => handleActivateUser(user.id)}
+                            className="cursor-pointer hover:text-primaryRed text-lg"
+                          >
+                            {user.active ? <FaPause /> : <FaPlay />}
+                          </div>
                           <button className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
                             <FiEdit2 className="w-4 h-4" />
                           </button>

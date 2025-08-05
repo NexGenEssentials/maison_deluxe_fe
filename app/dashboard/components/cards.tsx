@@ -1,5 +1,6 @@
+'use client'
+import { useAppContext } from "@/app/context";
 import { FiInfo, FiTrendingDown, FiTrendingUp } from "react-icons/fi";
-
 
 interface MetricCardProps {
   title: string;
@@ -8,6 +9,7 @@ interface MetricCardProps {
   currency?: string;
   bgColor: string;
   textColor: string;
+  link:string;
 }
 const MetricCard: React.FC<MetricCardProps> = ({
   title,
@@ -16,7 +18,13 @@ const MetricCard: React.FC<MetricCardProps> = ({
   currency,
   bgColor,
   textColor,
-}) => (
+  link,
+}) => {
+
+const {setActiveTab} =useAppContext();
+
+  return (
+  
   <div
     className={`${bgColor} ${textColor} rounded-2xl p-6 relative overflow-hidden`}
   >
@@ -45,13 +53,13 @@ const MetricCard: React.FC<MetricCardProps> = ({
         </div>
         <span className="text-sm opacity-75">than last month</span>
       </div>
-      <button className="flex items-center gap-2 mt-4 text-sm font-medium opacity-90 hover:opacity-100 transition-opacity">
+      <button onClick={()=> setActiveTab(link)} className="flex items-center gap-2 mt-4 text-sm font-medium opacity-70 hover:opacity-100 hover:underline hover:text-primaryBlue cursor-pointer transition-opacity">
         View details
         <FiInfo className="w-4 h-4" />
       </button>
     </div>
     <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
   </div>
-);
+);}
 
-export default MetricCard
+export default MetricCard;
