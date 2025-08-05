@@ -2,24 +2,27 @@
 import {
   CreateRoomTypeAPI,
   CreateRoomTypeImageAPI,
+  EditRoomTypeAPI,
+  getRoomByIdAPI,
 } from "@/app/api/roomtype/action";
 import { useAppContext } from "@/app/context";
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDropzone } from "react-dropzone";
 import { FaImage, FaX } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
+import Loader from "@/app/components/common/loader";
 
 export type CreateRoomTypeFormData = {
   name: string;
   description: string;
-  amenities: Record<string, string>;
+  amenities: string;
   units: number;
   price: string;
   capacity: number;
 };
 
-export default function RoomTypeForm() {
+export default function RoomTypeForm({ roomId }: { roomId?: number }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<{ status: boolean; message: string }>({
     status: false,
@@ -28,6 +31,7 @@ export default function RoomTypeForm() {
   const [images, setImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const router = useRouter();
+  const { setActiveModalId, setActiveTab } = useAppContext();
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: { "image/*": [".jpeg", ".jpg", ".png", ".webp"] },
@@ -41,49 +45,97 @@ export default function RoomTypeForm() {
     },
   });
 
-  const { setActiveTab } = useAppContext();
+  useEffect(() => {
+    handleGetRoom();
+  }, [roomId]);
+
   const {
+    reset,
     register,
     handleSubmit,
     setValue,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<CreateRoomTypeFormData>();
 
   const onSubmit = async (data: CreateRoomTypeFormData) => {
-    setLoading(true);
     try {
-      const result = await CreateRoomTypeAPI(data);
+      if (!roomId) {
+        const result = await CreateRoomTypeAPI(data);
 
-      if (result.status) {
-        const formData = new FormData();
-        images.forEach((img) => {
-          formData.append("image", img);
-        });
+        if (result.status) {
+          const formData = new FormData();
+          images.forEach((img) => {
+            formData.append("image", img);
+          });
 
-        const response = await CreateRoomTypeImageAPI(
-          formData,
-          result?.data?.id
-        );
+          const response = await CreateRoomTypeImageAPI(
+            formData,
+            result?.data?.id
+          );
 
-
-        if (response.success) {
-          setError({ status: true, message: "Image uploaded successfully!" });
-          setActiveTab("Room Type");
-          router.push("dashboard");
-        } else {
-          setError({ status: true, message: "Failed to upload image." });
+          if (response.success) {
+            setError({ status: true, message: "Image uploaded successfully!" });
+            setActiveTab("Room Type");
+            router.push("dashboard");
+          } else {
+            setError({ status: true, message: "Failed to upload image." });
+          }
         }
+      } else {
+        const result = await EditRoomTypeAPI(roomId, data);
+        if (!result.status) {
+          setError({ status: true, message: result.message });
+          return;
+        }
+        setError({
+          status: true,
+          message: "Room type updated successfully!",
+        });
+        setActiveTab("Room Type");
+        setActiveModalId(null);
+        router.refresh();
+
+        // if (result.status) {
+        //   if (images.length > 0) {
+        //     const formData = new FormData();
+        //     images.forEach((img) => {
+        //       formData.append("image", img);
+        //     });
+
+        //     const response = await CreateRoomTypeImageAPI(
+        //       formData,
+        //       roomId
+        //     );
+
+        //     if (response.success) {
+        //       setError({
+        //         status: true,
+        //         message: "Room type updated successfully!",
+        //       });
+        //       setActiveTab("Room Type");
+        //       router.push("dashboard");
+        //     } else {
+        //       setError({ status: true, message: "Failed to upload image." });
+        //     }
+        //   } else {
+        //     setError({
+        //       status: true,
+        //       message: "Room type updated successfully without images!",
+        //     });
+        //     setActiveTab("Room Type");
+        //     router.push("dashboard");
+        //   }
+        // }
       }
     } catch (error) {
       setError({ status: true, message: error as string });
     } finally {
       setValue("name", "");
       setValue("description", "");
-      setValue("amenities", {});
+      setValue("amenities", "");
       setValue("units", 0);
       setValue("price", "");
       setValue("capacity", 0);
-      setLoading(false);
       setActiveTab("Room Type");
     }
   };
@@ -97,12 +149,47 @@ export default function RoomTypeForm() {
     setImagePreviews(updatedPreviews);
   };
 
+  const handleGetRoom = async () => {
+    setLoading(true);
+    if (!roomId) return;
+    try {
+      const response = await getRoomByIdAPI(roomId);
+
+      if (response.status === 200) {
+        reset({
+          name: response.data?.name || "",
+          description: response.data?.description || "",
+          amenities: response.data?.amenities || "",
+          units: response.data?.units || 0,
+          price: response.data?.price?.toString() || "",
+          capacity: response.data?.capacity || 0,
+        });
+        setImagePreviews(
+          response.data?.images?.map((img: { image: string }) => img.image) ||
+            []
+        );
+      }
+    } catch (error) {
+      console.error("Error fetching room type:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) return (
+    <div className="flex items-center justify-center min-w-[500px] min-h-[500px]">
+      <Loader />
+    </div>
+  );
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="max-w-4xl mx-auto p-4 space-y-6 bg-white shadow-md rounded"
     >
-      <h2 className="text-xl font-bold">Create New Room Type Form</h2>
+      <h2 className="text-xl font-bold">
+        {roomId ? "Edit Room Form" : "Create New Room Type Form"}
+      </h2>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div>
           <label className="block font-medium text-gray-500 pb-1 text-sm">
@@ -246,10 +333,10 @@ export default function RoomTypeForm() {
       <div className="w-full flex justify-center">
         <button
           type="submit"
-          disabled={loading}
+          disabled={isSubmitting}
           className="min-w-sm cursor-pointer bg-secondaryRed/80 text-white px-6 py-2 rounded hover:bg-secondaryRed"
         >
-          {loading ? "Submitting..." : " Submit"}
+          {isSubmitting ? "Submitting..." : " Submit"}
         </button>
       </div>
     </form>

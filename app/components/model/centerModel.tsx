@@ -35,16 +35,15 @@ const CenterModal = ({
             }`}
             onClick={handleModalClick}
           >
-            {id !== "not-found" && (
-              <div className="text-end w-full flex items-end justify-end">
-                <FaX
-                  onClick={closeModal}
-                  height={25}
-                  width={25}
-                  color="#3f6db0"
-                />
-              </div>
-            )}
+            <div className="text-end w-full flex items-end justify-end">
+              <FaX
+                onClick={closeModal}
+                height={25}
+                width={25}
+                color="#3f6db0"
+              />
+            </div>
+
             {children}
           </div>
         </div>

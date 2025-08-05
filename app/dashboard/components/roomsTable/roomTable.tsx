@@ -4,10 +4,12 @@ import {
   getAllRoomTypeAPI,
 } from "@/app/api/roomtype/action";
 import Loader from "@/app/components/common/loader";
+import CenterModal from "@/app/components/model/centerModel";
 import { useAppContext } from "@/app/context";
 import { RoomType } from "@/app/types/rooms";
 import React, { useEffect, useState } from "react";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
+import RoomTypeForm from "../forms/createRoon";
 // adjust to your path
 
 const ITEMS_PER_PAGE = 10;
@@ -16,8 +18,9 @@ const RoomTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedRoom, setSelectedRoom] = useState<RoomType | null>(null);
   const [room, setRoom] = useState<RoomType[]>([]);
+  const [roomId, setRoomId] = useState<number>(0);
   const [loading, setLoading] = useState(true);
-  const { activeTab } = useAppContext();
+  const { activeTab, setActiveModalId } = useAppContext();
 
   useEffect(() => {
     handleGetRoomType();
@@ -98,6 +101,10 @@ const RoomTable = () => {
                       <FaEye className="w-4 h-4" />
                     </button>
                     <button
+                      onClick={() => {
+                        setRoomId(room.id);
+                        setActiveModalId("edit-room");
+                      }}
                       title="Edit"
                       className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
                     >
@@ -177,7 +184,7 @@ const RoomTable = () => {
             <p className="text-sm">
               <strong>Available:</strong> {selectedRoom.units} |{" "}
               <strong>Price:</strong> ${selectedRoom.price}|{" "}
-              <strong>Units:</strong> ${selectedRoom.units}
+              <strong>Units:</strong> {selectedRoom.units}
             </p>
             <h4 className="font-semibold mb-1">Room Policies:</h4>
             <ul className="list-disc list-inside text-sm mb-4">
@@ -188,6 +195,11 @@ const RoomTable = () => {
           </div>
         </div>
       )}
+
+      <CenterModal
+        children={<RoomTypeForm roomId={roomId} />}
+        id={"edit-room"}
+      />
     </div>
   );
 };

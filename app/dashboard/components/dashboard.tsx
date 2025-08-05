@@ -356,9 +356,7 @@ const DashboardAnalytics: React.FC = () => {
                               >
                                 <FiEye className="w-4 h-4" />
                               </button>
-                              <button className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
-                                <FiEdit2 className="w-4 h-4" />
-                              </button>
+
                               <button
                                 onClick={() => handleDelete(booking.id)}
                                 className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"

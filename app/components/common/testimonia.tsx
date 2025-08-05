@@ -8,6 +8,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Keyboard } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/autoplay";
+import Link from "next/link";
 
 const StarRating = ({ rating }: { rating: number }) => {
   const fullStars = Math.floor(rating);
@@ -27,7 +28,10 @@ const Testimonials = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <section id={'reviews'} className="relative  bg-primaryBlue text-white text-center">
+    <section
+      id={"reviews"}
+      className="relative  bg-primaryBlue text-white text-center"
+    >
       <div className="bg-gradient-to-r from-transparent via-[#100699]/10 via-50%  py-20  to-transparent px-4">
         <Title title="What Our Customers say" />
         <p className="text-sm md:text-base text-gray-300 mb-12">
@@ -191,6 +195,18 @@ const Testimonials = () => {
             </div>
           ))}
         </div>
+
+        <Link
+          href="/reviews"
+          aria-label="Give us feedback"
+          title="Give us feedback"
+          rel="noopener noreferrer"
+          className="flex-shrink-0 absolute bottom-10 right-10 "
+        >
+          <button className="cursor-pointer max-sm:w-full mt-4 px-6 py-3 bg-primaryGreen text-primaryBlue backdrop-blur-xl font-semibold rounded-md shadow-md hover:opacity-90 transition">
+            Give us Feedback
+          </button>
+        </Link>
       </div>
     </section>
   );

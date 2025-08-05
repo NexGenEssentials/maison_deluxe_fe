@@ -48,6 +48,49 @@ export const CreateRoomTypeAPI = async (
   }
 };
 
+export const EditRoomTypeAPI = async (
+  id: number,
+  data: CreateRoomTypeFormData
+): Promise<{
+  message: string;
+  status: boolean;
+  data: RoomType | null;
+}> => {
+  try {
+    const accessToken = (await cookies()).get("accessToken")?.value;
+    const response = await fetch(`${base_url}/room-categories/${id}/`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(data),
+    });
+console.log(data,id,response);
+    const result = await response.json();
+
+    if (!response.ok) {
+      return {
+        data: result,
+        message: response.statusText,
+        status: false,
+      };
+    } else {
+      return {
+        data: result,
+        message: "You have successfully updated the room",
+        status: true,
+      };
+    }
+  } catch (error) {
+    return {
+      data: null,
+      message: "An error occurred while processing your request",
+      status: false,
+    };
+  }
+};
+
 export const CreateRoomTypeImageAPI = async (
   roomImages: FormData,
   id?: number
