@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import RedWhiteLogo from "@/public/images/red_white_logo.png";
+import RedLogo from "@/public/images/red_logo.png";
 import Link from "next/link";
 import { LoginAPI } from "../api/auth/action";
 import { useRouter } from "next/navigation";
@@ -41,7 +42,7 @@ const LoginPage = () => {
   return (
     <div className="h-screen flex items-center justify-center">
       {/* Left section with logo */}
-      <div className="relative bg-gradient-to-b from-[#010A77] to-primaryBlue h-full w-1/2 flex items-center justify-center">
+      <div className="max-md:hidden relative bg-gradient-to-b from-[#010A77] to-primaryBlue h-full w-1/2 flex items-center justify-center">
         <div
           className="absolute top-1/3 inset-0 z-0 bg-center bg-no-repeat bg-cover lg:bg-contain opacity-100"
           style={{ backgroundImage: "url('/images/grayMoon.png')" }}
@@ -57,7 +58,15 @@ const LoginPage = () => {
       </div>
 
       {/* Right section with login form */}
-      <div className="w-1/2 h-full flex items-center justify-center">
+      <div className="max-md:w-full w-1/2 h-full flex flex-col items-center gap-8 justify-center">
+        <div className="md:hidden h-[150px] w-[150px] relative z-10">
+          <Image
+            src={RedLogo}
+            alt="maison de lux"
+            fill
+            className="object-cover w-full h-full"
+          />
+        </div>
         <form onSubmit={handleSubmit} className="w-2/3 max-w-md space-y-6">
           <h1 className="text-3xl font-bold text-center">Login</h1>
           <p className="text-center text-gray-500">
@@ -100,7 +109,7 @@ const LoginPage = () => {
               {showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
             </div>
           </div>
-            {/* <div className="text-right">
+          {/* <div className="text-right">
               <a href="#" className="text-sm text-blue-800 hover:underline">
                 Forgot Password
               </a>
