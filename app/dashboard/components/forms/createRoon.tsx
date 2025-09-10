@@ -91,41 +91,37 @@ export default function RoomTypeForm({ roomId }: { roomId?: number }) {
           status: true,
           message: "Room type updated successfully!",
         });
-        setActiveTab("Room Type");
-        setActiveModalId(null);
-        router.refresh();
 
-        // if (result.status) {
-        //   if (images.length > 0) {
-        //     const formData = new FormData();
-        //     images.forEach((img) => {
-        //       formData.append("image", img);
-        //     });
+        if (result.status) {
+          if (images.length > 0) {
+            const formData = new FormData();
+            images.forEach((img) => {
+              formData.append("image", img);
+            });
 
-        //     const response = await CreateRoomTypeImageAPI(
-        //       formData,
-        //       roomId
-        //     );
+            const response = await CreateRoomTypeImageAPI(formData, roomId);
 
-        //     if (response.success) {
-        //       setError({
-        //         status: true,
-        //         message: "Room type updated successfully!",
-        //       });
-        //       setActiveTab("Room Type");
-        //       router.push("dashboard");
-        //     } else {
-        //       setError({ status: true, message: "Failed to upload image." });
-        //     }
-        //   } else {
-        //     setError({
-        //       status: true,
-        //       message: "Room type updated successfully without images!",
-        //     });
-        //     setActiveTab("Room Type");
-        //     router.push("dashboard");
-        //   }
-        // }
+            if (response.success) {
+              setError({
+                status: true,
+                message: "Room type updated successfully!",
+              });
+              setActiveTab("Room Type");
+              router.push("dashboard");
+              setActiveModalId(null);
+              router.refresh();
+            } else {
+              setError({ status: true, message: "Failed to upload image." });
+            }
+          } else {
+            setError({
+              status: true,
+              message: "Room type updated successfully without images!",
+            });
+            setActiveTab("Room Type");
+            router.push("dashboard");
+          }
+        }
       }
     } catch (error) {
       setError({ status: true, message: error as string });
@@ -176,11 +172,12 @@ export default function RoomTypeForm({ roomId }: { roomId?: number }) {
     }
   };
 
-  if (loading) return (
-    <div className="flex items-center justify-center min-w-[500px] min-h-[500px]">
-      <Loader />
-    </div>
-  );
+  if (loading && roomId!)
+    return (
+      <div className="flex items-center justify-center min-w-[500px] min-h-[500px]">
+        <Loader />
+      </div>
+    );
 
   return (
     <form

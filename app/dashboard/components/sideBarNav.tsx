@@ -48,7 +48,6 @@ const menuItems = [
   },
 ];
 
-
 const SideBarNav = () => {
   const [active, setActive] = useState("Dashboard");
   const { setActiveTab } = useAppContext();
@@ -68,6 +67,7 @@ const SideBarNav = () => {
             onClick={() => {
               setActive(item.label);
               setActiveTab(item.label);
+              router.push("/dashboard");
             }}
             className={clsx(
               "flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium text-gray-700 transition-all duration-200",

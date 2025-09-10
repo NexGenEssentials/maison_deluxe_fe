@@ -1,19 +1,26 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FiUserPlus } from "react-icons/fi";
+import { FiEye, FiEyeOff, FiUserPlus } from "react-icons/fi";
+import { CreateUserAPI } from "@/app/api/common/action";
+import { useRouter } from "next/navigation";
+import { useAppContext } from "@/app/context";
 
 const userSchema = z.object({
   email: z.string().email("Invalid email address"),
   phone: z.string().min(10, "Phone number is too short"),
   full_name: z.string().min(3, "Full name is required"),
+  password: z.string().min(4, "atleast enter five letters"),
 });
 
-type UserFormData = z.infer<typeof userSchema>;
+export type UserFormData = z.infer<typeof userSchema>;
 
 const CreateUser = () => {
+  const router = useRouter();
+  const { setActiveTab } = useAppContext();
+  const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
@@ -25,23 +32,26 @@ const CreateUser = () => {
       email: "",
       phone: "",
       full_name: "",
+      password: "",
     },
   });
 
   const onSubmit = async (data: UserFormData) => {
-    console.log("Form Data:", data);
-
-    // try {
-    //   const res = await CreateUserAPI(data);
-
-    //   if (res.ok) {
-    //     reset();
-    //   } else {
-
-    //   }
-    // } catch (error) {
-
-    // }
+    const dataForm = {
+      ...data,
+      phone: `+25${data.phone}`,
+    };
+    try {
+      const res = await CreateUserAPI(dataForm);
+     
+      if (res.success) {
+        router.push("/dashboard");
+        setActiveTab("Users");
+        reset();
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -114,6 +124,28 @@ const CreateUser = () => {
             {errors.phone && (
               <p className="text-red-500 text-xs mt-1">
                 {errors.phone.message}
+              </p>
+            )}
+          </div>
+
+          {/* password */}
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              {...register("password")}
+              className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+            <div
+              className="absolute inset-y-0 right-4 flex items-center cursor-pointer text-gray-500"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
+            </div>
+            {errors.password && (
+              <p className="text-red-500 text-xs mt-1">
+                {errors.password.message}
               </p>
             )}
           </div>

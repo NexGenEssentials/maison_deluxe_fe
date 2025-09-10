@@ -1,5 +1,6 @@
 "use server";
 
+import { UserFormData } from "@/app/dashboard/users/page";
 import { UserApiResponse } from "@/app/types/user";
 import { cookies } from "next/headers";
 
@@ -61,6 +62,73 @@ export const getUser = async (): Promise<UserApiResponse> => {
     const data = await response.json();
 
     return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const CreateUserAPI = async (
+  data: UserFormData
+): Promise<{ success: boolean; message: string; data: UserFormData }> => {
+  try {
+    const response = await fetch(`${base_url}/register/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const ActivateUserAPI = async (
+  id: number,
+  data: { action: string }
+): Promise<{ success: boolean; message: string; data: UserFormData }> => {
+  const accessToken = (await cookies()).get("accessToken")?.value;
+  try {
+    const response = await fetch(
+      `${base_url}/users/${id}/activate-deactivate-user/`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify(data),
+      }
+    );
+
+    const result = await response.json();
+
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const ResetPasswordAPI = async (data: {
+  old_password: string;
+  new_password: string;
+}): Promise<{ success: boolean; message: string; data: UserFormData }> => {
+  const accessToken = (await cookies()).get("accessToken")?.value;
+  try {
+    const response = await fetch(`${base_url}/user/change-password/`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(data),
+    });
+    const result = await response.json();
+    return result;
   } catch (error) {
     throw error;
   }

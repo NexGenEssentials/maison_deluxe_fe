@@ -206,7 +206,7 @@ export default function BookingForm({ room }: { room: RoomType }) {
               type="number"
               min={1}
               max={room.capacity}
-              placeholder="Email Address"
+              placeholder="Number of People"
               className="w-full border rounded px-4 py-2 focus:outline-none  border-gray-400 hover:border-lime-400 transition"
             />
             {errors.people && (

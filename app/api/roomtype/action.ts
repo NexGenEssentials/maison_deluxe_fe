@@ -66,7 +66,7 @@ export const EditRoomTypeAPI = async (
       },
       body: JSON.stringify(data),
     });
-console.log(data,id,response);
+   
     const result = await response.json();
 
     if (!response.ok) {
@@ -98,12 +98,11 @@ export const CreateRoomTypeImageAPI = async (
   try {
     const response = await fetch(`${base_url}/room-categories/${id}/images/`, {
       method: "POST",
-      headers: {},
       body: roomImages,
     });
 
     const data = await response.json();
-
+    
     if (!response.ok) {
       return { success: false };
     }
@@ -231,7 +230,7 @@ export const checkRoomAvailabilityAPI = async (
     );
 
     const data = await response.json();
-  
+
     if (response.ok) {
       return {
         available: true,
