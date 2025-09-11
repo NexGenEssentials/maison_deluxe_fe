@@ -30,7 +30,7 @@ const CenterModal = ({
           onClick={closeModal}
         >
           <div
-            className={`bg-white rounded-lg shadow-lg p-4 sm:p-8 max-md:h-fit overflow-y-scroll hide-scrollbar md:max-w-fit w-full transform transition-all duration-500 ease-out ${
+            className={`bg-white m-8 rounded-lg shadow-lg p-4 sm:p-8 max-md:h-fit overflow-y-scroll hide-scrollbar md:max-w-fit w-full transform transition-all duration-500 ease-out ${
               activeModalId === id ? "animate-slideUp" : "animate-slideDown"
             }`}
             onClick={handleModalClick}

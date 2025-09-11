@@ -9,7 +9,7 @@ const RoomType = () => {
   return (
     <div className="p-8 space-y-4">
       <div>
-        <div className="border border-gray-200 rounded-lg w-full md:w-1/2 mx-auto flex overflow-hidden">
+        <div className="border border-gray-200 rounded-lg w-full md:w-2/3  mx-auto flex overflow-hidden">
           {tabs.map((tbs) => (
             <span
               onClick={() => setTab(tbs)}
@@ -17,7 +17,7 @@ const RoomType = () => {
                 tbs !== tab
                   ? "bg-secondaryRed/70 hover:bg-secondaryRed text-white"
                   : "text-gray-300 cursor-not-allowed"
-              } w-full flex items-center justify-center py-3 font-semibold cursor-pointer capitalize`}
+              } w-full flex items-center justify-center py-3 px-4 font-semibold cursor-pointer capitalize`}
               key={tbs}
             >
               {tbs}

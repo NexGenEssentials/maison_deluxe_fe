@@ -51,3 +51,8 @@ body {
     @apply bg-white rounded-full shadow-lg h-full;
   }
 }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
