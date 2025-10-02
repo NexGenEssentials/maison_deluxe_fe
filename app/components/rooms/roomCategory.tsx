@@ -156,44 +156,52 @@ const RoomCategory = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 pl-12 py-12 w-full mb-12 items-center text-white overflow-hidden">
           {/* Left */}
-          <div className="w-full flex flex-col justify-center items-start px-20 relative">
-            <div className="absolute left-0 top-1/2 transform -translate-y-1/2 h-full w-[1px] bg-white rounded-full">
-              <div
-                className="absolute -left-1 h-1/4 transition duration-500 w-[2px] px-1 bg-[#7D9F43] rounded-full"
-                style={{ top: `${(20 * currentIndex) % 100}%` }}
-              />
+          {!roomCategory?.id ? (
+            <div className="flex items-center justify-center w-full text-2xl h-full min-h-[300px] text-primaryGreen">
+              Rooms not available at the moment !
             </div>
+          ) : (
+            <div className="w-full flex flex-col justify-center items-start px-20 relative">
+              <div className="absolute left-0 top-1/2 transform -translate-y-1/2 h-full w-[1px] bg-white rounded-full">
+                <div
+                  className="absolute -left-1 h-1/4 transition duration-500 w-[2px] px-1 bg-[#7D9F43] rounded-full"
+                  style={{ top: `${(20 * currentIndex) % 100}%` }}
+                />
+              </div>
 
-            <div
-              className={`transition-all duration-500 ease-in-out ${
-                isTransitioning
-                  ? "opacity-0 translate-y-10"
-                  : "opacity-100 translate-y-0"
-              }`}
-              key={roomCategory?.id}
-            >
-              <Title title={`0${currentIndex+1}  ${roomCategory?.name}`} />
-              <p className="mb-4 text-base font-normal max-w-md leading-relaxed text-gray-300">
-                {roomCategory?.description}
-              </p>
-              <div className="py-2 px-4 bg-primaryGreen/20 w-fit rounded-md mb-4">
-                Available Room(s):{" "}
-                <span className="font-bold">{roomCategory?.units}</span>
-              </div>
-              <div className="mb-8">
-                <h4 className="font-bold text-white mb-2 text-xl">Amenities</h4>
-                <ul className="list-disc font-normal pl-8 space-y-2">
-                  <li className="text-gray-200">{roomCategory?.amenities}</li>
-                </ul>
-              </div>
-              <button
-                onClick={handleBooking}
-                className="bg-[#C6F123] text-black px-6 py-3 rounded-lg font-bold hover:bg-lime-400 transition"
+              <div
+                className={`transition-all duration-500 ease-in-out ${
+                  isTransitioning
+                    ? "opacity-0 translate-y-10"
+                    : "opacity-100 translate-y-0"
+                }`}
+                key={roomCategory?.id}
               >
-                Reserve room
-              </button>
+                <Title title={`0${currentIndex + 1}  ${roomCategory?.name}`} />
+                <p className="mb-4 text-base font-normal max-w-md leading-relaxed text-gray-300">
+                  {roomCategory?.description}
+                </p>
+                <div className="py-2 px-4 bg-primaryGreen/20 w-fit rounded-md mb-4">
+                  Available Room(s):{" "}
+                  <span className="font-bold">{roomCategory?.units}</span>
+                </div>
+                <div className="mb-8">
+                  <h4 className="font-bold text-white mb-2 text-xl">
+                    Amenities
+                  </h4>
+                  <ul className="list-disc font-normal pl-8 space-y-2">
+                    <li className="text-gray-200">{roomCategory?.amenities}</li>
+                  </ul>
+                </div>
+                <button
+                  onClick={handleBooking}
+                  className="bg-[#C6F123] text-black px-6 py-3 rounded-lg font-bold hover:bg-lime-400 transition"
+                >
+                  Reserve room
+                </button>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Right */}
           <div

@@ -147,8 +147,8 @@ export const getAllRoomTypeAPI = async (): Promise<{
       },
     });
 
+    // console.log({response})
     const result = await response.json();
-
     if (!response.ok) {
       return {
         data: [],
@@ -163,6 +163,7 @@ export const getAllRoomTypeAPI = async (): Promise<{
       };
     }
   } catch (error) {
+    console.log(error)
     return {
       data: [],
       message: "An error occurred while processing your request",

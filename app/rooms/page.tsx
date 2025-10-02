@@ -58,7 +58,7 @@ const RoomCategory = () => {
   return (
     <Tamplate>
       <div className="flex flex-col md:flex-row justify-between items-start gap-2 px-4 md:px-12 py-10">
-        <div className="w-full lg:w1/2 xl:w-3/4 bg-[#F5F5F5] text-black  ">
+        <div className="w-full lg:w1/2 xl:w-3/4 bg-[#F5F5F5] text-black h-full  ">
           <div className="flex justify-between items-center mb-6 bg-[#E6EBFF]">
             <div
               className={` ${
@@ -115,6 +115,10 @@ const RoomCategory = () => {
           {/* Room Categories */}
           {loading ? (
             <Loader />
+          ) : roomType.length <= 0 ? (
+            <div className="flex items-center justify-center w-full h-full min-h-[300px] text-primaryRed">
+              Rooms not available at the moment !
+            </div>
           ) : (
             <div className="grid grid-cols-1 gap-6 py-10 px-4 md:px-12 ">
               {roomType.map((room) => (
@@ -148,9 +152,13 @@ const RoomCategory = () => {
                     <p className="lg:hidden text-gray-500 mb-4">
                       <span className="font-bold text-primaryBlue">Price:</span>{" "}
                       $
-                      {(selectedRoom && (selectedPeopleMap[selectedRoom.id] || 1)) === 0
+                      {(selectedRoom &&
+                        (selectedPeopleMap[selectedRoom.id] || 1)) === 0
                         ? room.price
-                        : selectedRoom ? Number(room.price) * (selectedPeopleMap[selectedRoom.id] || 1) : room.price}
+                        : selectedRoom
+                        ? Number(room.price) *
+                          (selectedPeopleMap[selectedRoom.id] || 1)
+                        : room.price}
                     </p>
                     <div className="flex items-end gap-4 justify-between w-full">
                       <button
@@ -177,7 +185,7 @@ const RoomCategory = () => {
                           className="w-32 border rounded-md p-2"
                           value={selectedPeopleMap[room.id] || 0}
                           onChange={(e) => {
-                              handleRoomSelect(room.name);
+                            handleRoomSelect(room.name);
                             const people = Number(e.target.value);
                             setSelectedPeopleMap((prev) => ({
                               ...prev,
@@ -225,7 +233,9 @@ const RoomCategory = () => {
               </ul>
               <p className="text-gray-800 mb-4">
                 <span className="font-bold text-3xl">
-                  Amount: ${Number(selectedRoom.price) * (selectedRoom && (selectedPeopleMap[selectedRoom.id] || 1))}
+                  Amount: $
+                  {Number(selectedRoom.price) *
+                    (selectedRoom && (selectedPeopleMap[selectedRoom.id] || 1))}
                 </span>
               </p>
               <div
