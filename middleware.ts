@@ -1,8 +1,13 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import jwt from "jsonwebtoken";
+import { decodeJwt, JWTPayload } from "jose";
 
-export function middleware(request: NextRequest) {
+// extend JWTPayload with your custom claims
+interface CustomJWTPayload extends JWTPayload {
+  is_verified?: boolean;
+}
+
+export async function middleware(request: NextRequest) {
   const loginUrl = new URL("/login", request.url);
   const token = request.cookies.get("accessToken")?.value;
 
@@ -11,28 +16,28 @@ export function middleware(request: NextRequest) {
   }
 
   try {
-    const decoded = jwt.decode(token) as {
-      exp?: number;
-      is_verified?: boolean;
-    } | null;
+    const payload = decodeJwt(token) as CustomJWTPayload;
 
-    if (!decoded || !decoded.exp || !decoded.is_verified) {
+    // type-safe checks
+    if (!payload.exp || !payload.is_verified) {
       return NextResponse.redirect(loginUrl);
     }
 
-    const isExpired = decoded.exp * 1000 < Date.now();
+    const isExpired = payload.exp * 1000 < Date.now();
 
     if (isExpired) {
-      request.cookies.delete("accessToken");
-      return NextResponse.redirect(loginUrl);
+      const response = NextResponse.redirect(loginUrl);
+      response.cookies.delete("accessToken");
+      return response;
     }
+
+    return NextResponse.next();
   } catch (error) {
+    console.error("JWT decode error:", error);
     return NextResponse.redirect(loginUrl);
   }
 }
 
 export const config = {
-  matcher: [
-    "/dashboard/:path*",
-  ],
+  matcher: ["/dashboard/:path*"],
 };
